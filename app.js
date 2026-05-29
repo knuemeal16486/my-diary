@@ -1192,7 +1192,7 @@ async function processUserChat(messageText) {
     console.error(error);
     const thinkingEl = document.getElementById('thinking-bubble');
     if (thinkingEl) thinkingEl.remove();
-    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. 조금 뒤에 다시 말해줄래요?");
+    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. (디버깅: " + error.message + ") 조금 뒤에 다시 말해줄래요?");
   }
 }
 
