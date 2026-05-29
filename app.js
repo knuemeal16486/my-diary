@@ -1234,7 +1234,6 @@ async function fetchGeminiResponse(userText) {
       }],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 800,
         responseMimeType: "application/json"
       }
     })

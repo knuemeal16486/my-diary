@@ -29,12 +29,24 @@ fetch(url, {
     }],
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 800,
       responseMimeType: "application/json"
     }
   })
 }).then(async r => {
-  const data = await r.json();
+  const dataText = await r.text();
+  let data;
+  try {
+    data = JSON.parse(dataText);
+  } catch(e) {
+    console.error("Not json response", dataText);
+    return;
+  }
+  if (!data.candidates) {
+    console.error("NO CANDIDATES", data);
+    return;
+  }
+  console.log("=== FINISH REASON ===");
+  console.log(data.candidates[0].finishReason);
   let rawText = data.candidates[0].content.parts[0].text.trim();
   console.log("=== RAW TEXT ===");
   console.log(rawText);
