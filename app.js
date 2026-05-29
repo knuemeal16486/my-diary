@@ -1184,7 +1184,6 @@ async function processUserChat(messageText) {
           triggerStageLevelUp();
         }
       }
-      saveGame();
     }
     
     addBotMessage(aiResponse.reply || "응답을 불러오지 못했어요.");
