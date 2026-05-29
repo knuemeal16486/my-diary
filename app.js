@@ -1016,18 +1016,26 @@ function updateDashboardUI() {
 
   statsList.forEach(stat => {
     const val = Math.round(appState.stats[stat]);
-    document.getElementById(`val-${stat}`).innerText = `${val}%`;
-    document.getElementById(`fill-${stat}`).style.width = `${val}%`;
 
     // Check danger
     const minVal = profile.careInfo[stat].min;
     const maxVal = profile.careInfo[stat].max;
+    
+    let statusLabel = "(적절)";
     if (val < minVal) {
       isAnyDanger = true;
       dangerMessage = `${stat === 'water' ? '물이 부족해 말라가고 있어요!' : stat === 'sun' ? '햇빛이 너무 부족해 시들시들해요.' : stat === 'wind' ? '공기가 탁해서 숨쉬기 힘들어요.' : '흙에 영양분이 전부 닳았어요!'}`;
+      statusLabel = "(부족)";
     } else if (val > maxVal) {
       isAnyDanger = true;
-      dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 강풍이라 흙이 너무 빨리 말라요.' : '영양 성분이 과다하여 해로워요!'}`;
+      dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 너무 강해요.' : '영양 성분이 과다하여 해로워요!'}`;
+      statusLabel = "(과다)";
+    }
+
+    const chipBtn = document.getElementById(`chip-${stat}`);
+    if (chipBtn) {
+        const actionName = stat === 'water' ? '물 주기' : stat === 'sun' ? '햇빛 쬐기' : stat === 'wind' ? '환기 하기' : '비료 주기';
+        chipBtn.innerText = `${actionName} ${statusLabel}`;
     }
   });
 
@@ -1942,7 +1950,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Chat Prompt Chip Click Actions
   document.getElementById('chat-prompt-chips').addEventListener('click', (e) => {
     if (e.target.classList.contains('chip-btn')) {
-      const promptText = e.target.innerText;
+      // Use data-action if available, else fallback to innerText
+      const promptText = e.target.dataset.action || e.target.innerText;
       processUserChat(promptText);
     }
   });

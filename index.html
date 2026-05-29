@@ -348,67 +348,7 @@
                   <h3>식물과 대화하며 환경을 조절해주세요</h3>
                 </div>
 
-                <div class="status-controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
-                  <!-- Water Level -->
-                  <div class="control-item" style="padding: 10px;">
-                    <div class="control-info">
-                      <span class="control-title"><i data-lucide="droplet" class="text-blue"></i> 수분</span>
-                      <span class="control-value" id="val-water">50%</span>
-                    </div>
-                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
-                      <div class="safe-zone-marker water-safe"></div>
-                      <div id="fill-water" class="stat-fill bg-blue" style="width: 50%;"></div>
-                    </div>
-                    <button class="btn-action btn-blue" id="btn-care-water" style="padding: 6px; font-size: 13px;">
-                      <i data-lucide="droplets"></i> 물주기
-                    </button>
-                  </div>
 
-                  <!-- Sunlight Level -->
-                  <div class="control-item" style="padding: 10px;">
-                    <div class="control-info">
-                      <span class="control-title"><i data-lucide="sun" class="text-sunny"></i> 햇빛</span>
-                      <span class="control-value" id="val-sun">30%</span>
-                    </div>
-                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
-                      <div class="safe-zone-marker sun-safe"></div>
-                      <div id="fill-sun" class="stat-fill bg-sunny" style="width: 30%;"></div>
-                    </div>
-                    <button class="btn-action btn-sunny" id="btn-care-sun" style="padding: 6px; font-size: 13px;">
-                      <i data-lucide="sun-dim"></i> 햇빛쬐기
-                    </button>
-                  </div>
-
-                  <!-- Ventilation Level -->
-                  <div class="control-item" style="padding: 10px;">
-                    <div class="control-info">
-                      <span class="control-title"><i data-lucide="wind" class="text-teal"></i> 환기</span>
-                      <span class="control-value" id="val-wind">40%</span>
-                    </div>
-                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
-                      <div class="safe-zone-marker wind-safe"></div>
-                      <div id="fill-wind" class="stat-fill bg-teal" style="width: 40%;"></div>
-                    </div>
-                    <button class="btn-action btn-teal" id="btn-care-wind" style="padding: 6px; font-size: 13px;">
-                      <i data-lucide="wind"></i> 환기하기
-                    </button>
-                  </div>
-
-                  <!-- Soil / Nutrients Level -->
-                  <div class="control-item" style="padding: 10px;">
-                    <div class="control-info">
-                      <span class="control-title"><i data-lucide="leaf" class="text-brown"></i> 영양</span>
-                      <span class="control-value" id="val-soil">40%</span>
-                    </div>
-                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
-                      <div class="safe-zone-marker soil-safe"></div>
-                      <div id="fill-soil" class="stat-fill bg-brown" style="width: 40%;"></div>
-                    </div>
-                    <button class="btn-action btn-brown" id="btn-care-fertilizer" style="padding: 6px; font-size: 13px;">
-                      <i data-lucide="sparkles"></i> 비료주기
-                    </button>
-                  </div>
-                </div>
 
                 <div class="health-alert-box warning hidden" id="health-alert" style="margin-bottom: 10px;">
                   <i data-lucide="alert-triangle" class="alert-icon"></i>
@@ -425,10 +365,10 @@
 
                   <!-- Recommended Prompt Chips -->
                   <div class="prompt-chips" id="chat-prompt-chips">
-                    <button class="chip-btn">물 주기</button>
-                    <button class="chip-btn">햇빛 쬐기</button>
-                    <button class="chip-btn">환기 하기</button>
-                    <button class="chip-btn">비료 주기</button>
+                    <button class="chip-btn" id="chip-water" data-action="물 주기">물 주기</button>
+                    <button class="chip-btn" id="chip-sun" data-action="햇빛 쬐기">햇빛 쬐기</button>
+                    <button class="chip-btn" id="chip-wind" data-action="환기 하기">환기 하기</button>
+                    <button class="chip-btn" id="chip-soil" data-action="비료 주기">비료 주기</button>
                   </div>
 
                   <!-- Message Input -->
