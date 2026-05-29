@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 마음정원 - AI 초등 실과 식물 기르기</title>
+  <!-- Error Diagnostics Handler -->
+  <script>
+    window.onerror = function (message, source, lineno, colno, error) {
+      const div = document.createElement('div');
+      div.style.position = 'fixed';
+      div.style.top = '0';
+      div.style.left = '0';
+      div.style.width = '100%';
+      div.style.backgroundColor = '#FFEBEE';
+      div.style.color = '#C62828';
+      div.style.padding = '20px';
+      div.style.borderBottom = '2px solid #EF9A9A';
+      div.style.zIndex = '999999';
+      div.style.fontFamily = 'monospace';
+      div.style.fontSize = '14px';
+      div.style.lineHeight = '1.5';
+      div.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      div.innerHTML = '<h3>🚨 [오류 감지됨] 스크립트 실행 중 문제가 발생했습니다:</h3>' +
+        '<strong>메시지:</strong> ' + message + '<br>' +
+        '<strong>파일:</strong> ' + source + '<br>' +
+        '<strong>위치:</strong> 줄 ' + lineno + ', 열 ' + colno;
+      document.body.appendChild(div);
+      return false;
+    };
+  </script>
+  <!-- Google Fonts: Outfit & NanumSquareRound via web font fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- App Wrapper -->
+  <div id="app-container">
+
+    <!-- Top Header (Hidden on Intro and Test screens) -->
+    <header id="main-header" class="hidden">
+      <div class="header-logo">
+        <i data-lucide="sprout" class="logo-icon animate-pulse-slow"></i>
+        <h1>Green Mate</h1>
+      </div>
+      <div class="header-status">
+        <div class="user-badge">
+          <i data-lucide="user" class="icon-small"></i>
+          <span id="header-user-name">꼬마 정원사</span>
+        </div>
+        <div class="item-badge" id="fertilizer-badge" title="친환경 비료 개수">
+          <i data-lucide="sparkles" class="icon-small text-gold animate-bounce-slow"></i>
+          <span>비료: <strong id="fertilizer-count">1</strong>개</span>
+        </div>
+        <button id="btn-reset" class="btn-icon-only" title="처음부터 다시 하기">
+          <i data-lucide="refresh-cw"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main id="view-viewport">
+
+      <!-- 1. INTRO SCREEN -->
+      <section id="view-intro" class="view-section active">
+        <div class="intro-card glassmorphism">
+          <div class="intro-header">
+            <div class="intro-icon-wrapper animate-float">
+              <i data-lucide="leaf" class="icon-huge text-green"></i>
+              <i data-lucide="bot" class="icon-huge text-blue robot-overlay"></i>
+            </div>
+            <h2>나만의 AI 반려 식물 기르기</h2>
+            <p class="subtitle">초록 친구와 대화하고 돌보며 식물 성장의 비밀을 풀어봐요!</p>
+          </div>
+
+          <div class="intro-form">
+            <label for="input-name">정원사로 사용할 멋진 이름을 입력해주세요:</label>
+            <input type="text" id="input-name" placeholder="예: 초록이대장, 정원사민우" maxlength="10" autocomplete="off">
+            <button id="btn-start-test" class="btn-primary">
+              성향 테스트 시작하기
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="intro-footer">
+            <span>초등학교 6학년 실과 [동식물 가꾸기] 단원 연계 학습 프로그램</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PERSONALITY TEST SCREEN -->
+      <section id="view-test" class="view-section hidden">
+        <div class="test-container glassmorphism">
+          <!-- Progress bar -->
+          <div class="progress-container">
+            <div class="progress-bar-label">
+              <span>식물 성향 분석</span>
+              <span id="test-progress-text">1 / 4</span>
+            </div>
+            <div class="progress-bar-track">
+              <div id="test-progress-fill" style="width: 25%;"></div>
+            </div>
+          </div>
+
+          <!-- Question Card -->
+          <div id="test-question-card" class="question-card">
+            <div class="question-icon-circle">
+              <i data-lucide="help-circle" class="text-green"></i>
+            </div>
+            <h3 id="test-question-title">질문 로딩 중...</h3>
+
+            <div id="test-options" class="options-grid">
+              <!-- Dynamically generated buttons go here -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. LOADING / AI ANALYSIS SCREEN -->
+      <section id="view-loading" class="view-section hidden">
+        <div class="loading-container glassmorphism text-center">
+          <div class="loader-visual">
+            <div class="radar-scan"></div>
+            <div class="ai-brain-pulse">
+              <i data-lucide="bot" class="icon-huge text-blue"></i>
+            </div>
+          </div>
+          <h3>AI가 나의 성향을 분석하고 있습니다</h3>
+          <p class="subtitle">답변을 토대로 가장 잘 맞는 반려 식물 세포를 조합 중입니다...</p>
+
+          <div class="analysis-logs">
+            <div class="log-line opacity-30">> 성향 데이터 파싱 완료...</div>
+            <div class="log-line opacity-60">> 식물 성장 선호도 매핑 중...</div>
+            <div class="log-line">> 환경 기호도 분석 매개변수 계산 완료...</div>
+            <div class="log-line text-green animate-pulse">> 최적의 매칭 반려 식물을 발견했습니다!</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. RESULT SCREEN (RECOMMENDATION) -->
+      <section id="view-result" class="view-section hidden">
+        <div class="result-container glassmorphism">
+          <div class="result-header">
+            <span class="badge">AI 추천 반려 식물</span>
+            <h2 id="recommended-plant-name">방울토마토</h2>
+            <p id="recommended-plant-slogan" class="slogan">"열정 가득! 자라나는 결실의 즐거움"</p>
+          </div>
+
+          <div class="result-body-grid">
+            <div class="result-visual-card">
+              <!-- Large plant Preview SVG/Graphic -->
+              <div id="result-plant-preview" class="plant-preview-box">
+                <!-- SVG injected dynamically -->
+              </div>
+            </div>
+            <div class="result-details-card">
+              <div class="detail-section">
+                <h4><i data-lucide="sparkle" class="icon-small text-green"></i> 이런 점이 나와 닮았어요!</h4>
+                <p id="recommended-plant-desc">방울토마토는 강한 햇살을 좋아하고 쑥쑥 자라며 열매를 맺는 기쁨을 주는 활동적인 식물입니다. 친구들과 뛰어노는 것을 좋아하고
+                  에너지가 넘치는 정원사님과 환상의 짝꿍입니다!</p>
+              </div>
+
+              <div class="detail-section">
+                <h4><i data-lucide="list-checks" class="icon-small text-blue"></i> 가꾸기 난이도 & 정보</h4>
+                <div class="info-pill-container">
+                  <span class="info-pill"><i data-lucide="thermometer"></i> 온도: 20~25°C</span>
+                  <span class="info-pill"><i data-lucide="droplet"></i> 물주기: 주 2-3회</span>
+                  <span class="info-pill"><i data-lucide="sun"></i> 햇빛: 매우 좋아함</span>
+                  <span class="info-pill"><i data-lucide="wind"></i> 환기: 필수</span>
+                </div>
+              </div>
+
+              <button id="btn-adopt-plant" class="btn-primary btn-huge btn-glow">
+                <i data-lucide="heart" class="animate-pulse"></i>
+                이 식물로 시작하기!
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4.5. ENVIRONMENT SELECTION SCREEN -->
+      <section id="view-environment" class="view-section hidden">
+        <div class="result-container glassmorphism fade-in">
+          <div class="result-header">
+            <span class="badge">환경 선택</span>
+            <h2>어디서 키울까요?</h2>
+            <p class="slogan">식물이 자랄 장소를 선택해주세요. 환경에 따라 돌보는 방법이 달라집니다!</p>
+          </div>
+
+          <div class="env-options-grid">
+            <div class="env-card" data-env="window">
+              <div class="env-icon"><i data-lucide="sun"></i></div>
+              <h3>햇살 가득한 창가</h3>
+              <p>햇빛이 잘 들어 광합성에 유리하지만, 흙이 빨리 마를 수 있어요.</p>
+            </div>
+            <div class="env-card" data-env="balcony">
+              <div class="env-icon"><i data-lucide="wind"></i></div>
+              <h3>서늘한 베란다</h3>
+              <p>바람이 잘 통해 병충해 예방에 좋고 온도가 서늘해요.</p>
+            </div>
+            <div class="env-card" data-env="room">
+              <div class="env-icon"><i data-lucide="home"></i></div>
+              <h3>아늑한 방 안</h3>
+              <p>온도가 안정적이지만 햇빛과 통풍에 특별히 신경 써야 해요.</p>
+            </div>
+            <div class="env-card" data-env="outdoor">
+              <div class="env-icon"><i data-lucide="cloud-rain"></i></div>
+              <h3>야외 정원</h3>
+              <p>자연의 영향을 직접 받으며 흙의 영양분이 빨리 소모됩니다.</p>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 30px;">
+            <button id="btn-start-dashboard" class="btn-primary btn-huge btn-glow" disabled>
+              <i data-lucide="sprout"></i> 이 환경에서 키우기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. MAIN DASHBOARD SCREEN -->
+      <section id="view-dashboard" class="view-section hidden">
+        <div class="dashboard-grid">
+
+          <!-- LEFT PANEL: PLANT OBSERVATORY -->
+          <div class="observatory-card glassmorphism">
+
+            <!-- Environment / Weather status HUD -->
+            <div class="observatory-hud">
+              <div class="hud-item" id="hud-weather" title="오늘의 날씨">
+                <i data-lucide="sun" id="hud-weather-icon" class="text-sunny"></i>
+                <span id="hud-weather-text">맑음</span>
+              </div>
+              <div class="hud-item" id="hud-stage" title="현재 식물 성장 단계">
+                <i data-lucide="trending-up" class="text-green"></i>
+                <span id="hud-stage-text">새싹 단계</span>
+              </div>
+              <button id="btn-dev-skip" class="btn-secondary"
+                style="margin-left:auto; padding: 4px 10px; font-size:12px; height:auto; display:flex; align-items:center; gap:4px;"
+                title="개발자 모드: 다음 단계로 강제 성장">
+                <i data-lucide="fast-forward" style="width:14px; height:14px;"></i> 단계 스킵
+              </button>
+            </div>
+
+            <!-- Real-time Weather Info Panel (Compact) -->
+            <div class="weather-panel" id="weather-panel">
+              <div class="weather-panel-loading" id="weather-loading">
+                <i data-lucide="loader" class="spin-icon"></i>
+                <span>날씨 불러오는 중...</span>
+              </div>
+              <div class="weather-panel-content hidden" id="weather-content">
+                <div class="weather-compact-row">
+                  <span class="weather-main-icon" id="w-main-icon">☀️</span>
+                  <span class="w-weather-text" id="w-weather-label">맑음</span>
+                  <span class="w-divider">|</span>
+                  <i data-lucide="thermometer" class="wicon text-red"></i>
+                  <span id="w-temp" class="wstat-val">--°C</span>
+                  <span class="w-divider">|</span>
+                  <i data-lucide="wind" class="wicon text-teal"></i>
+                  <span id="w-wind" class="wstat-val">-- m/s</span>
+                  <span class="w-divider">|</span>
+                  <i data-lucide="map-pin" class="wicon"></i>
+                  <span id="w-location" class="w-location-text">--</span>
+                  <span class="w-clock-badge" id="w-clock">00:00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Virtual Pot Container -->
+            <div class="garden-view" id="garden-view-port">
+
+              <!-- Environmental Effect Overlays -->
+              <div id="effect-sunlight" class="effect-layer hidden-effect"></div>
+              <div id="effect-rain" class="effect-layer hidden-effect"></div>
+              <div id="effect-wind" class="effect-layer hidden-effect">
+                <div class="wind-particle"></div>
+                <div class="wind-particle"></div>
+                <div class="wind-particle"></div>
+              </div>
+
+              <!-- The dynamically animated Plant SVG wrapper -->
+              <div class="plant-container">
+                <div id="plant-svg-holder">
+                  <!-- JS builds SVG here -->
+                </div>
+              </div>
+
+              <!-- Interaction Animation Assets -->
+              <div id="water-can-animation" class="interaction-overlay hidden-effect">
+                <i data-lucide="droplet" class="water-drop-icon"></i>
+                <i data-lucide="droplet" class="water-drop-icon animation-delay-1"></i>
+                <i data-lucide="droplet" class="water-drop-icon animation-delay-2"></i>
+              </div>
+
+              <div id="fertilizer-animation" class="interaction-overlay hidden-effect">
+                <i data-lucide="sparkles" class="fertilizer-sparkle"></i>
+                <i data-lucide="sparkles" class="fertilizer-sparkle animation-delay-1"></i>
+              </div>
+
+            </div>
+
+            <!-- Growth Progress Bar -->
+            <div class="growth-meter-container">
+              <div class="growth-label">
+                <span>성장 경험치 (<span id="growth-percent">0</span>%)</span>
+                <span id="growth-stage-indicator" class="text-bold">씨앗</span>
+              </div>
+              <div class="growth-track">
+                <div id="growth-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT PANEL: DASHBOARD TABS -->
+          <div class="control-card glassmorphism">
+
+            <!-- Tabs Menu -->
+            <nav class="tab-menu">
+              <button class="tab-btn active" data-tab="chat">
+                <i data-lucide="message-square"></i>
+                <span>AI 대화 & 돌보기</span>
+              </button>
+              <button class="tab-btn" data-tab="diary">
+                <i data-lucide="book-open"></i>
+                <span>일기 쓰기</span>
+              </button>
+              <button class="tab-btn" data-tab="quiz">
+                <i data-lucide="award"></i>
+                <span>식물 퀴즈</span>
+              </button>
+            </nav>
+
+            <!-- Tab Content Viewport -->
+            <div class="tab-viewport">
+
+              <!-- Tab 1: AI CHAT & CARE -->
+              <div class="tab-pane active" id="pane-chat">
+                <div class="pane-header" style="margin-bottom: 10px;">
+                  <h3>식물과 대화하며 환경을 조절해주세요</h3>
+                </div>
+
+                <div class="status-controls-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+                  <!-- Water Level -->
+                  <div class="control-item" style="padding: 10px;">
+                    <div class="control-info">
+                      <span class="control-title"><i data-lucide="droplet" class="text-blue"></i> 수분</span>
+                      <span class="control-value" id="val-water">50%</span>
+                    </div>
+                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
+                      <div class="safe-zone-marker water-safe"></div>
+                      <div id="fill-water" class="stat-fill bg-blue" style="width: 50%;"></div>
+                    </div>
+                    <button class="btn-action btn-blue" id="btn-care-water" style="padding: 6px; font-size: 13px;">
+                      <i data-lucide="droplets"></i> 물주기
+                    </button>
+                  </div>
+
+                  <!-- Sunlight Level -->
+                  <div class="control-item" style="padding: 10px;">
+                    <div class="control-info">
+                      <span class="control-title"><i data-lucide="sun" class="text-sunny"></i> 햇빛</span>
+                      <span class="control-value" id="val-sun">30%</span>
+                    </div>
+                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
+                      <div class="safe-zone-marker sun-safe"></div>
+                      <div id="fill-sun" class="stat-fill bg-sunny" style="width: 30%;"></div>
+                    </div>
+                    <button class="btn-action btn-sunny" id="btn-care-sun" style="padding: 6px; font-size: 13px;">
+                      <i data-lucide="sun-dim"></i> 햇빛쬐기
+                    </button>
+                  </div>
+
+                  <!-- Ventilation Level -->
+                  <div class="control-item" style="padding: 10px;">
+                    <div class="control-info">
+                      <span class="control-title"><i data-lucide="wind" class="text-teal"></i> 환기</span>
+                      <span class="control-value" id="val-wind">40%</span>
+                    </div>
+                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
+                      <div class="safe-zone-marker wind-safe"></div>
+                      <div id="fill-wind" class="stat-fill bg-teal" style="width: 40%;"></div>
+                    </div>
+                    <button class="btn-action btn-teal" id="btn-care-wind" style="padding: 6px; font-size: 13px;">
+                      <i data-lucide="wind"></i> 환기하기
+                    </button>
+                  </div>
+
+                  <!-- Soil / Nutrients Level -->
+                  <div class="control-item" style="padding: 10px;">
+                    <div class="control-info">
+                      <span class="control-title"><i data-lucide="leaf" class="text-brown"></i> 영양</span>
+                      <span class="control-value" id="val-soil">40%</span>
+                    </div>
+                    <div class="progress-bar-track custom-track" style="margin: 8px 0; height: 6px;">
+                      <div class="safe-zone-marker soil-safe"></div>
+                      <div id="fill-soil" class="stat-fill bg-brown" style="width: 40%;"></div>
+                    </div>
+                    <button class="btn-action btn-brown" id="btn-care-fertilizer" style="padding: 6px; font-size: 13px;">
+                      <i data-lucide="sparkles"></i> 비료주기
+                    </button>
+                  </div>
+                </div>
+
+                <div class="health-alert-box warning hidden" id="health-alert" style="margin-bottom: 10px;">
+                  <i data-lucide="alert-triangle" class="alert-icon"></i>
+                  <span id="health-alert-text">환경이 맞지 않아 식물이 스트레스를 받고 있습니다!</span>
+                </div>
+
+                <div class="chat-wrapper">
+                  <div class="chat-messages" id="chat-messages-container" style="max-height: 200px;">
+                    <div class="chat-bubble bot">
+                      <p>안녕! 나를 심어줘서 고마워. 앞으로 너와 함께 자랄 생각을 하니 기뻐! 내 목소리가 들리면 아래 선택지나 하고 싶은 말을 입력해줘!</p>
+                      <span class="time">방금 전</span>
+                    </div>
+                  </div>
+
+                  <!-- Recommended Prompt Chips -->
+                  <div class="prompt-chips" id="chat-prompt-chips">
+                    <button class="chip-btn">물 주기</button>
+                    <button class="chip-btn">햇빛 쬐기</button>
+                    <button class="chip-btn">환기 하기</button>
+                    <button class="chip-btn">비료 주기</button>
+                  </div>
+
+                  <!-- Message Input -->
+                  <div class="chat-input-bar">
+                    <input type="text" id="chat-input-field" placeholder="식물에게 상냥한 말을 걸어주세요..." maxlength="50">
+                    <button id="btn-send-message" class="btn-primary btn-square">
+                      <i data-lucide="send"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab 3: OBSERVATION DIARY -->
+              <div class="tab-pane" id="pane-diary">
+                <div class="diary-layout">
+
+                  <!-- Diary Creator -->
+                  <div class="diary-editor glassmorphism-sub">
+                    <h4>나와 식물의 마음 일기</h4>
+
+                    <div class="editor-row">
+                      <label>오늘 나의 감정 (인사이드 아웃):</label>
+                      <div class="mood-selector">
+                        <button class="mood-btn active" data-mood="joy" data-color="#FFD700"
+                          style="--emotion-color:#FFD700">
+                          <span class="mood-emoji">😄</span>
+                          <span class="mood-name">기뻐요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="sadness" data-color="#4A90D9"
+                          style="--emotion-color:#4A90D9">
+                          <span class="mood-emoji">😢</span>
+                          <span class="mood-name">슬퍼요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="anger" data-color="#E53935" style="--emotion-color:#E53935">
+                          <span class="mood-emoji">😠</span>
+                          <span class="mood-name">화나요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="fear" data-color="#8E44AD" style="--emotion-color:#8E44AD">
+                          <span class="mood-emoji">😨</span>
+                          <span class="mood-name">무서워요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="disgust" data-color="#43A047"
+                          style="--emotion-color:#43A047">
+                          <span class="mood-emoji">🤢</span>
+                          <span class="mood-name">싫어요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="anxiety" data-color="#FF7043"
+                          style="--emotion-color:#FF7043">
+                          <span class="mood-emoji">😟</span>
+                          <span class="mood-name">걱정돼요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="ennui" data-color="#546E7A" style="--emotion-color:#546E7A">
+                          <span class="mood-emoji">😑</span>
+                          <span class="mood-name">심심해요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="envy" data-color="#00897B" style="--emotion-color:#00897B">
+                          <span class="mood-emoji">🙄</span>
+                          <span class="mood-name">부러워요</span>
+                        </button>
+                        <button class="mood-btn" data-mood="embarrassment" data-color="#E91E8C"
+                          style="--emotion-color:#E91E8C">
+                          <span class="mood-emoji">😳</span>
+                          <span class="mood-name">부끄러워요</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="editor-row relative-editor" style="position: relative;">
+                      <div id="diary-ghost-text" class="ghost-text-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 12px; pointer-events: none; color: rgba(150, 150, 150, 0.7); font-size: 13px; font-weight: 700; font-family: inherit; line-height: normal; white-space: pre-wrap; word-wrap: break-word; overflow: hidden; z-index: 1;"></div>
+                      <textarea id="diary-text" rows="3" placeholder="오늘 하루 어떤 감정을 느꼈나요? 식물에게 나의 마음을 이야기해 보세요... (잠시 멈추면 식물이 위로의 말을 건넬지도 몰라요!)"
+                        maxlength="150" style="position: relative; z-index: 2; background: transparent;"></textarea>
+                    </div>
+
+                    <div class="editor-row file-upload-row" style="margin-top: 10px; margin-bottom: 15px;">
+                      <label for="diary-photo-upload" class="file-upload-label" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px;">
+                        <i data-lucide="image-plus"></i> 오늘 찍은 사진 첨부하기
+                      </label>
+                      <input type="file" id="diary-photo-upload" accept="image/*" multiple style="display:none;">
+                      <div id="photo-preview-container" class="photo-preview-container" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
+                    </div>
+
+                    <button id="btn-save-diary" class="btn-primary btn-full">
+                      <i data-lucide="save"></i> 식물과 함께 일기 기록하기
+                    </button>
+                  </div>
+
+                  <!-- Saved Diaries Timeline -->
+                  <div class="diary-history">
+                    <h4>나의 기록장 (<span id="diary-count">0</span>개)</h4>
+                    <div class="diary-list" id="diary-list-container">
+                      <div class="empty-diary-state">
+                        <i data-lucide="book-dashed" class="icon-huge opacity-30"></i>
+                        <p>아직 기록된 일기가 없습니다. 식물에게 오늘 하루를 들려주세요!</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Tab 4: EDU QUIZ -->
+              <div class="tab-pane" id="pane-quiz">
+                <div class="quiz-container-inner">
+
+                  <div id="quiz-card" class="quiz-card-box">
+                    <div class="quiz-header-badge">
+                      <i data-lucide="graduation-cap" class="text-green"></i>
+                      <span>식물 퀴즈</span>
+                    </div>
+
+                    <h3 id="quiz-question">식물이 싹을 틔우기 위해 필요한 3대 요소가 아닌 것은 무엇일까요?</h3>
+
+                    <div class="quiz-options-list" id="quiz-options-list">
+                      <!-- Dynamic options buttons -->
+                    </div>
+
+                    <div id="quiz-result-feedback" class="quiz-feedback-box hidden">
+                      <div class="feedback-icon-circle" id="quiz-feedback-icon-container">
+                        <i data-lucide="check" class="text-green" id="quiz-feedback-icon"></i>
+                      </div>
+                      <h4 id="quiz-feedback-title">정답입니다!</h4>
+                      <p id="quiz-feedback-desc">설명이 여기에 나타납니다.</p>
+                      <div class="reward-indicator text-green">
+                        <i data-lucide="sparkles"></i> 친환경 비료 1개 획득!
+                      </div>
+                      <button id="btn-next-quiz" class="btn-primary btn-full mt-10">
+                        다음 퀴즈 도전하기
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Scripts: Loaded with defer to ensure non-blocking HTML rendering -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="app.js" defer></script>
+</body>
+
+</html>
