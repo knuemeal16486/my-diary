@@ -1234,21 +1234,29 @@ async function fetchGeminiResponse(userText) {
       }],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 250,
+        maxOutputTokens: 800,
         responseMimeType: "application/json"
       }
     })
   });
 
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Gemini API Error:", response.status, errorText);
     throw new Error('Gemini API 연동 중 오류 발생');
   }
 
   const data = await response.json();
   if (data.candidates && data.candidates.length > 0) {
-    const rawText = data.candidates[0].content.parts[0].text.trim();
+    let rawText = data.candidates[0].content.parts[0].text.trim();
+    
     try {
-      return JSON.parse(rawText);
+      // 가장 처음 나오는 { 부터 가장 마지막에 나오는 } 까지 추출 (불필요한 텍스트 무시)
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) {
+        throw new Error("JSON 형태를 찾을 수 없습니다.");
+      }
+      return JSON.parse(jsonMatch[0]);
     } catch(e) {
       console.error("JSON 파싱 에러:", e, rawText);
       throw e;
