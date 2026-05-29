@@ -186,7 +186,9 @@ let appState = {
   chatLog: [],
   quizIndex: 0,
   isSimulating: false,
-  simulationIntervalId: null
+  simulationIntervalId: null,
+  dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
+  currentCalendarDate: new Date()
 };
 
 // 인사이드 아웃 감정 정의 (mood key → 표시 정보)
@@ -1035,7 +1037,8 @@ function updateDashboardUI() {
     const chipBtn = document.getElementById(`chip-${stat}`);
     if (chipBtn) {
         const actionName = stat === 'water' ? '물 주기' : stat === 'sun' ? '햇빛 쬐기' : stat === 'wind' ? '환기 하기' : '비료 주기';
-        chipBtn.innerText = `${actionName} ${statusLabel}`;
+        const iconName = stat === 'water' ? 'droplet' : stat === 'sun' ? 'sun' : stat === 'wind' ? 'wind' : 'sparkles';
+        chipBtn.innerHTML = `<i data-lucide="${iconName}"></i> ${actionName} ${statusLabel}`;
     }
   });
 
@@ -1050,25 +1053,42 @@ function updateDashboardUI() {
 
   // Active statuses styling for toggle buttons
   const sunBtn = document.getElementById('btn-care-sun');
-  if (appState.isSunLampOn) {
-    sunBtn.classList.add('btn-sunny');
-    sunBtn.innerHTML = `<i data-lucide="sun"></i> 조명 끄기`;
-    document.getElementById('effect-sunlight').classList.remove('hidden-effect');
+  if (sunBtn) {
+    if (appState.isSunLampOn) {
+      sunBtn.classList.add('btn-sunny');
+      sunBtn.innerHTML = `<i data-lucide="sun"></i> 조명 끄기`;
+      document.getElementById('effect-sunlight').classList.remove('hidden-effect');
+    } else {
+      sunBtn.classList.remove('btn-sunny');
+      sunBtn.innerHTML = `<i data-lucide="sun-dim"></i> 햇빛쬐기`;
+      document.getElementById('effect-sunlight').classList.add('hidden-effect');
+    }
   } else {
-    sunBtn.classList.remove('btn-sunny');
-    sunBtn.innerHTML = `<i data-lucide="sun-dim"></i> 햇빛쬐기`;
-    document.getElementById('effect-sunlight').classList.add('hidden-effect');
+    // Control effects even if buttons are missing
+    if (appState.isSunLampOn) {
+      document.getElementById('effect-sunlight').classList.remove('hidden-effect');
+    } else {
+      document.getElementById('effect-sunlight').classList.add('hidden-effect');
+    }
   }
 
   const windBtn = document.getElementById('btn-care-wind');
-  if (appState.isWindowOpen) {
-    windBtn.classList.add('btn-teal');
-    windBtn.innerHTML = `<i data-lucide="wind"></i> 창문 닫기`;
-    document.getElementById('effect-wind').classList.remove('hidden-effect');
+  if (windBtn) {
+    if (appState.isWindowOpen) {
+      windBtn.classList.add('btn-teal');
+      windBtn.innerHTML = `<i data-lucide="wind"></i> 창문 닫기`;
+      document.getElementById('effect-wind').classList.remove('hidden-effect');
+    } else {
+      windBtn.classList.remove('btn-teal');
+      windBtn.innerHTML = `<i data-lucide="wind"></i> 환기하기`;
+      if (appState.weather !== 'windy') {
+        document.getElementById('effect-wind').classList.add('hidden-effect');
+      }
+    }
   } else {
-    windBtn.classList.remove('btn-teal');
-    windBtn.innerHTML = `<i data-lucide="wind"></i> 환기하기`;
-    if (appState.weather !== 'windy') {
+    if (appState.isWindowOpen) {
+      document.getElementById('effect-wind').classList.remove('hidden-effect');
+    } else if (appState.weather !== 'windy') {
       document.getElementById('effect-wind').classList.add('hidden-effect');
     }
   }
@@ -1215,7 +1235,7 @@ async function fetchGeminiResponse(userText) {
 현재 식물의 환경 상태: 수분 ${Math.round(water)}%, 햇빛 ${Math.round(sun)}%, 환기 ${Math.round(wind)}%, 영양 ${Math.round(soil)}%. (모든 수치는 40~80%가 적당하며, 너무 낮거나 높으면 식물이 힘들어합니다.)
 학생의 메시지: "${userText}"
 
-학생이 식물을 돌보는 행동('물 주기', '햇빛 쬐기', '환기 하기', '비료 주기' 등)을 하거나 질문을 하면, 그에 맞게 칭찬하고 교육적인 조언을 2~3문장 이내로 해주세요. 
+학생이 식물을 돌보는 행동('물 주기', '햇빛 쬐기', '환기 하기', '비료 주기' 등)을 할 때는 무조건 1문장(한 줄)으로만 아주 짧고 다정하게 코멘트해 주세요. 긴 설명은 생략하세요. 일반적인 대화에서도 짧고 간결하게 대답해 주세요.
 학생이 식물에게 도움이 되는 행동(물 주기, 햇빛 쬐기 등)을 했거나 질문에 좋은 대답을 했다면, 수치(water, sun, wind, soil 중 해당하는 것)를 +10 ~ +20 올려주고, 동시에 경험치(growth)를 +10 ~ +20 올려주세요. 행동에 실패했거나 무관한 대답이라면 0을 주세요.
 반드시 아래 JSON 형식으로만 응답해야 합니다.
 {
@@ -1887,10 +1907,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Dashboard Control Toggles
-  document.getElementById('btn-care-water').addEventListener('click', giveWater);
-  document.getElementById('btn-care-sun').addEventListener('click', toggleSunLamp);
-  document.getElementById('btn-care-wind').addEventListener('click', toggleWindow);
-  document.getElementById('btn-care-fertilizer').addEventListener('click', useFertilizer);
+  document.getElementById('btn-care-water')?.addEventListener('click', giveWater);
+  document.getElementById('btn-care-sun')?.addEventListener('click', toggleSunLamp);
+  document.getElementById('btn-care-wind')?.addEventListener('click', toggleWindow);
+  document.getElementById('btn-care-fertilizer')?.addEventListener('click', useFertilizer);
 
   // Dev Mode Skip Button
   document.getElementById('btn-dev-skip').addEventListener('click', () => {
@@ -1923,6 +1943,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Auto-focus triggers
       if (tabName === 'chat') {
         document.getElementById('chat-messages-container').scrollTop = document.getElementById('chat-messages-container').scrollHeight;
+      } else if (tabName === 'calendar') {
+        renderCalendar();
       }
     });
   });
@@ -1949,9 +1971,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Chat Prompt Chip Click Actions
   document.getElementById('chat-prompt-chips').addEventListener('click', (e) => {
-    if (e.target.classList.contains('chip-btn')) {
+    const btn = e.target.closest('.chip-btn');
+    if (btn) {
       // Use data-action if available, else fallback to innerText
-      const promptText = e.target.dataset.action || e.target.innerText;
+      const promptText = btn.dataset.action || btn.innerText;
       processUserChat(promptText);
     }
   });
@@ -2070,3 +2093,95 @@ document.addEventListener("DOMContentLoaded", () => {
   // Trigger weather effects on startup
   triggerWeatherEffect();
 });
+
+// 10. Daily Growth Tracking & Emotion Calendar
+function addDailyGrowth(xp) {
+  if (typeof xp !== "number" || xp <= 0) return;
+  const todayStr = new Date().toISOString().split("T")[0];
+  if (!appState.dailyGrowth[todayStr]) {
+    appState.dailyGrowth[todayStr] = 0;
+  }
+  appState.dailyGrowth[todayStr] += xp;
+  
+  if (document.getElementById("pane-calendar") && document.getElementById("pane-calendar").classList.contains("active")) {
+    renderCalendar();
+  }
+}
+
+function renderCalendar() {
+  const grid = document.getElementById("calendar-grid");
+  const monthYearLabel = document.getElementById("calendar-month-year");
+  if (!grid || !monthYearLabel) return;
+  
+  grid.innerHTML = "";
+  
+  const d = appState.currentCalendarDate;
+  const year = d.getFullYear();
+  const month = d.getMonth();
+  
+  monthYearLabel.innerText = `${year}년 ${month + 1}월`;
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  // Empty slots before 1st day
+  for (let i = 0; i < firstDay; i++) {
+    const emptyDiv = document.createElement("div");
+    emptyDiv.className = "calendar-day empty";
+    grid.appendChild(emptyDiv);
+  }
+  
+  const today = new Date();
+  const isCurrentMonth = (year === today.getFullYear() && month === today.getMonth());
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    
+    // Find last diary entry for this day
+    const diariesForDay = appState.diaryList.filter(entry => entry.date === dateStr);
+    const lastDiary = diariesForDay[diariesForDay.length - 1];
+    
+    const xpGained = appState.dailyGrowth[dateStr] || 0;
+    
+    const dayDiv = document.createElement("div");
+    dayDiv.className = "calendar-day";
+    if (isCurrentMonth && day === today.getDate()) {
+      dayDiv.classList.add("today");
+    }
+    
+    let innerHTML = `<div class="cal-date">${day}</div>`;
+    
+    if (lastDiary) {
+      const emojiOnly = lastDiary.mood.split(" ")[0]; // Get the emoji
+      innerHTML += `<div class="cal-emoji" title="${lastDiary.mood}">${emojiOnly}</div>`;
+    }
+    
+    if (xpGained > 0) {
+      innerHTML += `<div class="cal-xp">+${Math.round(xpGained)}XP</div>`;
+    }
+    
+    dayDiv.innerHTML = innerHTML;
+    grid.appendChild(dayDiv);
+  }
+}
+
+// Bind Calendar Events
+document.addEventListener("DOMContentLoaded", () => {
+  const btnPrev = document.getElementById("btn-cal-prev");
+  const btnNext = document.getElementById("btn-cal-next");
+  
+  if (btnPrev) {
+    btnPrev.addEventListener("click", () => {
+      appState.currentCalendarDate.setMonth(appState.currentCalendarDate.getMonth() - 1);
+      renderCalendar();
+    });
+  }
+  
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      appState.currentCalendarDate.setMonth(appState.currentCalendarDate.getMonth() + 1);
+      renderCalendar();
+    });
+  }
+});
+
