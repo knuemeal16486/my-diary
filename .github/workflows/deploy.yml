@@ -32,13 +32,16 @@ jobs:
         run: sed -i "s|app\.js?v=[^\"]*|app.js?v=${{ github.sha }}|g; s|src=\"app\.js\"|src=\"app.js?v=${{ github.sha }}\"|g" index.html
 
       - name: GitHub Pages 설정
+        if: github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v4
 
       - name: 배포 파일 업로드
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
       - name: GitHub Pages 배포
+        if: github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
