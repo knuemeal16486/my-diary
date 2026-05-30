@@ -291,6 +291,22 @@
                 <div id="plant-svg-holder">
                   <!-- JS builds SVG here -->
                 </div>
+                <!-- Plant part info panel -->
+                <div id="plant-info-panel" class="plant-info-panel hidden">
+                  <button id="plant-info-close" class="plant-info-close" aria-label="닫기">✕</button>
+                  <div class="plant-info-header">
+                    <span class="plant-info-icon" id="plant-info-icon">🍃</span>
+                    <h4 id="plant-info-name">잎</h4>
+                  </div>
+                  <div class="plant-info-section">
+                    <span class="plant-info-label">🔬 구조</span>
+                    <p id="plant-info-struct"></p>
+                  </div>
+                  <div class="plant-info-section">
+                    <span class="plant-info-label">⚡ 기능</span>
+                    <p id="plant-info-func"></p>
+                  </div>
+                </div>
               </div>
 
               <!-- Interaction Animation Assets -->
@@ -340,6 +356,9 @@
               <button class="tab-btn" data-tab="calendar">
                 <i data-lucide="calendar"></i>
                 <span>감정 달력</span>
+              </button>
+              <button class="tab-btn" data-tab="explore">
+                <i data-lucide="search"></i> 탐구
               </button>
             </nav>
 
@@ -533,6 +552,13 @@
                 </div>
               </div>
 
+              <!-- Tab 6: PLANT EXPLORER -->
+              <div class="tab-pane" id="pane-explore">
+                <div style="padding: 4px 0;">
+                  <!-- renderPlantExplorer() injects content here -->
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -542,6 +568,40 @@
 
     </main>
 
+  </div>
+
+  <!-- Life Cycle Complete Modal -->
+  <div id="lifecycle-complete-modal" class="lifecycle-modal hidden">
+    <div class="lifecycle-modal-overlay"></div>
+    <div class="lifecycle-modal-card">
+      <button id="lc-close-btn" class="lifecycle-close-btn">✕</button>
+      <div class="lifecycle-header">
+        <div id="lc-plant-emoji" style="font-size: 3em;">🌾</div>
+        <h2 class="lifecycle-title">한살이 완성! 🎊</h2>
+        <div id="lc-plant-name" class="lifecycle-plant-name"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">🗓️ 키운 기간</div>
+        <div id="lc-weeks" class="lifecycle-value"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">💕 느낀 감정들</div>
+        <div id="lc-emotions" class="lifecycle-value"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">⏳ 실제 한살이 기간</div>
+        <div id="lc-natural-duration" class="lifecycle-value"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">⚠️ 이 식물을 키울 때 조심할 것</div>
+        <ul id="lc-warnings" class="lifecycle-warnings"></ul>
+      </div>
+      <div class="lifecycle-section lifecycle-funfact">
+        <div class="lifecycle-label">🌟 알고 있었나요?</div>
+        <div id="lc-fun-fact" class="lifecycle-value"></div>
+      </div>
+      <button id="lc-close-btn-bottom" class="btn-primary btn-full" onclick="document.getElementById('lifecycle-complete-modal').classList.add('hidden')">계속 돌보기 🌱</button>
+    </div>
   </div>
 
   <!-- Scripts: Loaded with defer to ensure non-blocking HTML rendering -->
