@@ -1712,24 +1712,28 @@ body {
   50% { transform: translateY(-10px); }
 }
 
-/* Plant Swaying animations based on health */
-.sway-healthy {
+/* Plant Swaying — only plant-body sways, soil/roots are static */
+.sway-healthy .plant-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
   animation: sway 3s infinite ease-in-out;
 }
 
-.sway-stressed {
-  animation: sway-fast 1s infinite ease-in-out;
-  transform-origin: bottom center;
+.sway-stressed .plant-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: sway-fast 0.9s infinite ease-in-out;
 }
 
 @keyframes sway {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(2deg); }
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1.5deg); }
 }
 
 @keyframes sway-fast {
-  0%, 100% { transform: rotate(-1deg); }
-  50% { transform: rotate(1deg); }
+  0%, 100% { transform: rotate(-4deg); }
+  33% { transform: rotate(4deg); }
+  66% { transform: rotate(-2deg); }
 }
 
 /* 13. Responsiveness (Tablet Portrait & Large Mobile) */
@@ -2099,5 +2103,73 @@ body {
   padding: 2px 6px;
   border-radius: 10px;
   margin-top: 4px;
+}
+
+/* Plant hit areas (interactive markers on SVG) */
+.plant-hit-area {
+  cursor: pointer;
+}
+.plant-hit-area circle {
+  transition: opacity 0.15s;
+}
+.plant-hit-area:hover circle {
+  opacity: 1 !important;
+}
+
+/* Plant Part Info Panel */
+.plant-info-panel {
+  background: white;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 8px;
+  border: 1.5px solid #E8F5E9;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  position: relative;
+  animation: fade-in 0.25s ease;
+}
+.plant-info-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  line-height: 1;
+}
+.plant-info-close:hover { background: #F5F5F5; color: #333; }
+.plant-info-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.plant-info-icon {
+  font-size: 1.8em;
+}
+.plant-info-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #2E7D32;
+  font-weight: 700;
+}
+.plant-info-section {
+  margin-bottom: 8px;
+}
+.plant-info-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  display: block;
+  margin-bottom: 3px;
+}
+.plant-info-section p {
+  margin: 0;
+  font-size: 12px;
+  color: #444;
+  line-height: 1.6;
 }
 
