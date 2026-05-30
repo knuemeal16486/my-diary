@@ -3006,7 +3006,7 @@ async function generateEmotionReport() {
 6. 반드시 선생님이 학생에게 편지를 쓰는 듯한 어조로 작성하세요.`;
 
   try {
-    const url = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
