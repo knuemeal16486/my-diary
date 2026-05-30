@@ -401,7 +401,7 @@ function buildClickZones(plantKey, stage) {
 }
 
 let _svgUid = 0;
-function generatePlantSVG(plantKey, stage, stats) {
+function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
   const profile = plantProfiles[plantKey];
   if (!profile) return '';
   const uid = ++_svgUid;
@@ -425,7 +425,8 @@ function generatePlantSVG(plantKey, stage, stats) {
     highlightLeafColor = "#D4C870";
   }
 
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="${animationClass}" width="100%" height="100%" style="overflow: visible;">
+  const overflowStyle = isPreview ? "" : `style="overflow: visible;"`;
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="${animationClass}" width="100%" height="100%" ${overflowStyle}>
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="2" dy="5" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
@@ -472,12 +473,19 @@ function generatePlantSVG(plantKey, stage, stats) {
     </defs>
   `;
 
+  const soilPaths = isPreview ? `
+      <path d="M20,130 L180,130 L180,195 Q100,205 20,195 Z" fill="#5D4037" />
+      <path d="M20,130 L180,130 L180,145 Q100,150 20,145 Z" fill="#4E342E" />
+  ` : `
+      <path d="M-2000,130 L2200,130 L2200,1000 L-2000,1000 Z" fill="#5D4037" />
+      <path d="M-2000,130 L2200,130 L2200,145 Q100,150 -2000,145 Z" fill="#4E342E" />
+  `;
+
   // Soil group — static, never sways
   svg += `<g class="plant-soil">`;
   svg += `
     <g filter="url(#shadow)">
-      <path d="M-2000,130 L2200,130 L2200,1000 L-2000,1000 Z" fill="#5D4037" />
-      <path d="M-2000,130 L2200,130 L2200,145 Q100,150 -2000,145 Z" fill="#4E342E" />
+      ${soilPaths}
       <!-- Soil textures -->
       <circle cx="60" cy="160" r="2" fill="#3E2723" opacity="0.6"/>
       <circle cx="140" cy="180" r="3" fill="#3E2723" opacity="0.6"/>
@@ -1077,7 +1085,7 @@ function showResultScreen(plantKey) {
   
   // Inject Preview SVG
   const previewBox = document.getElementById('result-plant-preview');
-  previewBox.innerHTML = generatePlantSVG(plantKey, 4, { water: 60, sun: 70, wind: 60, soil: 50 }); // Healthy stage 4 as preview
+  previewBox.innerHTML = generatePlantSVG(plantKey, 4, { water: 60, sun: 70, wind: 60, soil: 50 }, true); // Healthy stage 4 as preview
   
   // Set theme color styling of result button
   const startBtn = document.getElementById('btn-adopt-plant');
