@@ -1051,6 +1051,73 @@ function stopSimulation() {
   }
 }
 
+function spawnParticles() {
+  const holder = document.getElementById('plant-svg-holder');
+  if (!holder) return;
+
+  const now = new Date();
+  const hour = now.getHours();
+  const isDay = (hour >= 6 && hour < 18);
+  const isSunny = appState.weather === 'sunny';
+
+  let type = '';
+  if (isDay) {
+    // 광합성: 낮이면서 맑은 날일 때 주로 발생
+    if (isSunny || Math.random() > 0.5) type = 'photo';
+  } else {
+    // 호흡: 밤에는 항상 일정하게 발생
+    if (Math.random() > 0.3) type = 'respire';
+  }
+
+  if (!type) return;
+
+  const count = Math.floor(Math.random() * 2) + 1;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    
+    if (type === 'photo') {
+      p.classList.add('particle-photo');
+      const size = Math.random() * 4 + 3;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      
+      // Start near top edges
+      const startX = Math.random() * 100;
+      const startY = Math.random() * 40;
+      p.style.left = startX + '%';
+      p.style.top = startY + '%';
+      
+      // Target: center bottom (towards plant)
+      p.style.setProperty('--tx', (50 - startX) + 'vw');
+      p.style.setProperty('--ty', (80 - startY) + 'vh');
+    } else {
+      p.classList.add('particle-respire');
+      const size = Math.random() * 3 + 2;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      
+      // Start near center bottom (plant leaves)
+      const startX = 40 + Math.random() * 20;
+      const startY = 60 + Math.random() * 20;
+      p.style.left = startX + '%';
+      p.style.top = startY + '%';
+      
+      // Target: float outward and up
+      const angle = Math.random() * Math.PI + Math.PI; // Upwards hemisphere
+      const distance = 80 + Math.random() * 100;
+      p.style.setProperty('--tx', (Math.cos(angle) * distance) + 'px');
+      p.style.setProperty('--ty', (Math.sin(angle) * distance - 50) + 'px');
+    }
+    
+    holder.appendChild(p);
+    
+    setTimeout(() => {
+      if (p.parentNode) p.parentNode.removeChild(p);
+    }, 4000);
+  }
+}
+
 function simulationTick() {
   const profile = plantProfiles[appState.selectedPlantKey];
   if (!profile) return;
@@ -1117,6 +1184,9 @@ function simulationTick() {
   }
 
   // 3. Real weather is applied by KMA API, so random weather is disabled
+
+  // 4. 생명 활동 파티클 렌더링
+  spawnParticles();
 
   updateDashboardUI();
 }
@@ -2445,6 +2515,21 @@ function startClock() {
     if (!el) return;
     const now = new Date();
     el.textContent = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+    // Day/Night Update
+    const hour = now.getHours();
+    const isDay = (hour >= 6 && hour < 18);
+    
+    const holder = document.getElementById('plant-svg-holder');
+    if (holder) {
+      if (isDay) {
+        holder.classList.add('theme-day');
+        holder.classList.remove('theme-night');
+      } else {
+        holder.classList.add('theme-night');
+        holder.classList.remove('theme-day');
+      }
+    }
   }
   updateClock();
   clockIntervalId = setInterval(updateClock, 60000);
