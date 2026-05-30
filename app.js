@@ -1225,11 +1225,23 @@ function simulationTick() {
   appState.stats.water = Math.max(0, Math.min(100, appState.stats.water - waterDrain));
   
   // Sun Lamp Override
-  if (appState.isSunLampOn) targetSun = 90;
+  if (appState.isSunLampOn) {
+    if (appState.environment === 'outdoor') {
+      targetSun = 30; // 차광막 효과 (Defense against high sun)
+    } else {
+      targetSun = 90; // 인공 조명 효과 (Indoor light)
+    }
+  }
   appState.stats.sun = Math.max(0, Math.min(100, appState.stats.sun + (targetSun - appState.stats.sun) * 0.3));
 
   // Window Open Override
-  if (appState.isWindowOpen) targetWind = Math.max(targetWind, 85);
+  if (appState.isWindowOpen) {
+    if (appState.environment === 'outdoor') {
+      targetWind = 30; // 바람막이 효과 (Defense against high wind)
+    } else {
+      targetWind = Math.max(targetWind, 85); // 환기 효과 (Indoor ventilation)
+    }
+  }
   appState.stats.wind = Math.max(0, Math.min(100, appState.stats.wind + (targetWind - appState.stats.wind) * 0.3));
 
   // Soil nutrient slowly consumed
@@ -1435,16 +1447,20 @@ function updateDashboardUI() {
   if (sunBtn) {
     if (appState.isSunLampOn) {
       sunBtn.classList.add('btn-sunny');
-      sunBtn.innerHTML = `<i data-lucide="sun"></i> 조명 끄기`;
-      document.getElementById('effect-sunlight').classList.remove('hidden-effect');
+      const text = appState.environment === 'outdoor' ? '차광막 걷기' : '조명 끄기';
+      const icon = appState.environment === 'outdoor' ? 'umbrella' : 'sun';
+      sunBtn.innerHTML = `<i data-lucide="${icon}"></i> ${text}`;
+      if (appState.environment !== 'outdoor') document.getElementById('effect-sunlight').classList.remove('hidden-effect');
     } else {
       sunBtn.classList.remove('btn-sunny');
-      sunBtn.innerHTML = `<i data-lucide="sun-dim"></i> 햇빛쬐기`;
+      const text = appState.environment === 'outdoor' ? '차광막 치기' : '햇빛쬐기';
+      const icon = appState.environment === 'outdoor' ? 'umbrella' : 'sun-dim';
+      sunBtn.innerHTML = `<i data-lucide="${icon}"></i> ${text}`;
       document.getElementById('effect-sunlight').classList.add('hidden-effect');
     }
   } else {
     // Control effects even if buttons are missing
-    if (appState.isSunLampOn) {
+    if (appState.isSunLampOn && appState.environment !== 'outdoor') {
       document.getElementById('effect-sunlight').classList.remove('hidden-effect');
     } else {
       document.getElementById('effect-sunlight').classList.add('hidden-effect');
@@ -1455,14 +1471,16 @@ function updateDashboardUI() {
   if (windBtn) {
     if (appState.isWindowOpen) {
       windBtn.classList.add('btn-teal');
-      const closeText = appState.environment === 'outdoor' ? '바람 피하기' : '창문 닫기';
-      windBtn.innerHTML = `<i data-lucide="wind"></i> ${closeText}`;
-      document.getElementById('effect-wind').classList.remove('hidden-effect');
+      const text = appState.environment === 'outdoor' ? '바람막이 치우기' : '창문 닫기';
+      const icon = appState.environment === 'outdoor' ? 'shield' : 'wind';
+      windBtn.innerHTML = `<i data-lucide="${icon}"></i> ${text}`;
+      if (appState.environment !== 'outdoor') document.getElementById('effect-wind').classList.remove('hidden-effect');
     } else {
       windBtn.classList.remove('btn-teal');
-      const openText = appState.environment === 'outdoor' ? '바람 쐬기' : '환기하기';
-      windBtn.innerHTML = `<i data-lucide="wind"></i> ${openText}`;
-      if (appState.weather !== 'windy') {
+      const text = appState.environment === 'outdoor' ? '바람막이 설치' : '환기하기';
+      const icon = appState.environment === 'outdoor' ? 'shield' : 'wind';
+      windBtn.innerHTML = `<i data-lucide="${icon}"></i> ${text}`;
+      if (appState.weather !== 'windy' || appState.environment === 'outdoor') {
         document.getElementById('effect-wind').classList.add('hidden-effect');
       }
     }
@@ -1496,12 +1514,17 @@ function giveWater() {
 
 function toggleSunLamp() {
   appState.isSunLampOn = !appState.isSunLampOn;
+  const isOutdoor = appState.environment === 'outdoor';
   if (appState.isSunLampOn) {
-    appState.stats.sun = Math.min(100, appState.stats.sun + 15);
-    showToast("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
+    if (isOutdoor) {
+      showToast("⛱️ 뙤약볕을 막아줄 차광막을 설치했습니다!");
+    } else {
+      appState.stats.sun = Math.min(100, appState.stats.sun + 15);
+      showToast("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
+    }
     checkEmotionCareMission('햇빛 쬐기');
   } else {
-    showToast("💡 조명을 껐어요");
+    showToast(isOutdoor ? "⛱️ 차광막을 걷었습니다." : "💡 조명을 껐어요.");
   }
   updateDashboardUI();
 }
@@ -1510,11 +1533,15 @@ function toggleWindow() {
   appState.isWindowOpen = !appState.isWindowOpen;
   const isOutdoor = appState.environment === 'outdoor';
   if (appState.isWindowOpen) {
-    appState.stats.wind = Math.min(100, appState.stats.wind + 20);
-    showToast(isOutdoor ? "🍃 시원한 자연 바람을 맞고 있어요! 식물 잎사귀가 기분 좋게 흔들립니다." : "🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    if (isOutdoor) {
+      showToast("🛡️ 거센 바람을 막아줄 튼튼한 바람막이를 설치했습니다!");
+    } else {
+      appState.stats.wind = Math.min(100, appState.stats.wind + 20);
+      showToast("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    }
     checkEmotionCareMission('환기 하기');
   } else {
-    showToast(isOutdoor ? "🛡️ 바람막이를 쳐서 강한 바람을 피했어요." : "🪟 창문을 닫았어요.");
+    showToast(isOutdoor ? "🛡️ 바람막이를 치웠습니다." : "🪟 창문을 닫았어요.");
   }
   updateDashboardUI();
 }
@@ -2395,7 +2422,7 @@ function checkEmotionCareMission(action) {
     isMatch = true;
     const isOutdoor = appState.environment === 'outdoor';
     message = isOutdoor 
-      ? "💖 마음에 거센 바람이 불 때, 시원한 자연 바람을 쐬어주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)" 
+      ? "💖 거센 바람이 부는 날, 튼튼한 바람막이를 설치해 주셨군요! 식물이 안전하고 편안해합니다. (보너스 XP +10)" 
       : "💖 마음에 거센 바람이 불 때, 창문을 열어 환기해 주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)";
   } else if (appState.weather === 'sunny' && action === '비료 주기') {
     isMatch = true;
