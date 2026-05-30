@@ -321,6 +321,9 @@
                 <i data-lucide="sparkles" class="fertilizer-sparkle animation-delay-1"></i>
               </div>
 
+              <!-- Plant speech bubble (식물의 needs를 식물 위에 표시) -->
+              <div id="plant-speech-bubble" class="plant-speech-bubble hidden"></div>
+
             </div>
 
             <!-- Growth Progress Bar -->
@@ -623,6 +626,9 @@
       <button id="lc-close-btn-bottom" class="btn-primary btn-full" onclick="document.getElementById('lifecycle-complete-modal').classList.add('hidden')">계속 돌보기 🌱</button>
     </div>
   </div>
+
+  <!-- Toast notifications (돌보기/시스템 피드백 — 채팅과 분리) -->
+  <div id="toast-container" class="toast-container"></div>
 
   <!-- Scripts: Loaded with defer to ensure non-blocking HTML rendering -->
   <script src="https://unpkg.com/lucide@latest" defer></script>

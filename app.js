@@ -1197,7 +1197,7 @@ function triggerStageLevelUp() {
   const stageNames = ["씨앗", "새싹", "성장기", "개화", "결실", "채종"];
   const stageName = stageNames[appState.growthStage - 1] || "완성";
   const stageEmoji = ["🌱","🌿","🍃","🌸","🍎","🌾"][appState.growthStage - 1] || "🌾";
-  addBotMessage(`${stageEmoji} 축하해요! 정원사님 덕분에 [${stageName}] 단계로 성장했어요!`);
+  showToast(`${stageEmoji} 축하해요! [${stageName}] 단계로 성장했어요!`, 'celebrate');
   if (appState.growthStage === 6) {
     setTimeout(() => showLifeCycleComplete(), 1500);
   }
@@ -1324,7 +1324,7 @@ function updateDashboardUI() {
     }
 
     if (dangerKey && appState.lastDangerState[stat] !== dangerKey) {
-      addPlantMessage(dangerCfg.plant);
+      showPlantBubble(dangerCfg.plant);
     }
     appState.lastDangerState[stat] = dangerKey;
 
@@ -1413,7 +1413,7 @@ function giveWater() {
     anim.classList.add('hidden-effect');
   }, 1800);
 
-  addBotMessage("💧 시원한 물 감사합니다! 흙이 수분을 머금어 촉촉해졌어요.");
+  showToast("💧 물을 줬어요! 수분 +20");
   updateDashboardUI();
 }
 
@@ -1421,9 +1421,9 @@ function toggleSunLamp() {
   appState.isSunLampOn = !appState.isSunLampOn;
   if (appState.isSunLampOn) {
     appState.stats.sun = Math.min(100, appState.stats.sun + 15);
-    addBotMessage("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
+    showToast("💡 조명을 켰어요! 햇빛 +15");
   } else {
-    addBotMessage("💡 조명을 껐습니다. 자연 날씨 상태의 빛으로 돌아갑니다.");
+    showToast("💡 조명을 껐어요");
   }
   updateDashboardUI();
 }
@@ -1432,16 +1432,16 @@ function toggleWindow() {
   appState.isWindowOpen = !appState.isWindowOpen;
   if (appState.isWindowOpen) {
     appState.stats.wind = Math.min(100, appState.stats.wind + 20);
-    addBotMessage("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    showToast("🪟 창문을 열었어요! 환기 +20");
   } else {
-    addBotMessage("🪟 창문을 닫아 방 안의 공기 흐름을 진정시켰습니다.");
+    showToast("🪟 창문을 닫았어요");
   }
   updateDashboardUI();
 }
 
 function useFertilizer() {
   if (appState.fertilizerCount <= 0) {
-    addBotMessage("🧪 아이템이 부족합니다! [실과 퀴즈] 탭에서 초등 퀴즈를 풀고 비료를 더 모아보세요!");
+    showToast("🧪 비료가 부족해요! [식물 퀴즈]를 풀어 모아보세요", 'warn');
     return;
   }
 
@@ -1456,7 +1456,7 @@ function useFertilizer() {
     anim.classList.add('hidden-effect');
   }, 1800);
 
-  addBotMessage("🧪 유기농 비료를 흙에 솔솔 뿌렸습니다! 영양분도 공급하고 식물이 빠르게 자라도록 도왔어요.");
+  showToast("🧪 비료를 줬어요! 영양 +30, 경험치 +15");
   updateDashboardUI();
 }
 
@@ -1490,22 +1490,6 @@ function addBotMessage(text) {
   container.scrollTop = container.scrollHeight;
 }
 
-function addPlantMessage(text) {
-  const container = document.getElementById('chat-messages-container');
-  const bubble = document.createElement('div');
-  bubble.className = 'chat-bubble plant';
-  const p = document.createElement('p');
-  p.textContent = text;
-  const time = document.createElement('span');
-  time.className = 'time';
-  time.textContent = '방금 전';
-  bubble.appendChild(p);
-  bubble.appendChild(time);
-  container.appendChild(bubble);
-  trimChatHistory(container);
-  container.scrollTop = container.scrollHeight;
-}
-
 function addUserMessage(text) {
   const container = document.getElementById('chat-messages-container');
   const bubble = document.createElement('div');
@@ -1520,6 +1504,38 @@ function addUserMessage(text) {
   container.appendChild(bubble);
   trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
+}
+
+// 돌보기/시스템 피드백을 채팅과 분리해 토스트로 표시
+// type: '' | 'warn' | 'error' | 'celebrate'
+function showToast(text, type = '') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type ? ` toast-${type}` : '');
+  toast.textContent = text;
+  container.appendChild(toast);
+  // 다음 프레임에 show 클래스 추가 (트랜지션 발동)
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 2600);
+}
+
+// 식물의 needs(목말라요 등)를 식물 위 말풍선으로 표시
+let plantBubbleTimer = null;
+function showPlantBubble(text) {
+  const bubble = document.getElementById('plant-speech-bubble');
+  if (!bubble) return;
+  bubble.textContent = text;
+  bubble.classList.remove('hidden');
+  requestAnimationFrame(() => bubble.classList.add('show'));
+  clearTimeout(plantBubbleTimer);
+  plantBubbleTimer = setTimeout(() => {
+    bubble.classList.remove('show');
+    setTimeout(() => bubble.classList.add('hidden'), 300);
+  }, 3500);
 }
 
 async function processUserChat(messageText) {
@@ -2080,9 +2096,9 @@ async function saveDiary() {
   lucide.createIcons();
 
   if (appState.weather === 'rainy') {
-    addBotMessage(`🌧️ ${emotion.label}의 시간을 일기로 표현해줘서 고마워요! 비 온 뒤 흙이 더 단단해지듯, 식물이 폭발적으로 성장했어요! ×2.0 XP 획득 🌱`);
+    showToast(`🌧️ 일기 작성 완료! 비 온 뒤 흙처럼 식물이 쑥쑥 자랐어요 ×2.0 XP 🌱`, 'celebrate');
   } else {
-    addBotMessage(`📝 ${emotion.label}의 하루를 일기로 남겨줘서 고마워요! 식물도 함께 성장했답니다 🌱`);
+    showToast(`📝 일기 작성 완료! 식물도 함께 성장했어요 🌱`, 'celebrate');
   }
 }
 
@@ -2147,11 +2163,11 @@ function analyzeEmotionWeather() {
     triggerWeatherEffect();
 
     const msgs = {
-      rainy: '🌧️ 마음 속 감정들이 모여 비가 내리기 시작했어요. 슬픈 마음도 일기로 쓰면 식물의 양분이 된답니다 🌱',
-      sunny: '☀️ 기쁨찬 하루들이 모여서 해가 떠올랐어요! 식물도 덩달아 활짝 웃고 있어요 ☀️',
-      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요. 식물도 함께 힘차게 버텨낼 거예요! 💨',
+      rainy: '🌧️ 감정들이 모여 비가 내려요. 슬픈 마음도 식물의 양분이 돼요 🌱',
+      sunny: '☀️ 기쁜 하루들이 모여 해가 떠올랐어요! 식물도 활짝 웃어요',
+      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요!',
     };
-    if (msgs[newWeather]) addBotMessage(msgs[newWeather]);
+    if (msgs[newWeather]) showToast(msgs[newWeather]);
   }
 }
 
@@ -2412,7 +2428,7 @@ async function fetchOpenMeteoWeather(lat, lon, locationName) {
 
     // Post a chat notification about real weather
     const advice = generatePlantWeatherAdvice(realWeatherData);
-    addBotMessage(`🌍 [${locationName}] 실시간 날씨: ${wmo.emoji} ${wmo.text}, 기온 ${realWeatherData.temperature}°C, 풍속 ${realWeatherData.windspeed}m/s — ${advice}`);
+    showToast(`🌍 ${locationName} ${wmo.emoji} ${wmo.text}, ${realWeatherData.temperature}°C — ${advice}`);
 
   } catch (error) {
     console.error("Open-Meteo fetch error:", error);
@@ -2581,7 +2597,7 @@ document.addEventListener("DOMContentLoaded", () => {
       appState.growthXP = 0;
       triggerStageLevelUp();
       updateDashboardUI();
-      addBotMessage("⏩ [빠른 성장] 강제로 다음 단계로 건너뛰었습니다!");
+      showToast("⏩ 다음 단계로 건너뛰었어요!");
     } else {
       alert("이미 마지막 성장 단계(채종)입니다! 씨앗을 수확해 한살이가 완성되었어요 🌾");
     }
