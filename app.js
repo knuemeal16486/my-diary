@@ -2672,10 +2672,15 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // 선택한 감정 색상을 mood-selector 테두리에 반영
+      
       const color = btn.getAttribute('data-color');
       if (color) {
-        document.querySelector('.mood-selector').style.setProperty('--selected-color', color);
+        const editor = document.querySelector('.diary-editor');
+        if (editor) {
+          // 일기장의 배경색과 테두리를 감정에 맞게 은은하게 변경
+          editor.style.backgroundColor = `color-mix(in srgb, ${color} 8%, rgba(255, 255, 255, 0.75))`;
+          editor.style.borderColor = `color-mix(in srgb, ${color} 20%, rgba(255, 255, 255, 0.4))`;
+        }
       }
     });
   });
@@ -2838,6 +2843,12 @@ function renderCalendar() {
     if (lastDiary) {
       const emojiOnly = lastDiary.mood.split(" ")[0]; // Get the emoji
       innerHTML += `<div class="cal-emoji" title="${lastDiary.mood}">${emojiOnly}</div>`;
+      
+      if (lastDiary.color) {
+        // 감정 달력 해당 칸을 감정에 맞는 은은한 색으로 칠함
+        dayDiv.style.backgroundColor = `color-mix(in srgb, ${lastDiary.color} 15%, white)`;
+        dayDiv.style.borderColor = `color-mix(in srgb, ${lastDiary.color} 30%, rgba(0,0,0,0.05))`;
+      }
     }
     
     if (xpGained > 0) {
