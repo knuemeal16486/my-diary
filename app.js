@@ -2426,7 +2426,7 @@ document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 
   // Randomize name placeholder so it feels like real kids
-  const sampleNames = ['이서준', '김민아', '박지호', '최하은', '정유준', '한소율', '오시우', '윤채원', '임준혁', '강나연'];
+  const sampleNames = ['김초롱', '박한별', '이새싹', '최푸름', '정하늘', '윤초록', '한빛나', '오나무', '류솔잎', '신꽃님'];
   const pick = sampleNames[Math.floor(Math.random() * sampleNames.length)];
   document.getElementById('input-name').placeholder = `예: ${pick}`;
   
