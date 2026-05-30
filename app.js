@@ -1690,7 +1690,7 @@ async function fetchGeminiResponse(userText) {
 2. 학생의 질문(특히 식물이나 자연에 관한 질문)에는 사실에 입각하여 정확하면서도 초등학생이 이해하기 쉽게 친절히 설명해 주세요.
 3. 식물 재배 팁이나 성장 과정에 대한 지식을 자연스럽게 알려주어 식물 성장에 대한 모든 것을 커버하세요.
 4. 학생이 감정을 표현하거나 일상적인 대화를 걸어올 때는, 학생의 최근 감정 상태(${recentEmotion})를 세심하게 관찰하고 공감하며 위로하거나 칭찬해 주세요.
-5. 학생이 단순 돌보기 행동('물 주기' 등)을 할 때는 아주 짧게(1문장) 반응하고, 질문이나 대화에는 필요한 만큼 충분히(2~4문장) 다정하게 답해 주세요.
+5. 답변은 항상 아주 간결하고 짧게(1~2문장) 핵심만 다정하게 답해 주세요. 억지로 말을 길게 지어낼 필요가 없습니다.
 6. 학생의 행동이나 좋은 질문이 식물 성장에 기여했다면 관련 수치(water, sun, wind, soil)와 경험치(growth)를 +10 ~ +20 올려주세요. 그렇지 않다면 0을 주세요.
 
 반드시 아래 JSON 형식으로만 응답해야 합니다.
@@ -1705,7 +1705,7 @@ async function fetchGeminiResponse(userText) {
   }
 }`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -2261,7 +2261,7 @@ async function fetchImagePromptFromGemini(text, mood) {
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -2289,7 +2289,7 @@ async function fetchTeacherCommentFromGemini(text, mood) {
 
 학생의 일기를 읽고, 깊은 공감과 칭찬을 담은 따뜻한 선생님의 코멘트를 1~2문장으로 '해요체(존댓말)'를 사용하여 다정하게 작성해 주세요. JSON 포맷 없이 순수 텍스트로만 대답해 주세요.`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -2993,7 +2993,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 다음 문장의 뒷부분(3~5단어 정도)을 자연스럽게 이어지도록 예상해서 완성해주세요. 반드시 이어질 단어만 출력하고 다른 설명은 하지 마세요.
 현재까지 쓴 내용: "${diaryInput.value}"`;
             
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
               method: 'POST',
@@ -3207,7 +3207,7 @@ async function generateEmotionReport() {
 6. 반드시 선생님이 학생에게 편지를 쓰는 듯한 어조로 작성하세요.`;
 
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
