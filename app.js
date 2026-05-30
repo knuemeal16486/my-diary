@@ -425,7 +425,7 @@ function generatePlantSVG(plantKey, stage, stats) {
     highlightLeafColor = "#D4C870";
   }
 
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="${animationClass}" width="100%" height="100%">
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="${animationClass}" width="100%" height="100%" style="overflow: visible;">
     <defs>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="2" dy="5" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
@@ -476,8 +476,8 @@ function generatePlantSVG(plantKey, stage, stats) {
   svg += `<g class="plant-soil">`;
   svg += `
     <g filter="url(#shadow)">
-      <path d="M-10,130 L210,130 L210,210 L-10,210 Z" fill="#5D4037" />
-      <path d="M-10,130 L210,130 L210,145 Q100,150 -10,145 Z" fill="#4E342E" />
+      <path d="M-2000,130 L2200,130 L2200,1000 L-2000,1000 Z" fill="#5D4037" />
+      <path d="M-2000,130 L2200,130 L2200,145 Q100,150 -2000,145 Z" fill="#4E342E" />
       <!-- Soil textures -->
       <circle cx="60" cy="160" r="2" fill="#3E2723" opacity="0.6"/>
       <circle cx="140" cy="180" r="3" fill="#3E2723" opacity="0.6"/>
@@ -2627,6 +2627,7 @@ function applyRealWeatherToStats(weatherData) {
 // Main weather init function
 async function initWeather() {
   try {
+    startClock(); // 즉각적인 시간(낮/밤) 테마 적용
     let lat, lon, locationName;
 
     if (navigator.geolocation) {
