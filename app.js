@@ -654,7 +654,7 @@ function generatePlantSVG(plantKey, stage, stats) {
     </g>
   `;
 
-  const drawRoot = (stage) => {
+  function drawRoot(stage) {
     let roots = '';
     if (stage >= 2) {
       roots += `<path d="M100,135 Q90,150 95,160 M100,135 Q110,150 105,160" fill="none" stroke="#A1887F" stroke-width="2" filter="url(#shadow)"/>`;
@@ -667,7 +667,7 @@ function generatePlantSVG(plantKey, stage, stats) {
       roots += `<path d="M90,150 Q75,160 65,165 M110,150 Q125,160 135,165" fill="none" stroke="#A1887F" stroke-width="1" filter="url(#shadow)"/>`;
     }
     return roots;
-  };
+  }
 
   if (stage === 1) {
     if (plantKey === 'tomato') {
