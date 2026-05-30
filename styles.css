@@ -1193,6 +1193,14 @@ body {
   align-self: flex-end;
 }
 
+.chat-bubble.plant {
+  background: #DCEDC8;
+  color: #33691E;
+  border-top-left-radius: 4px;
+  align-self: flex-start;
+  border: 1px solid #AED581;
+}
+
 .chat-bubble .time {
   font-size: 10px;
   color: var(--text-light);
