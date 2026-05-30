@@ -288,6 +288,79 @@ const PLANT_PART_INFO = {
   }
 };
 
+// Plant Growth Timeline (6 stages × 5 plants)
+const PLANT_GROWTH_TIMELINE = {
+  tomato: [
+    { stage:1, emoji:'🌱', title:'씨앗·발아', weeks:'1~2주', parts:[{name:'씨앗',icon:'🟤',desc:'껍질(종피) 안에 어린 식물체(배아)와 영양분(배유)이 들어있어요.'},{name:'뿌리(유근)',icon:'🌱',desc:'씨앗에서 가장 먼저 나오는 부분이에요. 물을 흡수하기 시작해요.'}], tip:'20~25℃ 따뜻한 곳, 촉촉한 흙 → 5~7일 안에 싹이 터요.' },
+    { stage:2, emoji:'🌿', title:'새싹·유묘', weeks:'3~4주', parts:[{name:'떡잎(자엽)',icon:'🍃',desc:'씨앗 속 영양분으로 자라는 첫 번째 잎이에요. 광합성을 시작해요.'},{name:'줄기',icon:'🌿',desc:'뿌리에서 잎까지 물과 양분을 전달하는 통로예요.'},{name:'뿌리',icon:'🌱',desc:'곁뿌리와 뿌리털이 늘어나 흡수 면적을 넓혀요.'}], tip:'하루 6시간 이상 햇빛이 없으면 줄기가 웃자라요.' },
+    { stage:3, emoji:'🍃', title:'성장기·본잎', weeks:'5~8주', parts:[{name:'본잎(겹깃꼴겹잎)',icon:'🍃',desc:'광합성을 본격적으로 담당해요. 가장자리가 톱니 모양의 복엽이에요.'},{name:'줄기',icon:'🌿',desc:'굵어지면서 물관과 체관이 발달해요.'},{name:'곁순',icon:'✂️',desc:'잎 겨드랑이에서 자라는 가지예요. 제때 따줘야 열매가 커요.'}], tip:'곁순따기를 꾸준히 해야 영양분이 주줄기에 집중돼요.' },
+    { stage:4, emoji:'🌼', title:'개화(꽃피기)', weeks:'9~10주', parts:[{name:'노란 별 모양 꽃',icon:'🌼',desc:'수술과 암술이 함께 있어 혼자서도 꽃가루받이가 가능해요(자가수분).'},{name:'수술·암술',icon:'🌸',desc:'수술의 꽃가루가 암술머리에 닿으면 열매가 생겨요.'}], tip:'꽃을 살살 흔들어 꽃가루받이를 도와주세요.' },
+    { stage:5, emoji:'🍅', title:'결실(열매)', weeks:'11~14주', parts:[{name:'초록 열매',icon:'🟢',desc:'수정 후 씨방이 자라 열매가 돼요. 처음엔 초록색이에요.'},{name:'빨간 열매',icon:'🍅',desc:'리코펜 색소가 쌓이면서 빨갛게 익어요. 이때 수확해요!'},{name:'씨앗',icon:'🟤',desc:'열매 안에 다음 세대의 씨앗이 자라요.'}], tip:'물을 갑자기 많이 주면 열매가 갈라져요. 꾸준히 주세요.' },
+    { stage:6, emoji:'🌾', title:'채종(씨앗 수확)', weeks:'15주+', parts:[{name:'완숙 씨앗',icon:'🌾',desc:'완전히 익은 열매에서 씨앗을 꺼내 말려요. 이 씨앗으로 새 한살이를 시작할 수 있어요.'}], tip:'씨앗을 잘 건조시켜 서늘하고 어두운 곳에 보관하면 이듬해 다시 심을 수 있어요.' }
+  ],
+  potato: [
+    { stage:1, emoji:'🌱', title:'씨감자·발아', weeks:'1~2주', parts:[{name:'씨감자(덩이줄기)',icon:'🥔',desc:'눈(芽)에서 새 싹이 돋아나요. 감자는 씨앗이 아닌 줄기(덩이줄기)로 번식해요!'},{name:'뿌리',icon:'🌱',desc:'씨감자에서 가느다란 뿌리가 뻗어 물을 흡수해요.'}], tip:'씨감자의 눈이 위를 향하도록 심어요. 발아 전 과습하면 썩어요.' },
+    { stage:2, emoji:'🌿', title:'새싹·줄기 신장', weeks:'3~4주', parts:[{name:'지상부 줄기',icon:'🌿',desc:'씨감자에서 여러 줄기가 올라와요.'},{name:'본잎(겹깃꼴)',icon:'🍃',desc:'복엽 구조의 잎이 펼쳐져 광합성을 시작해요.'},{name:'지하 줄기',icon:'🥔',desc:'땅속 줄기 끝이 부풀기 시작해 새 감자가 될 준비를 해요.'}], tip:'싹이 나면 흙을 북돋아(북주기) 줄기가 더 많이 나오게 해요.' },
+    { stage:3, emoji:'🍃', title:'성장기·괴경 비대', weeks:'5~8주', parts:[{name:'본잎',icon:'🍃',desc:'광합성으로 만든 양분이 땅속 감자로 이동해요.'},{name:'땅속 덩이줄기(감자)',icon:'🥔',desc:'줄기 끝이 굵어져 녹말을 저장해요. 뿌리가 아니라 줄기예요!'},{name:'뿌리',icon:'🌱',desc:'물과 무기 양분을 흡수해 지상부와 지하 감자에 공급해요.'}], tip:'이 시기 땅을 파지 마세요. 빛을 받은 감자에 독성(솔라닌)이 생겨요.' },
+    { stage:4, emoji:'🌼', title:'개화·결실', weeks:'9~11주', parts:[{name:'흰색/연보라 꽃',icon:'🌸',desc:'별 모양의 꽃이 모여 피어요. 꽃가루받이 후 작은 초록 열매를 맺어요.'},{name:'땅속 감자(성숙)',icon:'🥔',desc:'감자가 더욱 굵어지며 수확할 준비를 해요.'}], tip:'꽃이 피면 수확이 가까워졌다는 신호예요.' },
+    { stage:5, emoji:'🥔', title:'수확기', weeks:'12~16주', parts:[{name:'성숙한 감자',icon:'🥔',desc:'녹말이 가득 찬 감자를 수확해요. 줄기가 말라가면 수확할 때예요.'}], tip:'줄기가 노랗게 말라갈 때 수확하면 가장 맛있어요.' },
+    { stage:6, emoji:'🌾', title:'씨감자 보관', weeks:'수확 후', parts:[{name:'씨감자',icon:'🥔',desc:'눈이 많은 감자를 골라 서늘하고 어두운 곳에 보관해요. 이듬해 씨감자로 써요.'}], tip:'빛에 노출되면 독성이 생겨요. 반드시 어두운 곳에 보관하세요.' }
+  ],
+  cabbage: [
+    { stage:1, emoji:'🌱', title:'씨앗·발아', weeks:'1주', parts:[{name:'씨앗',icon:'🟤',desc:'매우 작고 둥근 씨앗이에요. 서늘한 온도(15~20℃)에서 잘 발아해요.'},{name:'뿌리(유근)',icon:'🌱',desc:'씨앗에서 처음 나오는 기관으로 물 흡수를 시작해요.'}], tip:'15~20℃ 서늘한 환경에서 3~5일 안에 발아해요.' },
+    { stage:2, emoji:'🌿', title:'새싹·유묘', weeks:'2~3주', parts:[{name:'떡잎',icon:'🍃',desc:'씨앗 속 영양분으로 자라는 첫 번째 잎이에요.'},{name:'줄기(밑동)',icon:'🌿',desc:'짧고 굵은 줄기가 자라기 시작해요.'}], tip:'모종을 키울 때는 솎아주기가 중요해요.' },
+    { stage:3, emoji:'🥬', title:'잎 성장기', weeks:'4~7주', parts:[{name:'겉잎(결구엽 전)',icon:'🥬',desc:'넓은 잎이 사방으로 펼쳐져요. 이 잎들이 광합성을 담당해요.'},{name:'줄기',icon:'🌿',desc:'짧고 굵어지면서 잎을 지탱해요.'}], tip:'이 시기 비료를 충분히 주면 결구가 튼실해져요.' },
+    { stage:4, emoji:'🥬', title:'결구(속 차기)', weeks:'8~11주', parts:[{name:'속잎(결구)',icon:'🥬',desc:'잎이 안으로 말려 단단한 공 모양을 만들어요. 속은 연한 노란색이에요.'},{name:'겉잎',icon:'🍃',desc:'광합성으로 만든 양분을 속잎에 공급해요.'}], tip:'결구가 단단해지면 수확 직전이에요.' },
+    { stage:5, emoji:'🥬', title:'수확기', weeks:'12~15주', parts:[{name:'완성된 결구',icon:'🥬',desc:'꽉 찬 배추를 수확해요. 우리나라 김치의 주재료예요!'}], tip:'너무 늦게 수확하면 꽃대가 올라와(추대) 잎이 질겨져요.' },
+    { stage:6, emoji:'🌼', title:'추대·채종', weeks:'수확 후', parts:[{name:'꽃대(추대)',icon:'🌼',desc:'따뜻해지면 가운데서 꽃대가 올라와 노란 꽃이 피어요.'},{name:'씨앗',icon:'🟤',desc:'꽃가루받이 후 씨앗 꼬투리가 생겨요. 완전히 익으면 채종해요.'}], tip:'추대가 시작되면 잎이 질겨지니 식용은 그 전에 해야 해요.' }
+  ],
+  cucumber: [
+    { stage:1, emoji:'🌱', title:'씨앗·발아', weeks:'1주', parts:[{name:'씨앗',icon:'🟤',desc:'납작하고 희끄무레한 씨앗이에요. 따뜻한 온도(25~30℃)에서 잘 발아해요.'},{name:'뿌리(유근)',icon:'🌱',desc:'오이는 뿌리가 약해서 직파(바로 심기)를 추천해요.'}], tip:'25~30℃ 따뜻한 환경에서 3~5일 안에 발아해요.' },
+    { stage:2, emoji:'🌿', title:'새싹·유묘', weeks:'2~3주', parts:[{name:'떡잎',icon:'🍃',desc:'납작하고 둥근 떡잎 2장이 펼쳐져요.'},{name:'줄기(덩굴)',icon:'🌿',desc:'초기 줄기가 올라오기 시작해요.'}], tip:'지지대를 미리 세워두면 나중에 덩굴이 타고 올라가요.' },
+    { stage:3, emoji:'🍃', title:'덩굴·잎 성장', weeks:'4~6주', parts:[{name:'손바닥 모양 잎',icon:'🍃',desc:'광합성을 담당해요. 표면에 털이 있어 해충과 강한 햇빛을 막아요.'},{name:'덩굴손',icon:'🌀',desc:'지지대를 감아 위로 올라가는 기관이에요.'},{name:'덩굴 줄기',icon:'🌿',desc:'빠르게 자라며 지지대를 타고 위로 뻗어요.'}], tip:'덩굴손이 지지대를 잘 잡을 수 있게 자주 유인해줘요.' },
+    { stage:4, emoji:'🌼', title:'개화', weeks:'7~8주', parts:[{name:'수꽃(노란색)',icon:'🌼',desc:'꽃가루를 만들어요. 암꽃보다 먼저 피어요.'},{name:'암꽃(노란색)',icon:'🌼',desc:'꽃 아래에 작은 오이 모양이 달려있어요. 수분 후 열매가 돼요.'}], tip:'수꽃과 암꽃이 함께 피어야 열매가 맺혀요.' },
+    { stage:5, emoji:'🥒', title:'결실·수확', weeks:'9~12주', parts:[{name:'오이 열매',icon:'🥒',desc:'초록색으로 빠르게 자라요. 95%가 수분이에요!'},{name:'씨앗',icon:'🟤',desc:'열매 속에 씨앗이 줄지어 자라요.'}], tip:'15~20cm 정도 자라면 수확해요. 너무 크면 씨앗이 굵어져 맛이 떨어져요.' },
+    { stage:6, emoji:'🌾', title:'채종', weeks:'완숙 후', parts:[{name:'완숙 열매(노란색)',icon:'🟡',desc:'채종용은 노랗게 될 때까지 두어요. 안의 씨앗을 채취해요.'}], tip:'씨앗을 잘 씻어 말린 뒤 서늘하고 건조한 곳에 보관하세요.' }
+  ],
+  apple: [
+    { stage:1, emoji:'🌱', title:'씨앗·묘목', weeks:'1~4주', parts:[{name:'씨앗',icon:'🟤',desc:'사과씨는 저온 처리(층적 처리)를 해야 발아해요.'},{name:'어린 뿌리',icon:'🌱',desc:'뿌리가 자라며 땅에 자리를 잡아요.'}], tip:'실제로는 씨앗보다 접목(다른 나무에 붙이기)으로 재배하는 경우가 많아요.' },
+    { stage:2, emoji:'🌿', title:'묘목 성장', weeks:'5~12주', parts:[{name:'어린 줄기',icon:'🌿',desc:'나무처럼 딱딱한 목질부 줄기가 자라기 시작해요.'},{name:'타원형 잎',icon:'🍃',desc:'광합성으로 양분을 만들어 나무 전체에 공급해요.'}], tip:'사과나무는 다년생 식물로 해마다 자라요. 인내가 필요해요!' },
+    { stage:3, emoji:'🍃', title:'가지·수관 성장', weeks:'여러 달', parts:[{name:'가지',icon:'🌿',desc:'주가지에서 곁가지가 발달해 수관을 형성해요.'},{name:'잎',icon:'🍃',desc:'수많은 잎이 광합성을 해요. 가을에는 단풍이 들어요.'}], tip:'가지치기로 햇빛이 잘 들어오게 해야 맛있는 사과가 열려요.' },
+    { stage:4, emoji:'🌸', title:'개화', weeks:'봄(4~5월)', parts:[{name:'사과꽃(분홍빛 흰색)',icon:'🌸',desc:'꽃잎 5장의 예쁜 꽃이 피어요. 꿀벌이 꽃가루를 다른 품종에 옮겨줘야 해요(타가수분).'},{name:'수술·암술',icon:'🌸',desc:'암술에 꽃가루가 닿아야 열매가 맺혀요.'}], tip:'주변에 다른 품종의 사과나무가 있어야 열매가 잘 맺혀요.' },
+    { stage:5, emoji:'🍎', title:'결실·수확', weeks:'꽃 후 130~150일', parts:[{name:'사과 열매',icon:'🍎',desc:'꽃받침이 발달해 열매가 돼요. 가운데 씨앗 5개가 있어요.'},{name:'씨앗',icon:'🟤',desc:'열매 가운데에 씨앗이 자라요.'}], tip:'봉지 씌우기를 하면 예쁜 빨간 사과가 돼요. 가을(9~10월)에 수확해요.' },
+    { stage:6, emoji:'🍂', title:'낙엽·겨울잠', weeks:'가을~겨울', parts:[{name:'단풍·낙엽',icon:'🍂',desc:'가을에 잎의 엽록소가 분해되어 단풍이 들고 잎이 떨어져요.'},{name:'가지·눈(芽)',icon:'🌿',desc:'이듬해 봄을 위한 꽃눈과 잎눈이 가지에 자리잡아요.'}], tip:'사과나무는 겨울에 쉬고 봄에 다시 꽃을 피워요. 수년간 열매를 맺는 다년생 식물이에요.' }
+  ]
+};
+
+// Plant Life Cycle Summary Info
+const PLANT_LIFE_CYCLE_INFO = {
+  tomato: {
+    naturalDuration: '약 3~4개월 (90~120일)',
+    careWarnings: ['줄기 밑동이 과습하면 역병(무름병)이 생겨요','곁순을 제때 따줘야 열매가 커요','지지대를 꼭 세워 쓰러짐을 막아요','강한 직사광선에 오래 노출되면 잎이 타요'],
+    funFact: '방울토마토는 식물학적으로 채소가 아니라 과일이에요! 씨앗이 있는 씨방이 발달한 열매이기 때문이에요.'
+  },
+  potato: {
+    naturalDuration: '약 3~4개월 (90~120일)',
+    careWarnings: ['과습하면 역병과 무름병이 생겨요','감자가 빛에 노출되면 솔라닌(독소)이 생겨 녹색이 돼요','북주기(흙 덮기)를 꼭 해줘야 감자가 많이 달려요','씨감자의 눈(芽)을 살려서 심어야 해요'],
+    funFact: '감자는 뿌리가 아니라 줄기(땅속줄기=덩이줄기)예요! 눈(芽)에서 싹이 나는 것이 바로 그 증거예요.'
+  },
+  cabbage: {
+    naturalDuration: '약 3~4개월 (90~120일)',
+    careWarnings: ['고온에 약해 여름 재배는 어려워요','배추흰나비 애벌레를 자주 확인해요','수확 시기를 놓치면 꽃대가 올라와(추대) 잎이 질겨져요','물이 잎 사이에 고이면 무름병이 생겨요'],
+    funFact: '배추의 속이 노란 이유는 빛이 닿지 못해 엽록소가 없기 때문이에요. 이 부분이 가장 달고 부드러워요!'
+  },
+  cucumber: {
+    naturalDuration: '약 2~3개월 (60~90일)',
+    careWarnings: ['뿌리가 약해 이식 시 조심해야 해요','물을 많이 필요로 해 건조하면 쓴맛이 나요','덩굴손을 지지대에 자주 유인해줘야 해요','흰가루병(잎에 흰 가루 같은 병)을 조심해야 해요'],
+    funFact: '오이 열매의 95%가 수분이에요! 더운 여름날 오이를 먹으면 수분 보충에 최고예요.'
+  },
+  apple: {
+    naturalDuration: '꽃이 핀 후 130~150일 (나무 자체는 수십 년 다년생)',
+    careWarnings: ['다른 품종과 함께 심어야 꽃가루받이가 잘 돼요(타가수분)','가지치기를 매년 해야 햇빛이 잘 들어요','병해충(사과 응애, 붉은별무늬병)을 자주 확인해야 해요','열매가 많이 달리면 솎아내야(적과) 큰 사과가 돼요'],
+    funFact: '사과는 씨를 심으면 부모와 다른 사과나무가 자라요! 그래서 농부들은 좋은 사과를 접목(접붙이기)해서 재배해요.'
+  }
+};
+
 // 2. Application State Variables
 let appState = {
   userName: "꼬마 정원사",
@@ -348,52 +421,31 @@ const INSIDE_OUT_EMOTIONS = {
 // 3. Dynamic SVG Generator
 // Renders vector graphic of the plant based on its key, growth stage, and safety status
 
-function buildInfoMarkers(plantKey, stage) {
-  let m = '';
-  // Soil marker — bottom right (always shown)
-  m += `<g class="plant-hit-area" data-part="soil" style="cursor:pointer">
-    <circle cx="182" cy="188" r="13" fill="#4E342E" opacity="0.9" stroke="white" stroke-width="1.5"/>
-    <text x="182" y="193" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">흙</text>
-  </g>`;
-  // Root marker — left, underground zone
-  m += `<g class="plant-hit-area" data-part="root" style="cursor:pointer">
-    <circle cx="18" cy="167" r="13" fill="#795548" opacity="0.9" stroke="white" stroke-width="1.5"/>
-    <text x="18" y="172" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">뿌리</text>
-  </g>`;
-  // Stem marker
+function buildClickZones(plantKey, stage) {
+  let z = '';
+  // Underground: root zone
+  z += `<rect x="25" y="132" width="150" height="65" fill="transparent" class="plant-hit-area" data-part="root" style="cursor:pointer"/>`;
+  // Potato special: tuber = stem zone (overlaps root, drawn after = higher priority)
   if (plantKey === 'potato' && stage >= 3) {
-    // Potato: underground tuber = stem
-    m += `<g class="plant-hit-area" data-part="stem" style="cursor:pointer">
-      <circle cx="182" cy="165" r="13" fill="#8D6E63" opacity="0.9" stroke="white" stroke-width="1.5"/>
-      <text x="182" y="170" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">줄기</text>
-    </g>`;
-  } else if (plantKey !== 'potato' && stage >= 1) {
-    m += `<g class="plant-hit-area" data-part="stem" style="cursor:pointer">
-      <circle cx="18" cy="108" r="13" fill="#33691E" opacity="0.9" stroke="white" stroke-width="1.5"/>
-      <text x="18" y="113" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">줄기</text>
-    </g>`;
+    z += `<rect x="50" y="148" width="100" height="45" fill="transparent" class="plant-hit-area" data-part="stem" style="cursor:pointer"/>`;
   }
-  // Leaf marker — left, upper zone
+  // Above ground leaf zone
   if (stage >= 1) {
-    m += `<g class="plant-hit-area" data-part="leaf" style="cursor:pointer">
-      <circle cx="18" cy="55" r="13" fill="#43A047" opacity="0.9" stroke="white" stroke-width="1.5"/>
-      <text x="18" y="60" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">잎</text>
-    </g>`;
+    z += `<rect x="20" y="15" width="160" height="115" fill="transparent" class="plant-hit-area" data-part="leaf" style="cursor:pointer"/>`;
   }
-  // Flower or fruit marker — right, upper zone
+  // Stem zone (center strip, drawn after leaf = higher priority at center)
+  if (plantKey !== 'potato' && stage >= 1) {
+    z += `<rect x="88" y="50" width="24" height="82" fill="transparent" class="plant-hit-area" data-part="stem" style="cursor:pointer"/>`;
+  }
+  // Flower zone (stage 3) - drawn last = topmost
   if (stage === 3) {
-    m += `<g class="plant-hit-area" data-part="flower" style="cursor:pointer">
-      <circle cx="182" cy="55" r="13" fill="#FFA000" opacity="0.9" stroke="white" stroke-width="1.5"/>
-      <text x="182" y="60" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">꽃</text>
-    </g>`;
-  } else if (stage >= 4) {
-    const fruitFill = plantKey==='tomato'?'#E53935':plantKey==='apple'?'#C62828':plantKey==='cucumber'?'#2E7D32':plantKey==='potato'?'#8D6E63':'#558B2F';
-    m += `<g class="plant-hit-area" data-part="fruit" style="cursor:pointer">
-      <circle cx="182" cy="55" r="13" fill="${fruitFill}" opacity="0.9" stroke="white" stroke-width="1.5"/>
-      <text x="182" y="60" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">열매</text>
-    </g>`;
+    z += `<rect x="20" y="15" width="160" height="115" fill="transparent" class="plant-hit-area" data-part="flower" style="cursor:pointer"/>`;
   }
-  return m;
+  // Fruit zone (stage 4+)
+  if (stage >= 4) {
+    z += `<rect x="20" y="15" width="160" height="115" fill="transparent" class="plant-hit-area" data-part="fruit" style="cursor:pointer"/>`;
+  }
+  return z;
 }
 
 let _svgUid = 0;
@@ -882,7 +934,7 @@ function generatePlantSVG(plantKey, stage, stats) {
   }
   
   svg += `</g>`; // close plant-body
-  svg += buildInfoMarkers(plantKey, stage);
+  svg += buildClickZones(plantKey, stage);
   svg += `</svg>`;
 
   // Scope all SVG IDs to this call to prevent conflicts when multiple SVGs coexist in DOM
@@ -1145,6 +1197,9 @@ function triggerStageLevelUp() {
   const stageName = stageNames[appState.growthStage - 1] || "완성";
   const stageEmoji = ["🌱","🌿","🍃","🌸","🍎","🌾"][appState.growthStage - 1] || "🌾";
   addBotMessage(`${stageEmoji} 축하해요! 정원사님 덕분에 [${stageName}] 단계로 성장했어요!`);
+  if (appState.growthStage === 6) {
+    setTimeout(() => showLifeCycleComplete(), 1500);
+  }
 }
 
 function triggerWeatherEffect() {
@@ -1768,7 +1823,93 @@ function showAllQuestsComplete() {
 }
 
 
-// 10b. Plant Part Interaction
+// 10b. Plant Explorer Tab
+function renderPlantExplorer() {
+  const pane = document.getElementById('pane-explore');
+  if (!pane) return;
+  const plantKey = appState.selectedPlantKey;
+  const profile = plantProfiles[plantKey];
+  const timeline = PLANT_GROWTH_TIMELINE[plantKey];
+  if (!profile || !timeline) return;
+
+  let html = `<div class="explore-header" style="background: linear-gradient(135deg, ${profile.themeColor}22, ${profile.themeColor}11); border-radius: 12px; padding: 14px; margin-bottom: 14px; border-left: 4px solid ${profile.themeColor};">
+    <div style="font-size: 1.1em; font-weight: 800; color: ${profile.themeColor};">${profile.name} 성장 탐구</div>
+    <div style="font-size: 12px; color: #666; margin-top: 4px;">${profile.slogan}</div>
+  </div>
+  <div style="font-size: 11px; font-weight: 700; color: #888; margin-bottom: 10px; letter-spacing: 0.3px;">📅 주차별 성장 단계</div>`;
+
+  timeline.forEach(item => {
+    const isCurrent = item.stage === appState.growthStage;
+    const isDone = item.stage < appState.growthStage;
+    const borderColor = isCurrent ? profile.themeColor : isDone ? '#A5D6A7' : '#E0E0E0';
+    const bgColor = isCurrent ? `${profile.themeColor}12` : isDone ? '#F1F8E9' : '#FAFAFA';
+    const stageLabel = isCurrent ? '<span class="explore-current-badge">현재 단계</span>' : isDone ? '<span class="explore-done-badge">✓ 완료</span>' : '<span class="explore-locked-badge">잠김</span>';
+
+    html += `<div class="explore-stage-card" style="border: 2px solid ${borderColor}; background: ${bgColor};">
+      <div class="explore-stage-header">
+        <span class="explore-stage-emoji">${item.emoji}</span>
+        <div class="explore-stage-info">
+          <div class="explore-stage-title">${item.title}</div>
+          <div class="explore-stage-weeks">⏰ ${item.weeks}</div>
+        </div>
+        ${stageLabel}
+      </div>
+      <div class="explore-parts-list">
+        ${item.parts.map(p => `<div class="explore-part-row">
+          <span class="explore-part-icon">${p.icon}</span>
+          <div><span class="explore-part-name">${p.name}</span><span class="explore-part-desc">${p.desc}</span></div>
+        </div>`).join('')}
+      </div>
+      <div class="explore-tip">💡 ${item.tip}</div>
+    </div>`;
+  });
+
+  pane.innerHTML = html;
+}
+
+function showLifeCycleComplete() {
+  const plantKey = appState.selectedPlantKey;
+  const profile = plantProfiles[plantKey];
+  const cycleInfo = PLANT_LIFE_CYCLE_INFO[plantKey];
+  if (!profile || !cycleInfo) return;
+
+  // Calculate growing duration from dailyGrowth records
+  const growthDates = Object.keys(appState.dailyGrowth).sort();
+  const weekCount = growthDates.length > 0
+    ? Math.ceil(growthDates.length / 7)
+    : '여러';
+
+  // Tally emotions from diary
+  const emotionCounts = {};
+  appState.diaryList.forEach(d => {
+    if (d.moodKey) emotionCounts[d.moodKey] = (emotionCounts[d.moodKey] || 0) + 1;
+  });
+  const topEmotions = Object.entries(emotionCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([key]) => INSIDE_OUT_EMOTIONS[key])
+    .filter(Boolean);
+  const emotionStr = topEmotions.length > 0
+    ? topEmotions.map(e => `${e.emoji} ${e.label}`).join('  ')
+    : '😊 설레임과 함께';
+
+  const modal = document.getElementById('lifecycle-complete-modal');
+  if (!modal) return;
+
+  modal.querySelector('#lc-plant-emoji').textContent = ['🌱','🌿','🍃','🌸','🍎','🌾'][5];
+  modal.querySelector('#lc-plant-name').textContent = profile.name;
+  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount}주`;
+  modal.querySelector('#lc-emotions').textContent = emotionStr;
+  modal.querySelector('#lc-natural-duration').textContent = cycleInfo.naturalDuration;
+  modal.querySelector('#lc-fun-fact').textContent = cycleInfo.funFact;
+
+  const warningList = modal.querySelector('#lc-warnings');
+  warningList.innerHTML = cycleInfo.careWarnings.map(w => `<li>${w}</li>`).join('');
+
+  modal.classList.remove('hidden');
+}
+
+// 10c. Plant Part Interaction
 function initPlantInteraction() {
   const holder = document.getElementById('plant-svg-holder');
   holder.addEventListener('click', (e) => {
@@ -1778,6 +1919,9 @@ function initPlantInteraction() {
   });
   document.getElementById('plant-info-close').addEventListener('click', () => {
     document.getElementById('plant-info-panel').classList.add('hidden');
+  });
+  document.getElementById('lc-close-btn')?.addEventListener('click', () => {
+    document.getElementById('lifecycle-complete-modal').classList.add('hidden');
   });
 }
 
@@ -2295,6 +2439,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadQuiz();
     renderBadges();
     initPlantInteraction();
+    renderPlantExplorer();
     renderDiaries();
     
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
@@ -2386,6 +2531,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('chat-messages-container').scrollTop = document.getElementById('chat-messages-container').scrollHeight;
       } else if (tabName === 'calendar') {
         renderCalendar();
+      } else if (tabName === 'explore') {
+        renderPlantExplorer();
       }
     });
   });
