@@ -2173,3 +2173,81 @@ body {
   line-height: 1.6;
 }
 
+/* Plant Explorer Tab */
+.explore-stage-card {
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.explore-stage-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.explore-stage-emoji { font-size: 1.6em; }
+.explore-stage-info { flex: 1; }
+.explore-stage-title { font-size: 13px; font-weight: 700; color: #333; }
+.explore-stage-weeks { font-size: 11px; color: #888; margin-top: 2px; }
+.explore-current-badge { font-size: 10px; background: var(--primary-green); color: white; padding: 3px 8px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
+.explore-done-badge { font-size: 10px; background: #E8F5E9; color: #388E3C; padding: 3px 8px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
+.explore-locked-badge { font-size: 10px; background: #F5F5F5; color: #BDBDBD; padding: 3px 8px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
+.explore-parts-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.explore-part-row { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; }
+.explore-part-icon { font-size: 1.1em; flex-shrink: 0; margin-top: 1px; }
+.explore-part-name { font-weight: 700; color: #2E7D32; margin-right: 4px; }
+.explore-part-desc { color: #555; }
+.explore-tip { font-size: 11px; color: #F57F17; background: #FFF8E1; border-radius: 8px; padding: 6px 10px; }
+
+/* Life Cycle Complete Modal */
+.lifecycle-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+.lifecycle-modal.hidden { display: none; }
+.lifecycle-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+.lifecycle-modal-card {
+  position: relative;
+  background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px 32px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.2);
+  animation: slide-up 0.4s cubic-bezier(0.175,0.885,0.32,1.1);
+}
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.lifecycle-close-btn {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: #F5F5F5; border: none;
+  width: 28px; height: 28px;
+  border-radius: 50%; font-size: 13px;
+  cursor: pointer; color: #555;
+}
+.lifecycle-header { text-align: center; margin-bottom: 20px; }
+.lifecycle-title { font-size: 20px; font-weight: 800; color: #2E7D32; margin: 8px 0 4px; }
+.lifecycle-plant-name { font-size: 14px; color: #888; }
+.lifecycle-section { margin-bottom: 14px; }
+.lifecycle-label { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 4px; }
+.lifecycle-value { font-size: 14px; color: #333; font-weight: 600; }
+.lifecycle-warnings { margin: 4px 0 0 16px; padding: 0; }
+.lifecycle-warnings li { font-size: 12px; color: #555; margin-bottom: 3px; }
+.lifecycle-funfact { background: #E8F5E9; border-radius: 10px; padding: 12px 14px; }
+.lifecycle-funfact .lifecycle-value { font-size: 13px; color: #2E7D32; font-weight: 500; line-height: 1.5; }
+
