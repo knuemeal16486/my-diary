@@ -1052,7 +1052,7 @@ function stopSimulation() {
 }
 
 function spawnParticles() {
-  const holder = document.getElementById('plant-svg-holder');
+  const holder = document.getElementById('garden-view-port');
   if (!holder) return;
 
   const now = new Date();
@@ -2520,14 +2520,14 @@ function startClock() {
     const hour = now.getHours();
     const isDay = (hour >= 6 && hour < 18);
     
-    const holder = document.getElementById('plant-svg-holder');
-    if (holder) {
+    const gardenView = document.getElementById('garden-view-port');
+    if (gardenView) {
       if (isDay) {
-        holder.classList.add('theme-day');
-        holder.classList.remove('theme-night');
+        gardenView.classList.add('theme-day');
+        gardenView.classList.remove('theme-night');
       } else {
-        holder.classList.add('theme-night');
-        holder.classList.remove('theme-day');
+        gardenView.classList.add('theme-night');
+        gardenView.classList.remove('theme-day');
       }
     }
   }

@@ -759,6 +759,22 @@ body {
   justify-content: center;
   align-items: flex-end;
   padding-bottom: 25px;
+  transition: background 2s ease;
+}
+
+/* Night theme overlay covering the whole garden */
+.garden-view::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(5, 10, 25, 0.75) 0%, rgba(10, 20, 40, 0.85) 100%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+.garden-view.theme-night::before {
+  opacity: 1;
 }
 
 /* Day/Night weather variations */
@@ -841,16 +857,6 @@ body {
   align-items: flex-end;
   z-index: 2;
   position: relative; /* For particle positioning */
-  transition: background 2s ease-in-out;
-  border-radius: 12px;
-}
-
-/* Day/Night themes for the plant holder */
-#plant-svg-holder.theme-day {
-  background: linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255, 250, 240, 0.5) 100%);
-}
-#plant-svg-holder.theme-night {
-  background: linear-gradient(to top, rgba(10, 15, 30, 0.4) 0%, rgba(20, 30, 60, 0.8) 100%);
 }
 
 /* Particle Styles */
@@ -862,14 +868,14 @@ body {
 }
 
 .particle-photo {
-  background-color: rgba(200, 255, 100, 0.8);
-  box-shadow: 0 0 8px rgba(200, 255, 100, 0.8);
+  background-color: rgba(220, 255, 120, 0.9);
+  box-shadow: 0 0 12px 3px rgba(220, 255, 120, 0.9);
   animation: photosynthesis 3s ease-in forwards;
 }
 
 .particle-respire {
-  background-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.85);
   animation: respiration 4s ease-out forwards;
 }
 
