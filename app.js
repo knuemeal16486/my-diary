@@ -2424,13 +2424,18 @@ function showWeatherError() {
 document.addEventListener("DOMContentLoaded", () => {
   // Lucide initialize
   lucide.createIcons();
+
+  // Randomize name placeholder so it feels like real kids
+  const sampleNames = ['이서준', '김민아', '박지호', '최하은', '정유준', '한소율', '오시우', '윤채원', '임준혁', '강나연'];
+  const pick = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+  document.getElementById('input-name').placeholder = `예: ${pick}`;
   
   // Event: Start Test
   document.getElementById('btn-start-test').addEventListener('click', () => {
     const nameInput = document.getElementById('input-name');
     const name = nameInput.value.trim();
     if (!name) {
-      alert("정원사의 이름을 써주세요!");
+      alert("이름을 입력해주세요!");
       return;
     }
     appState.userName = name;
@@ -2507,7 +2512,8 @@ document.addEventListener("DOMContentLoaded", () => {
         isSimulating: false,
         simulationIntervalId: null,
         dailyGrowth: {},
-        currentCalendarDate: new Date()
+        currentCalendarDate: new Date(),
+        lastDangerState: {}
       };
       
       document.getElementById('input-name').value = '';
