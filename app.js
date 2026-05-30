@@ -1349,8 +1349,8 @@ function updateDashboardUI() {
     },
     wind: {
       action: '환기 하기', icon: 'wind',
-      low:  { alert: '공기가 탁해서 숨쉬기 힘들어요.',        chip: '😮‍💨 답답해요!',  plant: '😮‍💨 답답해요! 창문 좀 열어줘요 🪟' },
-      high: { alert: '바람이 너무 강해요.',                   chip: '🌪️ 바람 세요!',  plant: '🌪️ 바람이 너무 강해요!' }
+      low:  { alert: appState.environment === 'outdoor' ? '주변 공기 흐름이 막혀있어요.' : '공기가 탁해서 숨쉬기 힘들어요.',        chip: '😮‍💨 답답해요!',  plant: appState.environment === 'outdoor' ? '😮‍💨 답답해요! 시원한 바람이 불어오는 곳으로 가고 싶어요 🍃' : '😮‍💨 답답해요! 창문 좀 열어줘요 🪟' },
+      high: { alert: '바람이 너무 강해요.',                   chip: '🌪️ 바람 세요!',  plant: appState.environment === 'outdoor' ? '🌪️ 바람이 너무 강해요! 안전한 곳으로 옮겨주세요' : '🌪️ 바람이 너무 강해요! 창문 좀 닫아주세요 🪟' }
     },
     soil: {
       action: '비료 주기', icon: 'sparkles',
@@ -1455,11 +1455,13 @@ function updateDashboardUI() {
   if (windBtn) {
     if (appState.isWindowOpen) {
       windBtn.classList.add('btn-teal');
-      windBtn.innerHTML = `<i data-lucide="wind"></i> 창문 닫기`;
+      const closeText = appState.environment === 'outdoor' ? '바람 피하기' : '창문 닫기';
+      windBtn.innerHTML = `<i data-lucide="wind"></i> ${closeText}`;
       document.getElementById('effect-wind').classList.remove('hidden-effect');
     } else {
       windBtn.classList.remove('btn-teal');
-      windBtn.innerHTML = `<i data-lucide="wind"></i> 환기하기`;
+      const openText = appState.environment === 'outdoor' ? '바람 쐬기' : '환기하기';
+      windBtn.innerHTML = `<i data-lucide="wind"></i> ${openText}`;
       if (appState.weather !== 'windy') {
         document.getElementById('effect-wind').classList.add('hidden-effect');
       }
@@ -1506,12 +1508,13 @@ function toggleSunLamp() {
 
 function toggleWindow() {
   appState.isWindowOpen = !appState.isWindowOpen;
+  const isOutdoor = appState.environment === 'outdoor';
   if (appState.isWindowOpen) {
     appState.stats.wind = Math.min(100, appState.stats.wind + 20);
-    showToast("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    showToast(isOutdoor ? "🍃 시원한 자연 바람을 맞고 있어요! 식물 잎사귀가 기분 좋게 흔들립니다." : "🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
     checkEmotionCareMission('환기 하기');
   } else {
-    showToast("🪟 창문을 닫았어요");
+    showToast(isOutdoor ? "🛡️ 바람막이를 쳐서 강한 바람을 피했어요." : "🪟 창문을 닫았어요.");
   }
   updateDashboardUI();
 }
@@ -2390,7 +2393,10 @@ function checkEmotionCareMission(action) {
     message = "💖 마음에 비가 올 때 따뜻한 햇빛을 쬐어주셨군요! 기분이 한결 나아지고 식물도 쑥쑥 자라납니다. (보너스 XP +10)";
   } else if (appState.weather === 'windy' && action === '환기 하기') {
     isMatch = true;
-    message = "💖 마음에 거센 바람이 불 때, 창문을 열어 환기해 주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)";
+    const isOutdoor = appState.environment === 'outdoor';
+    message = isOutdoor 
+      ? "💖 마음에 거센 바람이 불 때, 시원한 자연 바람을 쐬어주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)" 
+      : "💖 마음에 거센 바람이 불 때, 창문을 열어 환기해 주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)";
   } else if (appState.weather === 'sunny' && action === '비료 주기') {
     isMatch = true;
     message = "💖 행복한 햇살 아래서 비료를 주셨군요! 기쁨의 에너지가 식물에게 듬뿍 전해졌어요. (보너스 XP +10)";
