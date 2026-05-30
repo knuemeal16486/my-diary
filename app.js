@@ -7,6 +7,10 @@ if (typeof lucide === 'undefined') {
   };
 }
 
+// ⚠️ 보안 주의: 이 키는 클라이언트에 노출됩니다. 실 서비스 시 백엔드 프록시를 사용하세요.
+// 키가 유출된 경우 Google AI Studio(aistudio.google.com)에서 즉시 폐기·재발급하세요.
+const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
+
 // 1. Data Definitions
 
 // Personality Test Questions
@@ -207,9 +211,11 @@ const INSIDE_OUT_EMOTIONS = {
 
 // 3. Dynamic SVG Generator
 // Renders vector graphic of the plant based on its key, growth stage, and safety status
+let _svgUid = 0;
 function generatePlantSVG(plantKey, stage, stats) {
   const profile = plantProfiles[plantKey];
   if (!profile) return '';
+  const uid = ++_svgUid;
 
   const isThirsty = stats.water < (profile.careInfo.water.min - 10) || stats.water > (profile.careInfo.water.max + 10);
   const isDark = stats.sun < (profile.careInfo.sun.min - 10);
@@ -688,6 +694,14 @@ function generatePlantSVG(plantKey, stage, stats) {
   }
   
   svg += `</svg>`;
+
+  // Scope all SVG IDs to this call to prevent conflicts when multiple SVGs coexist in DOM
+  const ids = ['shadow', 'soft-shadow', 'tomato-grad', 'potato-grad', 'cucumber-grad', 'apple-grad', 'cabbage-grad', 'trunk-grad'];
+  ids.forEach(id => {
+    svg = svg.replaceAll(`id="${id}"`, `id="${id}-${uid}"`)
+             .replaceAll(`url(#${id})`, `url(#${id}-${uid})`);
+  });
+
   return svg;
 }
 
@@ -1157,11 +1171,19 @@ function useFertilizer() {
 
 
 // 9. Simulated AI Chat Engine
+let isProcessingChat = false;
+
 function addBotMessage(text) {
   const container = document.getElementById('chat-messages-container');
   const bubble = document.createElement('div');
   bubble.className = 'chat-bubble bot';
-  bubble.innerHTML = `<p>${text}</p><span class="time">방금 전</span>`;
+  const p = document.createElement('p');
+  p.textContent = text;
+  const time = document.createElement('span');
+  time.className = 'time';
+  time.textContent = '방금 전';
+  bubble.appendChild(p);
+  bubble.appendChild(time);
   container.appendChild(bubble);
   container.scrollTop = container.scrollHeight;
 }
@@ -1170,21 +1192,27 @@ function addUserMessage(text) {
   const container = document.getElementById('chat-messages-container');
   const bubble = document.createElement('div');
   bubble.className = 'chat-bubble user';
-  bubble.innerHTML = `<p>${text}</p><span class="time">방금 전</span>`;
+  const p = document.createElement('p');
+  p.textContent = text;
+  const time = document.createElement('span');
+  time.className = 'time';
+  time.textContent = '방금 전';
+  bubble.appendChild(p);
+  bubble.appendChild(time);
   container.appendChild(bubble);
   container.scrollTop = container.scrollHeight;
 }
 
 async function processUserChat(messageText) {
-  if (!messageText.trim()) return;
-  
+  if (!messageText.trim() || isProcessingChat) return;
+  isProcessingChat = true;
+
   addUserMessage(messageText);
-  
+
   // Show thinking delay / indicator
   const container = document.getElementById('chat-messages-container');
   const thinkingBubble = document.createElement('div');
   thinkingBubble.className = 'chat-bubble bot thinking';
-  thinkingBubble.id = 'thinking-bubble';
   thinkingBubble.innerHTML = `<p><i data-lucide="loader" class="spin-icon"></i> 선생님이 생각 중...</p>`;
   container.appendChild(thinkingBubble);
   container.scrollTop = container.scrollHeight;
@@ -1192,16 +1220,15 @@ async function processUserChat(messageText) {
 
   try {
     const aiResponse = await fetchGeminiResponse(messageText);
-    const thinkingEl = document.getElementById('thinking-bubble');
-    if (thinkingEl) thinkingEl.remove();
-    
+    thinkingBubble.remove();
+
     if (aiResponse.stats) {
       if (typeof aiResponse.stats.water === 'number') appState.stats.water = Math.max(0, Math.min(100, appState.stats.water + aiResponse.stats.water));
       if (typeof aiResponse.stats.sun === 'number') appState.stats.sun = Math.max(0, Math.min(100, appState.stats.sun + aiResponse.stats.sun));
       if (typeof aiResponse.stats.wind === 'number') appState.stats.wind = Math.max(0, Math.min(100, appState.stats.wind + aiResponse.stats.wind));
       if (typeof aiResponse.stats.soil === 'number') appState.stats.soil = Math.max(0, Math.min(100, appState.stats.soil + aiResponse.stats.soil));
       if (typeof aiResponse.stats.growth === 'number') appState.growthXP = Math.min(100, appState.growthXP + aiResponse.stats.growth);
-      
+
       updateDashboardUI();
 
       // Check for growth stage progression
@@ -1213,13 +1240,14 @@ async function processUserChat(messageText) {
         }
       }
     }
-    
+
     addBotMessage(aiResponse.reply || "응답을 불러오지 못했어요.");
   } catch (error) {
     console.error(error);
-    const thinkingEl = document.getElementById('thinking-bubble');
-    if (thinkingEl) thinkingEl.remove();
-    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. (디버깅: " + error.message + ") 조금 뒤에 다시 말해줄래요?");
+    thinkingBubble.remove();
+    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. 조금 뒤에 다시 말해줄래요?");
+  } finally {
+    isProcessingChat = false;
   }
 }
 
@@ -1249,8 +1277,7 @@ async function fetchGeminiResponse(userText) {
   }
 }`;
 
-  const apiKey = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -1434,7 +1461,6 @@ async function saveDiary() {
   }
 
   updateDashboardUI();
-  saveGame();
 
   saveBtn.innerHTML = originalBtnText;
   saveBtn.disabled = false;
@@ -1454,9 +1480,8 @@ async function fetchImagePromptFromGemini(text, mood) {
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
 
-  const apiKey = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
-  
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1502,7 +1527,7 @@ function analyzeEmotionWeather() {
     const msgs = {
       rainy: '🌧️ 마음 속 감정들이 모여 비가 내리기 시작했어요. 슬픈 마음도 일기로 쓰면 식물의 양분이 된답니다 🌱',
       sunny: '☀️ 기쁨찬 하루들이 모여서 해가 떠올랐어요! 식물도 덩달아 활짝 웃고 있어요 ☀️',
-      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요. 식물이 겪 강하게 잔다 함 힘내요!💨',
+      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요. 식물도 함께 힘차게 버텨낼 거예요! 💨',
     };
     if (msgs[newWeather]) addBotMessage(msgs[newWeather]);
   }
@@ -1888,7 +1913,9 @@ document.addEventListener("DOMContentLoaded", () => {
         chatLog: [],
         quizIndex: 0,
         isSimulating: false,
-        simulationIntervalId: null
+        simulationIntervalId: null,
+        dailyGrowth: {},
+        currentCalendarDate: new Date()
       };
       
       document.getElementById('input-name').value = '';
@@ -2051,8 +2078,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 다음 문장의 뒷부분(3~5단어 정도)을 자연스럽게 이어지도록 예상해서 완성해주세요. 반드시 이어질 단어만 출력하고 다른 설명은 하지 마세요.
 현재까지 쓴 내용: "${diaryInput.value}"`;
             
-            const apiKey = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
               method: 'POST',
