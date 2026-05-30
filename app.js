@@ -1474,8 +1474,15 @@ async function saveDiary() {
 }
 
 async function fetchImagePromptFromGemini(text, mood) {
-  const prompt = `당신은 그림 프롬프트를 생성하는 AI입니다. 학생이 쓴 다음 일기 내용과 감정을 바탕으로, 이 하루를 요약하는 귀엽고 따뜻한 일러스트(동화풍)를 그리기 위한 영문 프롬프트를 작성해주세요. 
-반드시 영문 프롬프트 문장 하나만 출력하세요. (예: a cute cartoon drawing of a student playing soccer with friends, sunny day, happy mood, watercolor style)
+  const prompt = `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
+아래 일기에서 가장 구체적이고 기억에 남는 장면(사람, 장소, 행동)을 딱 하나 골라, 그 순간을 담은 영문 그림 프롬프트를 작성하세요.
+
+규칙:
+1. 일기 속 실제 사건·행동을 반드시 포함할 것 (예: playing soccer with friends after school, eating ramen with mom at home)
+2. 추상적 표현 금지 — 구체적인 인물·장소·행동으로 묘사할 것
+3. 감정(${mood})에 맞는 분위기와 색감을 넣을 것
+4. 마지막에 반드시 ", soft watercolor illustration, children's storybook style, warm pastel colors, no text" 를 붙일 것
+5. 영문 한 문장(60단어 이하)만 출력할 것. 설명이나 따옴표 없이 프롬프트 문장만 출력.
 
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
@@ -1487,7 +1494,7 @@ async function fetchImagePromptFromGemini(text, mood) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.8, maxOutputTokens: 100 }
+      generationConfig: { temperature: 0.7, maxOutputTokens: 150 }
     })
   });
   
