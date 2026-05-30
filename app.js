@@ -1931,7 +1931,7 @@ function showLifeCycleComplete() {
 
   modal.querySelector('#lc-plant-emoji').textContent = ['🌱','🌿','🍃','🌸','🍎','🌾'][5];
   modal.querySelector('#lc-plant-name').textContent = profile.name;
-  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount}주`;
+  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount} 주`;
   modal.querySelector('#lc-emotions').textContent = emotionStr;
   modal.querySelector('#lc-natural-duration').textContent = cycleInfo.naturalDuration;
   modal.querySelector('#lc-fun-fact').textContent = cycleInfo.funFact;
