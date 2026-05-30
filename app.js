@@ -1293,7 +1293,8 @@ function triggerWeatherEffect() {
   
   // Set weather class to garden viewport
   const gView = document.getElementById('garden-view-port');
-  gView.className = `garden-view weather-${appState.weather}`;
+  gView.classList.remove('weather-sunny', 'weather-cloudy', 'weather-rainy', 'weather-windy', 'weather-snowy');
+  gView.classList.add(`weather-${appState.weather}`);
   
   // Manage environmental overlay layers
   const rainLayer = document.getElementById('effect-rain');
@@ -2614,19 +2615,27 @@ function startClock() {
     const now = new Date();
     el.textContent = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
 
-    // Day/Night Update
+    // Day/Night & Dawn/Dusk Gradual Update
     const hour = now.getHours();
-    const isDay = (hour >= 6 && hour < 18);
+    const min = now.getMinutes();
+    const decimalHour = hour + min / 60;
+    
+    let nightOpacity = 0;
+    if (decimalHour >= 19 || decimalHour < 5) {
+      nightOpacity = 1.0;
+    } else if (decimalHour >= 5 && decimalHour < 7) {
+      // Dawn (5 to 7): 1.0 -> 0.0
+      nightOpacity = 1.0 - ((decimalHour - 5) / 2);
+    } else if (decimalHour >= 17 && decimalHour < 19) {
+      // Dusk (17 to 19): 0.0 -> 1.0
+      nightOpacity = (decimalHour - 17) / 2;
+    } else {
+      nightOpacity = 0.0;
+    }
     
     const gardenView = document.getElementById('garden-view-port');
     if (gardenView) {
-      if (isDay) {
-        gardenView.classList.add('theme-day');
-        gardenView.classList.remove('theme-night');
-      } else {
-        gardenView.classList.add('theme-night');
-        gardenView.classList.remove('theme-day');
-      }
+      gardenView.style.setProperty('--night-opacity', nightOpacity);
     }
   }
   updateClock();
