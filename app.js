@@ -1564,13 +1564,20 @@ async function processUserChat(messageText) {
   } catch (error) {
     console.error(error);
     thinkingBubble.remove();
-    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. 조금 뒤에 다시 말해줄래요?");
+    if (error.message === 'API_KEY_MISSING') {
+      addBotMessage("선생님 연결이 아직 준비되지 않았어요. 선생님께 API 키 설정을 부탁드려요! 🔑");
+    } else {
+      addBotMessage("앗, 선생님이 잠깐 자리를 비웠어요. 조금 뒤에 다시 말해줄래요? 😊");
+    }
   } finally {
     isProcessingChat = false;
   }
 }
 
 async function fetchGeminiResponse(userText) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') {
+    throw new Error('API_KEY_MISSING');
+  }
   const profile = plantProfiles[appState.selectedPlantKey] || { name: '반려 식물' };
   const water = appState.stats.water;
   const sun = appState.stats.sun;
@@ -1596,7 +1603,7 @@ async function fetchGeminiResponse(userText) {
   }
 }`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -2080,6 +2087,7 @@ async function saveDiary() {
 }
 
 async function fetchImagePromptFromGemini(text, mood) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
   const prompt = `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
 아래 일기에서 가장 구체적이고 기억에 남는 장면을 딱 하나 골라, 그 순간을 담은 영문 그림 프롬프트를 작성하세요.
 
@@ -2094,7 +2102,7 @@ async function fetchImagePromptFromGemini(text, mood) {
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -2706,7 +2714,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 다음 문장의 뒷부분(3~5단어 정도)을 자연스럽게 이어지도록 예상해서 완성해주세요. 반드시 이어질 단어만 출력하고 다른 설명은 하지 마세요.
 현재까지 쓴 내용: "${diaryInput.value}"`;
             
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
               method: 'POST',
