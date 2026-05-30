@@ -9,7 +9,7 @@ if (typeof lucide === 'undefined') {
 
 // GitHub Actions 배포 시 '__GEMINI_API_KEY__' 플레이스홀더가 GitHub Secret으로 자동 교체됩니다.
 // 로컬 테스트 시에는 아래 값을 직접 입력하되, 절대 커밋하지 마세요.
-const GEMINI_API_KEY = '__GEMINI_API_KEY__';
+const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
 
 // 1. Data Definitions
 
