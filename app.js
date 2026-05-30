@@ -476,8 +476,8 @@ function generatePlantSVG(plantKey, stage, stats) {
   svg += `<g class="plant-soil">`;
   svg += `
     <g filter="url(#shadow)">
-      <path d="M20,130 L180,130 L180,195 Q100,205 20,195 Z" fill="#5D4037" />
-      <path d="M20,130 L180,130 L180,145 Q100,150 20,145 Z" fill="#4E342E" />
+      <path d="M-10,130 L210,130 L210,210 L-10,210 Z" fill="#5D4037" />
+      <path d="M-10,130 L210,130 L210,145 Q100,150 -10,145 Z" fill="#4E342E" />
       <!-- Soil textures -->
       <circle cx="60" cy="160" r="2" fill="#3E2723" opacity="0.6"/>
       <circle cx="140" cy="180" r="3" fill="#3E2723" opacity="0.6"/>
