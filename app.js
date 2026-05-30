@@ -16,38 +16,59 @@ const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
 // Personality Test Questions
 const testQuestions = [
   {
-    title: "혹시 예전에 집이나 학교에서 식물을 직접 심고 키워본 경험이 있나요?",
+    title: "여가 시간을 보낼 때 가장 좋아하는 방식은?",
     options: [
-      { text: "네! 물도 주고 싹이 트고 자라는 것을 끝까지 책임감 있게 지켜본 적이 있어요.", scores: { tomato: 3, apple: 3, potato: 0, cucumber: 0, cabbage: 0 } },
-      { text: "아니요, 식물을 제 손으로 오랫동안 보살펴본 경험은 거의 없는 것 같아요.", scores: { potato: 3, cabbage: 3, cucumber: 2, tomato: 0, apple: 0 } }
+      { text: "밖에 나가서 땀 흘리며 활발하게 뛰어놀거나 운동하기", scores: { tomato: 4, cucumber: 1, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "조용하고 예쁜 카페나 자연 속에서 감상하고 힐링하기", scores: { apple: 4, cabbage: 2, tomato: 0, cucumber: 0, potato: 0 } },
+      { text: "내 방 침대나 소파에서 가장 편안하게 뒹굴뒹굴하기", scores: { potato: 4, cabbage: 1, tomato: 0, cucumber: 0, apple: 0 } }
     ]
   },
   {
-    title: "스스로 생각하기에 규칙적인 생활 습관(아침 기상, 숙제 등)을 잘 지키는 편인가요?",
+    title: "방학 숙제나 계획표를 세울 때 나는?",
     options: [
-      { text: "매일 계획한 일정을 제시간에 척척 해내고, 약속을 성실하게 잘 지키는 규칙적인 편이에요!", scores: { cucumber: 3, tomato: 3, apple: 2, potato: 0, cabbage: 0 } },
-      { text: "그때그때 기분에 따라 자유롭게 행동하거나 가끔 늦잠도 자는 편안한 스타일이에요~", scores: { potato: 3, cabbage: 3, apple: 1, tomato: 0, cucumber: 0 } }
+      { text: "매일 정해진 분량을 규칙적으로 꼬박꼬박 해낸다", scores: { cucumber: 4, tomato: 1, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "계획은 세우지만 기분과 상황에 따라 유동적으로 한다", scores: { potato: 3, apple: 2, tomato: 0, cucumber: 0, cabbage: 0 } },
+      { text: "친구들이나 가족과 함께 즐겁게 할 수 있는 일부터 찾는다", scores: { tomato: 2, cabbage: 3, potato: 0, cucumber: 0, apple: 0 } }
     ]
   },
   {
-    title: "평소 운동장이나 밖에서 뛰어놀기처럼 활동적이고 몸을 움직이는 것을 좋아하는 편인가요?",
+    title: "친구가 우울해할 때 나의 대처법은?",
     options: [
-      { text: "완전 좋아해요! 활발하게 뛰어놀고 친구들과 게임을 할 때 온몸에 에너지가 가득해져요!", scores: { tomato: 3, cucumber: 3, apple: 0, potato: 0, cabbage: 0 } },
-      { text: "방 안에서 조용히 만들기, 그리기, 책 읽기나 퍼즐처럼 차분하게 집중하는 게 더 좋아요.", scores: { potato: 3, cabbage: 3, apple: 3, tomato: 0, cucumber: 0 } }
+      { text: "신나는 곳에 데려가서 우울한 기분을 확 풀어준다", scores: { tomato: 3, cucumber: 1, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "조용히 옆에서 이야기를 끝까지 들어주고 공감해준다", scores: { cabbage: 4, apple: 1, potato: 0, cucumber: 0, tomato: 0 } },
+      { text: "어떻게 해결하면 좋을지 현실적이고 체계적인 조언을 해준다", scores: { cucumber: 4, tomato: 0, potato: 0, cabbage: 0, apple: 0 } }
     ]
   },
   {
-    title: "만약 나만의 초록 친구를 들여놓는다면, 방의 어디에 두고 가꾸고 싶나요?",
+    title: "무언가를 기르거나 만들 때 가장 기대되는 순간은?",
     options: [
-      { text: "햇빛이 잘 들고 따뜻한 창가나 베란다 틈에 놓아 매일 햇살 목욕을 시켜줄래요.", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "공부 책상이나 침대 머리맡처럼 제가 늘 앉아서 공부하고 쉴 때 가까이 볼 수 있게 할래요.", scores: { potato: 3, cabbage: 4, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "눈에 띄는 확실한 결과물이나 맛있는 열매를 얻을 때", scores: { tomato: 4, cucumber: 2, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "매일 조금씩 듬직하게 성장해가는 과정을 지켜볼 때", scores: { cabbage: 4, cucumber: 1, potato: 0, tomato: 0, apple: 0 } },
+      { text: "예쁜 꽃이 피거나 감성적이고 아름다운 변화를 볼 때", scores: { apple: 4, cabbage: 1, potato: 0, cucumber: 0, tomato: 0 } }
     ]
   },
   {
-    title: "식물을 기르면서 어떤 즐거움을 가장 느껴보고 싶나요?",
+    title: "새로운 취미를 시작한다면 어떤 스타일이 좋은가요?",
     options: [
-      { text: "식물이 자라서 맛있는 열매를 맺거나 향을 맡으며 무언가 수확하는 기쁨이요!", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "매일 자라나는 예쁜 꽃과 푸르른 잎사귀들을 조용히 보면서 마음이 편안해지는 정서적 힐링이요!", scores: { cabbage: 5, potato: 3, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "에너지를 마음껏 발산하며 열정적으로 할 수 있는 취미", scores: { tomato: 4, cucumber: 0, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "꾸준한 인내심과 섬세함이 필요한 정밀한 작업이나 공부", scores: { cucumber: 4, apple: 2, potato: 0, tomato: 0, cabbage: 0 } },
+      { text: "복잡하지 않고 마음이 편안해지며 느긋하게 즐기는 취미", scores: { potato: 4, cabbage: 2, tomato: 0, cucumber: 0, apple: 0 } }
+    ]
+  },
+  {
+    title: "내 책상이나 방을 정리하는 습관은?",
+    options: [
+      { text: "물건들이 항상 있어야 할 자리에 딱 맞춰 정돈되어 있다", scores: { cucumber: 4, apple: 0, tomato: 0, potato: 0, cabbage: 0 } },
+      { text: "나만의 미적 감각으로 예쁜 소품이나 그림과 함께 장식한다", scores: { apple: 4, cabbage: 1, tomato: 0, potato: 0, cucumber: 0 } },
+      { text: "조금 어질러져 있어도 내가 물건을 찾을 수 있으면 괜찮다", scores: { potato: 4, tomato: 1, cabbage: 0, cucumber: 0, apple: 0 } }
+    ]
+  },
+  {
+    title: "가장 좋아하는 계절의 분위기는?",
+    options: [
+      { text: "뜨거운 태양 아래에서 신나고 열정적으로 놀 수 있는 여름", scores: { tomato: 4, cucumber: 1, potato: 0, cabbage: 0, apple: 0 } },
+      { text: "선선한 바람이 불고 마음이 차분해지며 여유로운 가을", scores: { cabbage: 4, apple: 2, potato: 0, tomato: 0, cucumber: 0 } },
+      { text: "따뜻한 이불 속에서 귤을 까먹는 포근하고 느긋한 겨울", scores: { potato: 4, cabbage: 1, tomato: 0, cucumber: 0, apple: 0 } }
     ]
   }
 ];
