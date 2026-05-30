@@ -121,127 +121,50 @@ const plantProfiles = {
   }
 };
 
-// Curriculum Quizzes — 3-Stage Quest System (6th Grade Practical Arts)
-const questStages = [
-  {
-    stageName: "씨앗 탐험가",
-    stageEmoji: "🌱",
-    stageDesc: "식물이 자라는 기본 조건을 배워보자!",
-    questions: [
-      {
-        question: "식물이 스스로 자라고 건강한 생명을 유지하는 데 꼭 필요한 '성장 4대 필수 요소'가 아닌 것은 무엇일까요?",
-        options: ["적당한 수분(물)", "따뜻한 햇빛", "공기 순환(바람과 환기)", "매일 주는 설탕물"],
-        answer: 3,
-        explanation: "식물에게는 적절한 수분, 햇빛, 환기(바람/이산화탄소 공급), 그리고 흙 속의 영양분이 필수적입니다. 설탕물을 많이 주면 오히려 삼투압 현상 때문에 뿌리가 상하고 썩을 수 있으니 삼가야 해요!"
-      },
-      {
-        question: "씨앗이 싹을 틔우기 위해 반드시 필요한 조건 세 가지를 모두 고른 것은 무엇일까요?",
-        options: ["물, 적절한 온도, 공기(산소)", "물, 비료, 햇빛", "햇빛, 바람, 설탕", "흙, 비료, 햇빛"],
-        answer: 0,
-        explanation: "씨앗이 발아(싹트기)하려면 물, 적절한 온도, 공기(산소)가 필요합니다. 햇빛은 싹이 튼 이후 자라는 데 필요하지만, 발아 자체에는 필수가 아닙니다. 씨앗을 흙에 묻으면 어두워도 싹이 트는 이유가 바로 이 때문이에요!"
-      },
-      {
-        question: "화분에 물을 주는 정원사의 가장 올바른 습관은 무엇일까요?",
-        options: [
-          "식물이 지루하지 않게 1시간마다 조금씩 물을 뿌려준다.",
-          "매일 아침 찰랑찰랑하게 화분을 물바다로 채워둔다.",
-          "손가락으로 겉흙을 한 마디 정도 만져보고 완전히 보슬하게 말랐을 때, 배수구로 물이 나올 때까지 듬뿍 준다.",
-          "시들기 전까지는 절대 물을 주지 않고 몇 달간 그대로 둔다."
-        ],
-        answer: 2,
-        explanation: "정답은 흙 상태를 손가락이나 이쑤시개 등으로 체크한 뒤, 물을 줄 때는 화분 받침대 밑으로 흘러나올 때까지 골고루 듬뿍 주는 것입니다. 잦은 찔끔 물주기는 뿌리를 숨 막히게 만듭니다."
-      },
-      {
-        question: "식물의 뿌리가 하는 아주 고마운 일 중 거리가 먼 것은 무엇일까요?",
-        options: [
-          "화분 속 흙을 움켜쥐어 식물이 쓰러지지 않게 고정해준다.",
-          "이산화탄소를 흡수하고 산소를 잎 밖으로 내뱉는 호흡 및 광합성을 총괄한다.",
-          "흙 속 물과 녹아있는 영양 성분을 빨아들여 온몸으로 전달한다.",
-          "남는 영양분을 뿌리 통통한 곳에 저장하여 보관하기도 한다."
-        ],
-        answer: 1,
-        explanation: "광합성과 기체 교환은 주로 식물의 '잎'에 있는 엽록체와 기공을 통해 이루어집니다. 뿌리는 흡수, 지탱, 저장의 역할을 훌륭히 수행한답니다!"
-      }
-    ]
-  },
-  {
-    stageName: "성장 수호자",
-    stageEmoji: "🌿",
-    stageDesc: "광합성과 식물이 자라는 비밀을 파헤쳐보자!",
-    questions: [
-      {
-        question: "식물의 초록색 잎 속 엽록체에서 햇빛, 이산화탄소, 물을 이용해 스스로 유기 양분을 만들어내는 놀라운 생명 현상을 무엇이라고 부를까요?",
-        options: ["광합성 작용", "증산 작용", "호흡 작용", "화분 작용"],
-        answer: 0,
-        explanation: "정답은 광합성 작용입니다! 식물은 동물처럼 먹이를 찾지 않는 대신 햇빛을 받아 녹말과 같은 양분을 직접 제조해요. 이때 산소도 함께 발생시켜 지구를 맑게 해준답니다."
-      },
-      {
-        question: "방울토마토나 허브 등을 키울 때, 잎 겨드랑이에서 삐져나오는 불필요한 어린 곁가지를 손으로 꺾어주어 원줄기가 튼튼하게 열매를 맺도록 돕는 작업을 무엇이라고 할까요?",
-        options: ["솎아내기", "곁순 따기", "꽃눈 자르기", "북주기"],
-        answer: 1,
-        explanation: "정답은 곁순 따기입니다! 곁순을 떼어내지 않으면 쓸데없는 줄기가 번성하여 영양분이 다 분산되므로, 열매나 본줄기가 작고 약하게 자라게 됩니다. 정리가 필수적이에요."
-      },
-      {
-        question: "식물의 잎이 초록색으로 보이는 이유는 무엇일까요?",
-        options: [
-          "잎 속에 물이 가득 차 있어서",
-          "잎 세포 안에 엽록소(클로로필)라는 초록 색소가 있어서",
-          "흙의 갈색이 반대 색인 초록으로 보여서",
-          "햇빛이 초록색 파장만 잎에 반사시켜서"
-        ],
-        answer: 1,
-        explanation: "잎이 초록색인 것은 세포 안 엽록체에 '엽록소(클로로필)'라는 초록 색소가 있기 때문입니다. 엽록소는 빨간색·파란색 빛은 흡수하고 초록색 빛은 반사하기 때문에 우리 눈에 초록으로 보인답니다!"
-      },
-      {
-        question: "식물이 뿌리로 흡수한 물을 잎의 기공을 통해 수증기로 내보내는 현상을 무엇이라고 하나요?",
-        options: ["광합성", "증산 작용", "삼투압 현상", "호흡 작용"],
-        answer: 1,
-        explanation: "증산 작용입니다! 식물은 증산을 통해 체온을 조절하고 뿌리에서 물을 위로 끌어올리는 힘을 만들어냅니다. 더운 여름날 숲이 시원한 이유 중 하나가 바로 나무들의 증산 작용 덕분이에요."
-      }
-    ]
-  },
-  {
-    stageName: "한살이 마스터",
-    stageEmoji: "🍎",
-    stageDesc: "씨앗에서 열매까지, 식물의 한살이를 완성하자!",
-    questions: [
-      {
-        question: "식물의 꽃이 열매로 변하기 위해 꼭 필요한 과정은 무엇일까요?",
-        options: [
-          "물을 많이 주면 꽃이 저절로 열매로 변한다.",
-          "꽃가루가 암술머리에 옮겨지는 수분(꽃가루받이)이 이루어져야 한다.",
-          "꽃잎이 모두 떨어져야만 열매가 생긴다.",
-          "비가 오면 꽃이 자동으로 열매가 된다."
-        ],
-        answer: 1,
-        explanation: "꽃이 열매가 되려면 꽃가루가 암술머리에 닿는 '수분(꽃가루받이)'이 이루어져야 합니다! 꿀벌이나 바람이 꽃가루를 옮겨주는 역할을 하지요. 수분 후 씨방이 자라 열매가 되고, 그 안에 씨앗이 생겨납니다."
-      },
-      {
-        question: "한 해 살이 식물(방울토마토 등)의 한살이 순서로 올바른 것은 무엇일까요?",
-        options: [
-          "씨앗 → 꽃 → 새싹 → 잎 → 열매",
-          "씨앗 → 새싹 → 잎과 줄기 → 꽃 → 열매 → 씨앗",
-          "씨앗 → 잎 → 열매 → 꽃 → 새싹",
-          "새싹 → 씨앗 → 꽃 → 잎 → 열매"
-        ],
-        answer: 1,
-        explanation: "씨앗 → 새싹(발아) → 잎과 줄기(성장) → 꽃(개화) → 열매(결실) → 씨앗(채종)으로 이어지는 것이 한 해 살이 식물의 한살이입니다. 우리가 기르는 반려 식물도 이 과정을 거친답니다!"
-      },
-      {
-        question: "방울토마토의 꽃은 어떤 색깔인가요?",
-        options: ["빨간색", "파란색", "노란색", "보라색"],
-        answer: 2,
-        explanation: "방울토마토의 꽃은 노란색입니다! 작은 별 모양의 노란 꽃이 피고 나면, 꽃가루받이를 거쳐 초록색 열매가 열립니다. 그 열매가 익으면서 빨갛게 변하는 거예요. 꽃과 열매의 색이 다르다는 게 신기하죠?"
-      },
-      {
-        question: "식물의 씨앗 속에 들어있는, 싹이 될 어린 식물체를 무엇이라고 하나요?",
-        options: ["배유(배젖)", "종피(씨껍질)", "배(배아)", "떡잎"],
-        answer: 2,
-        explanation: "씨앗 속의 어린 식물체를 '배(胚, 배아)'라고 합니다! 씨앗을 심으면 배아가 자라 새싹이 됩니다. 배유(배젖)는 배아에게 영양을 공급하는 저장 조직이고, 종피는 씨앗을 보호하는 껍질이에요."
-      }
-    ]
-  }
+// 식물 퀴즈 문제 풀 (초등학생 수준, 랜덤 출제)
+const quizPool = [
+  // 뿌리
+  { question: "뿌리가 하는 일이 아닌 것은 무엇일까요?", options: ["물을 흡수해요", "식물을 땅에 고정해요", "광합성을 해요", "영양분을 저장해요"], answer: 2, explanation: "광합성은 잎이 하는 일이에요! 뿌리는 물과 영양분을 흡수하고, 식물이 쓰러지지 않게 땅에 붙잡아 주는 역할을 해요." },
+  { question: "뿌리는 어디서 물을 흡수할까요?", options: ["하늘에서", "흙 속에서", "잎에서", "꽃에서"], answer: 1, explanation: "뿌리는 흙 속에 뻗어 있어서 흙에 있는 물과 영양분을 빨아들여요. 그래서 화분에 물을 주면 뿌리가 흡수하는 거예요!" },
+  { question: "감자의 먹는 부분은 식물의 어떤 기관일까요?", options: ["잎", "꽃", "뿌리(덩이줄기)", "씨앗"], answer: 2, explanation: "우리가 먹는 감자는 땅속에서 자라는 줄기(덩이줄기)예요. 영양분이 가득 저장된 덩어리랍니다!" },
+  // 줄기
+  { question: "줄기가 하는 일은 무엇일까요?", options: ["씨앗을 만들어요", "물과 영양분을 위아래로 옮겨줘요", "햇빛을 흡수해요", "뿌리에서 광합성을 해요"], answer: 1, explanation: "줄기는 물과 영양분이 다니는 길이에요! 뿌리에서 흡수한 물을 잎까지 올려 보내고, 잎에서 만든 양분을 뿌리까지 내려 보내는 통로 역할을 해요." },
+  { question: "오이는 줄기로 무엇을 하면서 높이 올라갈까요?", options: ["날아서", "덩굴손으로 감으면서", "뿌리로 붙어서", "꽃으로 잡아서"], answer: 1, explanation: "오이는 덩굴손이라는 가는 실 같은 기관으로 다른 것을 감으면서 위로 올라가요. 그래서 지지대를 세워주면 높이 잘 자란답니다!" },
+  { question: "식물의 줄기 색이 보통 초록색인 이유는 무엇일까요?", options: ["흙이 초록색이라서", "줄기에도 엽록소가 있어서", "물이 초록색이라서", "햇빛이 초록색이라서"], answer: 1, explanation: "줄기에도 엽록소가 들어있어서 초록색으로 보여요. 잎뿐 아니라 어린 줄기도 광합성을 조금씩 할 수 있답니다!" },
+  // 잎
+  { question: "잎이 하는 가장 중요한 일은 무엇일까요?", options: ["물을 저장해요", "햇빛을 받아 양분을 만들어요(광합성)", "씨앗을 보호해요", "뿌리를 감싸요"], answer: 1, explanation: "잎은 햇빛·물·이산화탄소를 이용해 식물의 먹이(양분)를 직접 만들어요. 이걸 '광합성'이라고 해요!" },
+  { question: "잎이 초록색인 이유는 무엇일까요?", options: ["물이 많아서", "엽록소라는 초록 색소가 있어서", "흙색이 비쳐서", "바람 때문에"], answer: 1, explanation: "잎 안에 엽록소라는 초록색 물질이 있어서 초록으로 보여요. 이 엽록소가 햇빛을 받아 광합성을 해요!" },
+  { question: "잎에는 아주 작은 구멍이 있어요. 이 구멍의 이름은 무엇일까요?", options: ["기공", "씨방", "수술", "화분"], answer: 0, explanation: "잎에는 기공이라는 아주 작은 구멍이 있어요. 이 구멍으로 이산화탄소가 들어오고, 산소와 수증기가 나가요!" },
+  // 꽃
+  { question: "꽃의 역할은 무엇일까요?", options: ["물을 저장해요", "씨앗을 만들기 위해 꽃가루받이를 해요", "광합성을 해요", "뿌리에서 물을 끌어올려요"], answer: 1, explanation: "꽃은 씨앗을 만들기 위한 기관이에요. 꽃가루가 암술에 닿으면(꽃가루받이) 씨앗이 만들어지고, 꽃은 열매가 된답니다!" },
+  { question: "꿀벌이 꽃에서 꿀을 먹을 때 식물에게 도움이 되는 이유는 무엇일까요?", options: ["꿀벌이 물을 줘서", "꿀벌이 꽃가루를 다른 꽃에 옮겨줘서", "꿀벌이 잎을 청소해줘서", "꿀벌이 뿌리를 돌봐줘서"], answer: 1, explanation: "꿀벌이 꽃에서 꽃으로 날아다니면서 몸에 묻은 꽃가루를 옮겨줘요. 이 덕분에 꽃가루받이가 이루어져 씨앗과 열매가 만들어진답니다!" },
+  { question: "방울토마토 꽃의 색깔은 무엇일까요?", options: ["빨간색", "파란색", "노란색", "보라색"], answer: 2, explanation: "방울토마토 꽃은 작고 귀여운 노란 별 모양이에요! 노란 꽃이 지고 나면 초록 열매가 열리고, 그게 빨갛게 익는 거예요." },
+  // 씨앗·한살이
+  { question: "씨앗이 싹을 틔우기 위해 꼭 필요한 것이 아닌 것은?", options: ["물", "따뜻한 온도", "공기", "비료"], answer: 3, explanation: "씨앗이 싹트려면 물, 온도, 공기(산소)가 필요해요. 비료는 싹이 튼 뒤에 도움이 되지만, 발아에는 꼭 필요하지 않아요!" },
+  { question: "식물의 한살이 순서를 바르게 나열한 것은?", options: ["꽃→씨앗→새싹→열매", "씨앗→새싹→꽃→열매→씨앗", "새싹→씨앗→열매→꽃", "열매→꽃→씨앗→새싹"], answer: 1, explanation: "씨앗이 땅에 떨어져 싹이 트고, 잎과 줄기가 자라고, 꽃이 피고, 열매가 맺히고, 그 안에 새 씨앗이 만들어져요. 이게 한살이예요!" },
+  { question: "열매 안에는 무엇이 들어있을까요?", options: ["뿌리", "씨앗", "꽃가루", "엽록소"], answer: 1, explanation: "열매 안에는 씨앗이 들어있어요! 우리가 먹는 토마토·오이·사과도 모두 열매이고, 안에 씨앗이 있답니다." },
+  // 물·햇빛·환기
+  { question: "식물에 물을 너무 많이 주면 어떻게 될까요?", options: ["더 빠르게 자라요", "뿌리가 썩을 수 있어요", "꽃이 더 많이 펴요", "잎이 더 초록해져요"], answer: 1, explanation: "물이 너무 많으면 흙 속에 공기가 없어져서 뿌리가 숨을 못 쉬고 썩어버려요. 흙이 보슬보슬 마를 때 물을 주는 게 좋아요!" },
+  { question: "식물에게 햇빛이 필요한 가장 큰 이유는 무엇일까요?", options: ["몸을 따뜻하게 하려고", "광합성으로 양분을 만들려고", "물을 흡수하려고", "씨앗을 퍼뜨리려고"], answer: 1, explanation: "식물은 햇빛이 있어야 잎에서 광합성을 할 수 있어요. 햇빛이 없으면 양분을 만들지 못해서 점점 시들어버린답니다!" },
+  { question: "식물을 키울 때 환기(바람)가 필요한 이유는 무엇일까요?", options: ["식물이 춥게 해주려고", "신선한 공기를 공급하고 병을 예방하려고", "흙을 말리려고", "꽃을 예쁘게 하려고"], answer: 1, explanation: "환기를 하면 신선한 공기(이산화탄소)가 공급되고, 습기가 줄어들어 곰팡이나 병이 생기는 걸 막아줘요. 바람이 살짝 불어야 줄기도 튼튼해진답니다!" },
+  { question: "식물을 가장 잘 자라게 하려면 어디에 두는 게 좋을까요?", options: ["어둡고 습한 창고", "햇빛이 잘 들고 바람이 통하는 곳", "에어컨 바람이 세게 나오는 곳", "물 속"], answer: 1, explanation: "식물은 햇빛·공기·적당한 온도가 필요해요. 햇빛이 잘 들고 환기가 잘 되는 창가나 베란다가 식물이 자라기 딱 좋은 환경이에요!" },
+  // 광합성
+  { question: "광합성을 할 때 식물이 내놓는 기체는 무엇일까요?", options: ["이산화탄소", "산소", "수소", "질소"], answer: 1, explanation: "식물은 광합성을 하면서 산소를 만들어 공기 중으로 내보내요. 우리가 숨 쉬는 산소의 많은 부분이 식물 덕분이에요!" },
+  { question: "광합성에 필요하지 않은 것은?", options: ["햇빛", "물", "이산화탄소", "비료"], answer: 3, explanation: "광합성은 햇빛 + 물 + 이산화탄소로 이루어져요. 비료는 식물의 영양 보충에 도움을 주지만, 광합성 자체에는 필요하지 않아요!" },
+  // 흙·비료
+  { question: "식물에게 비료를 주는 이유는 무엇일까요?", options: ["물 대신 주려고", "식물에게 필요한 영양분을 보충해주려고", "흙을 단단하게 만들려고", "해충을 쫓으려고"], answer: 1, explanation: "비료에는 식물이 잘 자라는 데 필요한 영양분(질소·인·칼륨 등)이 들어있어요. 흙 속 영양분이 부족해지면 비료를 주어 보충해야 해요!" },
+  { question: "좋은 흙의 조건이 아닌 것은?", options: ["물을 잘 담아둘 수 있어요", "공기가 통해요", "딱딱하고 돌덩어리만 있어요", "미생물이 살고 있어요"], answer: 2, explanation: "좋은 흙은 물을 적당히 머금고, 공기가 잘 통하고, 미생물이 살면서 영양분을 만들어줘요. 딱딱한 흙은 뿌리가 뻗기 어려워요!" },
+  // 식물 기관 종합
+  { question: "식물의 4가지 기관을 모두 고른 것은?", options: ["뿌리·줄기·잎·꽃(열매)", "뿌리·물·햇빛·흙", "씨앗·비료·물·공기", "잎·구름·바람·흙"], answer: 0, explanation: "식물은 뿌리·줄기·잎·꽃(열매)으로 이루어져 있어요. 각 기관이 서로 다른 중요한 역할을 해서 식물이 살아갈 수 있어요!" },
+  { question: "식물에서 양분을 만드는 기관은 어디일까요?", options: ["뿌리", "줄기", "잎", "씨앗"], answer: 2, explanation: "잎에 있는 엽록소가 햇빛을 받아 광합성으로 양분을 만들어요. 잎이 넓고 초록색인 이유도 햇빛을 많이 받기 위해서랍니다!" },
+  { question: "사과나무는 열매를 맺기까지 몇 년 이상 걸릴까요?", options: ["1주일", "1달", "3~5년", "10분"], answer: 2, explanation: "사과나무는 씨앗에서 열매를 맺기까지 보통 3~5년이 걸려요. 식물에 따라 자라는 속도가 모두 달라요!" },
+  { question: "배추를 맛있게 기르려면 어느 계절이 좋을까요?", options: ["한여름", "봄·가을 서늘한 때", "한겨울", "계절은 상관없어요"], answer: 1, explanation: "배추는 너무 덥거나 춥지 않은 봄이나 가을에 잘 자라요. 우리가 먹는 김장 배추도 주로 가을에 수확한답니다!" },
+  { question: "씨앗이 물을 만나면 어떻게 될까요?", options: ["녹아버려요", "씨앗이 불어나다가 싹을 틔워요", "딱딱하게 굳어요", "꽃이 바로 피어요"], answer: 1, explanation: "씨앗은 물을 흡수하면 내부가 활동을 시작해서 점점 부풀다가 싹을 틔워요. 이걸 '발아'라고 해요!" },
+  { question: "식물에 물이 부족하면 어떻게 될까요?", options: ["꽃이 더 예쁘게 피어요", "잎이 시들고 축 처져요", "뿌리가 더 길어져요", "씨앗이 더 많이 생겨요"], answer: 1, explanation: "물이 부족하면 세포가 탱탱함을 잃어서 잎이 축 처지고 시들어요. 빨리 물을 주면 다시 살아나지만, 너무 오래 방치하면 식물이 죽을 수도 있어요!" },
+  { question: "뿌리가 없어서 공중에 떠 있다면 식물이 살 수 있을까요?", options: ["네, 잘 살아요", "아니요, 물과 영양분을 흡수할 수 없어요", "네, 잎으로만 살 수 있어요", "아니요, 줄기가 없어서요"], answer: 1, explanation: "뿌리가 없으면 흙에서 물과 영양분을 흡수할 수 없고, 식물이 쓰러지기도 해요. 뿌리는 식물 생명의 기반이에요!" },
+  { question: "오이의 어떤 부분을 먹을까요?", options: ["뿌리", "씨앗만", "열매", "잎만"], answer: 2, explanation: "우리가 먹는 오이는 식물의 열매예요! 꽃이 지고 나서 만들어지는 열매 안에는 작은 씨앗들이 가득 들어있어요." },
 ];
+
 
 
 // Plant Part Educational Info (per species)
@@ -383,11 +306,10 @@ let appState = {
   isWindowOpen: false,
   diaryList: [],
   chatLog: [],
-  quizStageIndex: 0,
-  quizQIndexInStage: 0,
-  completedStages: [],
+  quizSeenIndices: [],
+  quizCurrentIdx: null,
+  quizCorrectCount: 0,
   badges: [],
-  stageCorrectCount: 0,
   isSimulating: false,
   simulationIntervalId: null,
   dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
@@ -1723,47 +1645,43 @@ function showBadgeNotification(badge) {
   }, 3500);
 }
 
-function checkStageCompletion(stageIdx) {
-  const stage = questStages[stageIdx];
-  if (appState.stageCorrectCount === stage.questions.length) {
-    awardBadge('perfect_gardener');
-  }
-  awardBadge(STAGE_BADGE_KEYS[stageIdx]);
-  appState.stageCorrectCount = 0;
-}
-
 function renderQuestProgress() {
   const bar = document.getElementById('quest-progress-bar');
   if (!bar) return;
-  bar.innerHTML = '';
-  questStages.forEach((stage, i) => {
-    const chip = document.createElement('div');
-    chip.className = 'quest-chip';
-    if (appState.completedStages.includes(i)) {
-      chip.classList.add('quest-chip-done');
-      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
-    } else if (i === appState.quizStageIndex) {
-      chip.classList.add('quest-chip-active');
-      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
-    } else {
-      chip.classList.add('quest-chip-locked');
-      chip.textContent = `🔒 ${stage.stageName}`;
-    }
-    bar.appendChild(chip);
-  });
+  const seen = appState.quizSeenIndices.length;
+  const total = quizPool.length;
+  const pct = Math.round((seen / total) * 100);
+  bar.innerHTML = `
+    <div class="quest-chip quest-chip-active">🌿 식물 퀴즈 — ${seen}/${total}문제 완료 (${pct}%)</div>
+  `;
 }
 
 function loadQuiz() {
+  // 모든 문제를 다 봤으면 초기화
+  if (appState.quizSeenIndices.length >= quizPool.length) {
+    appState.quizSeenIndices = [];
+    awardBadge('plant_doctor');
+  }
+
+  // 아직 안 나온 문제 중 랜덤 선택
+  const remaining = quizPool
+    .map((_, i) => i)
+    .filter(i => !appState.quizSeenIndices.includes(i));
+  const pick = remaining[Math.floor(Math.random() * remaining.length)];
+  appState.quizCurrentIdx = pick;
+  appState.quizSeenIndices.push(pick);
+
   renderQuestProgress();
 
-  const stage = questStages[appState.quizStageIndex];
-  const qData = stage.questions[appState.quizQIndexInStage];
+  const qData = quizPool[pick];
+  const seen = appState.quizSeenIndices.length;
+  const total = quizPool.length;
 
   const card = document.getElementById('quiz-card');
   card.innerHTML = `
     <div class="quiz-header-badge">
       <i data-lucide="graduation-cap" class="text-green"></i>
-      <span id="quiz-stage-label">${stage.stageEmoji} ${stage.stageName} — ${appState.quizQIndexInStage + 1}/${stage.questions.length}번</span>
+      <span id="quiz-stage-label">🌱 식물 퀴즈 ${seen}/${total}</span>
     </div>
     <h3 id="quiz-question"></h3>
     <div class="quiz-options-list" id="quiz-options-list"></div>
@@ -1797,8 +1715,7 @@ function loadQuiz() {
 }
 
 function handleQuizAnswer(chosenIndex, btnElement) {
-  const stage = questStages[appState.quizStageIndex];
-  const qData = stage.questions[appState.quizQIndexInStage];
+  const qData = quizPool[appState.quizCurrentIdx];
   const optionsWrapper = document.getElementById('quiz-options-list');
 
   optionsWrapper.style.pointerEvents = 'none';
@@ -1809,13 +1726,10 @@ function handleQuizAnswer(chosenIndex, btnElement) {
   const fbIconContainer = document.getElementById('quiz-feedback-icon-container');
   const nextBtn = document.getElementById('btn-next-quiz');
 
-  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
-  const isLastStage = (appState.quizStageIndex === questStages.length - 1);
-
   if (chosenIndex === qData.answer) {
     btnElement.classList.add('correct');
     appState.fertilizerCount++;
-    appState.stageCorrectCount++;
+    appState.quizCorrectCount++;
     document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
     fbTitle.textContent = "정답입니다! 🌟";
     fbTitle.className = "text-green";
@@ -1823,6 +1737,9 @@ function handleQuizAnswer(chosenIndex, btnElement) {
     fbIconContainer.className = "feedback-icon-circle";
     fbIconContainer.innerHTML = '<i data-lucide="check" class="text-green"></i>';
     document.querySelector('.reward-indicator').classList.remove('hidden');
+    if (appState.quizCorrectCount === 5) awardBadge('seed_explorer');
+    if (appState.quizCorrectCount === 10) awardBadge('growth_guardian');
+    if (appState.quizCorrectCount === 20) awardBadge('perfect_gardener');
   } else {
     btnElement.classList.add('wrong');
     const correctBtn = optionsWrapper.children[qData.answer];
@@ -1835,89 +1752,15 @@ function handleQuizAnswer(chosenIndex, btnElement) {
     document.querySelector('.reward-indicator').classList.add('hidden');
   }
 
-  if (isLastQInStage && isLastStage) {
-    nextBtn.textContent = "🎉 모든 퀘스트 완료!";
-  } else if (isLastQInStage) {
-    nextBtn.textContent = "🏆 다음 단계로 이동 →";
-  } else {
-    nextBtn.textContent = "다음 문제 도전하기 →";
-  }
+  const allDone = appState.quizSeenIndices.length >= quizPool.length;
+  nextBtn.textContent = allDone ? "🎉 전체 완료! 다시 도전 →" : "다음 문제 도전하기 →";
 
   feedbackBox.classList.remove('hidden');
   lucide.createIcons();
 }
 
 function nextQuiz() {
-  const stage = questStages[appState.quizStageIndex];
-  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
-
-  if (isLastQInStage) {
-    appState.completedStages.push(appState.quizStageIndex);
-    if (appState.quizStageIndex === questStages.length - 1) {
-      showAllQuestsComplete();
-    } else {
-      showStageComplete();
-    }
-  } else {
-    appState.quizQIndexInStage++;
-    loadQuiz();
-  }
-}
-
-function showStageComplete() {
-  const completedStageIdx = appState.quizStageIndex;
-  const completedStage = questStages[completedStageIdx];
-  checkStageCompletion(completedStageIdx);
-
-  appState.quizStageIndex++;
-  appState.quizQIndexInStage = 0;
-
-  appState.fertilizerCount += 2;
-  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
-
-  const nextStage = questStages[appState.quizStageIndex];
-  renderQuestProgress();
-
-  const card = document.getElementById('quiz-card');
-  card.innerHTML = `
-    <div style="text-align:center; padding: 20px 10px;">
-      <div style="font-size: 3em; margin-bottom: 10px;">${completedStage.stageEmoji}</div>
-      <h3 style="color: var(--primary-green); margin-bottom: 8px;">${completedStage.stageName} 완료!</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 16px;">정말 잘했어요! 비료 2개를 추가로 획득했어요 🌿</p>
-      <div style="background: #E8F5E9; border-radius: 12px; padding: 14px; margin-bottom: 20px;">
-        <div style="font-size: 1.6em;">${nextStage.stageEmoji}</div>
-        <div style="font-weight: 700; color: #2E7D32; margin: 4px 0;">${nextStage.stageName}</div>
-        <div style="font-size: 12px; color: #555;">${nextStage.stageDesc}</div>
-      </div>
-      <button id="btn-stage-next" class="btn-primary btn-full">다음 단계 시작하기 →</button>
-    </div>
-  `;
-  document.getElementById('btn-stage-next').addEventListener('click', loadQuiz);
-}
-
-function showAllQuestsComplete() {
-  checkStageCompletion(appState.quizStageIndex);
-  awardBadge('plant_doctor');
-
-  appState.fertilizerCount += 3;
-  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
-
-  appState.quizStageIndex = 0;
-  appState.quizQIndexInStage = 0;
-  appState.completedStages = [];
-  renderQuestProgress();
-
-  const card = document.getElementById('quiz-card');
-  card.innerHTML = `
-    <div style="text-align:center; padding: 20px 10px;">
-      <div style="font-size: 3.5em; margin-bottom: 10px;">🏆</div>
-      <h3 style="color: var(--primary-green); margin-bottom: 8px;">식물 한살이 마스터!</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 12px;">모든 퀘스트를 완료했어요! 비료 3개를 추가로 획득했어요 🌟</p>
-      <p style="font-size: 12px; color: #888; margin-bottom: 20px;">처음부터 다시 도전해서 실력을 확인해 보세요!</p>
-      <button id="btn-quest-replay" class="btn-primary btn-full">🌱 다시 도전하기</button>
-    </div>
-  `;
-  document.getElementById('btn-quest-replay').addEventListener('click', loadQuiz);
+  loadQuiz();
 }
 
 
@@ -2570,11 +2413,10 @@ document.addEventListener("DOMContentLoaded", () => {
         isWindowOpen: false,
         diaryList: [],
         chatLog: [],
-        quizStageIndex: 0,
-        quizQIndexInStage: 0,
-        completedStages: [],
+        quizSeenIndices: [],
+        quizCurrentIdx: null,
+        quizCorrectCount: 0,
         badges: [],
-        stageCorrectCount: 0,
         isSimulating: false,
         simulationIntervalId: null,
         dailyGrowth: {},
