@@ -1338,14 +1338,24 @@ function updateDashboardUI() {
   // Stat mini card (water & sun only)
   const waterVal = Math.round(appState.stats.water);
   const sunVal   = Math.round(appState.stats.sun);
+  const windVal  = Math.round(appState.stats.wind);
+  const soilVal  = Math.round(appState.stats.soil);
   const waterFill = document.getElementById('stat-fill-water');
   const sunFill   = document.getElementById('stat-fill-sun');
+  const windFill  = document.getElementById('stat-fill-wind');
+  const soilFill  = document.getElementById('stat-fill-soil');
   const waterPct  = document.getElementById('stat-pct-water');
   const sunPct    = document.getElementById('stat-pct-sun');
+  const windPct   = document.getElementById('stat-pct-wind');
+  const soilPct   = document.getElementById('stat-pct-soil');
   if (waterFill) waterFill.style.width = `${waterVal}%`;
   if (sunFill)   sunFill.style.width   = `${sunVal}%`;
+  if (windFill)  windFill.style.width  = `${windVal}%`;
+  if (soilFill)  soilFill.style.width  = `${soilVal}%`;
   if (waterPct)  waterPct.textContent  = `${waterVal}%`;
   if (sunPct)    sunPct.textContent    = `${sunVal}%`;
+  if (windPct)   windPct.textContent   = `${windVal}%`;
+  if (soilPct)   soilPct.textContent   = `${soilVal}%`;
 
   // Health warnings box
   const alertBox = document.getElementById('health-alert');

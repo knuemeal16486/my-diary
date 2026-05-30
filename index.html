@@ -326,6 +326,22 @@
                 </div>
                 <span id="stat-pct-sun" class="plant-stat-pct">--%</span>
               </div>
+              <div class="plant-stat-row">
+                <span class="plant-stat-icon">🌬️</span>
+                <span class="plant-stat-name">환기</span>
+                <div class="plant-stat-track">
+                  <div id="stat-fill-wind" class="plant-stat-fill wind-fill" style="width:0%"></div>
+                </div>
+                <span id="stat-pct-wind" class="plant-stat-pct">--%</span>
+              </div>
+              <div class="plant-stat-row">
+                <span class="plant-stat-icon">🌿</span>
+                <span class="plant-stat-name">영양</span>
+                <div class="plant-stat-track">
+                  <div id="stat-fill-soil" class="plant-stat-fill soil-fill" style="width:0%"></div>
+                </div>
+                <span id="stat-pct-soil" class="plant-stat-pct">--%</span>
+              </div>
             </div>
 
           </div>
@@ -361,9 +377,6 @@
 
               <!-- Tab 1: AI CHAT & CARE -->
               <div class="tab-pane active" id="pane-chat">
-                <div class="pane-header" style="margin-bottom: 10px;">
-                  <h3>💬 아래 버튼으로 돌봐주거나, 식물에게 직접 말을 걸어보세요!</h3>
-                </div>
 
 
 
@@ -372,20 +385,20 @@
                   <span id="health-alert-text">환경이 맞지 않아 식물이 스트레스를 받고 있습니다!</span>
                 </div>
 
-                <!-- Recommended Prompt Chips (Care Options) -->
-                <div class="prompt-chips" id="chat-prompt-chips">
-                  <button class="chip-btn" id="chip-water" data-action="물 주기"><i data-lucide="droplet"></i> 물 주기</button>
-                  <button class="chip-btn" id="chip-sun" data-action="햇빛 쬐기"><i data-lucide="sun"></i> 햇빛 쬐기</button>
-                  <button class="chip-btn" id="chip-wind" data-action="환기 하기"><i data-lucide="wind"></i> 환기 하기</button>
-                  <button class="chip-btn" id="chip-soil" data-action="비료 주기"><i data-lucide="sparkles"></i> 비료 주기</button>
-                </div>
-
                 <div class="chat-wrapper">
                   <div class="chat-messages" id="chat-messages-container">
                     <div class="chat-bubble bot">
-                      <p>안녕! 나를 심어줘서 고마워. 앞으로 너와 함께 자랄 생각을 하니 기뻐! 내 목소리가 들리면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해줘!</p>
+                      <p>안녕! 나를 심어줘서 고마워. 앞으로 너와 함께 자랄 생각을 하니 기뻐! 아래 버튼으로 돌봐주거나 하고 싶은 말을 입력해줘!</p>
                       <span class="time">방금 전</span>
                     </div>
+                  </div>
+
+                  <!-- Recommended Prompt Chips (Care Options) -->
+                  <div class="prompt-chips" id="chat-prompt-chips">
+                    <button class="chip-btn" id="chip-water" data-action="물 주기"><i data-lucide="droplet"></i> 물 주기</button>
+                    <button class="chip-btn" id="chip-sun" data-action="햇빛 쬐기"><i data-lucide="sun"></i> 햇빛 쬐기</button>
+                    <button class="chip-btn" id="chip-wind" data-action="환기 하기"><i data-lucide="wind"></i> 환기 하기</button>
+                    <button class="chip-btn" id="chip-soil" data-action="비료 주기"><i data-lucide="sparkles"></i> 비료 주기</button>
                   </div>
 
                   <!-- Message Input -->

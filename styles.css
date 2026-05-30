@@ -976,6 +976,8 @@ body {
 
 .water-fill { background: linear-gradient(90deg, #64B5F6, #1976D2); }
 .sun-fill   { background: linear-gradient(90deg, #FFD54F, #F57C00); }
+.wind-fill  { background: linear-gradient(90deg, #80DEEA, #00838F); }
+.soil-fill  { background: linear-gradient(90deg, #A5D6A7, #2E7D32); }
 
 .plant-stat-pct {
   font-size: 12px;
@@ -1336,7 +1338,8 @@ body {
   overflow-x: auto;
   padding: 6px 0;
   white-space: nowrap;
-  margin-bottom: 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   -webkit-overflow-scrolling: touch;
 }
 
