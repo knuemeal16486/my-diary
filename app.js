@@ -1178,9 +1178,10 @@ const MAX_CHAT_BUBBLES = 40;
 function trimChatHistory(container) {
   const bubbles = container.querySelectorAll('.chat-bubble');
   if (bubbles.length > MAX_CHAT_BUBBLES) {
-    bubbles[1].remove(); // 첫 인사 메시지는 유지하고 두 번째부터 제거
+    bubbles[1].remove();
   }
 }
+
 
 function addBotMessage(text) {
   const container = document.getElementById('chat-messages-container');
