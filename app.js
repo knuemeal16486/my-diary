@@ -57,7 +57,7 @@ const plantProfiles = {
   tomato: {
     name: "방울토마토",
     slogan: "열정 가득! 쑥쑥 자라나 빨간 결실을 맺는 활력 메이트",
-    desc: "방울토마토는 밝은 햇빛을 아주 좋아하고 곁가지도 많아 매일 돌봐주는 보람을 크게 느끼게 하는 대표적인 실과 식물입니다. 에너지가 넘치고 목표를 향해 활기차게 노력하는 정원사님에게 빨간 열매의 커다란 수확의 기쁨을 선물해줄 찰떡궁합 식물입니다!",
+    desc: "방울토마토는 햇빛을 좋아하고 쑥쑥 자라서 매일 돌보는 즐거움이 큰 식물이에요. 힘이 넘치고 무엇이든 열심히 하는 정원사님과 잘 어울려요. 빨간 열매가 열리면 정말 뿌듯할 거예요!",
     personality: "활발하고 호기심 많은 성격. 문장의 끝에 항상 느낌표(!)를 자주 쓰며 성장을 기대함.",
     themeColor: "#E53935",
     careInfo: {
@@ -70,12 +70,11 @@ const plantProfiles = {
   potato: {
     name: "감자",
     slogan: "땅속 깊이 든든하게 영양을 채우는 튼튼 식량 메이트",
-    desc: "감자는 보이지 않는 흙 속에서 덩이줄기를 조용히 뚱뚱하게 키우는 강인하고 실용적인 식량 작물입니다. 겉으로 드러나지 않아도 묵묵히 제 몫을 다하고 차분한 매력을 지닌 정원사님과 닮았습니다. 과습에 약하므로 물을 너무 자주 주지 않아도 잘 견디는 초보 맞춤형 반려 작물입니다.",
-    personality: "친근하고 듬직하며 구수한 성격. 차분하고 안정된 다정한 어투로 이야기함.",
+    desc: "감자는 흙 속에서 조용히 영양을 모으며 자라는 든든한 식물이에요. 겉으로 드러내지 않아도 자기 할 일을 차분히 해내는 정원사님과 닮았어요. 물을 자주 주지 않아도 잘 자라서 처음 키우기에 딱 좋아요!",
     themeColor: "#8D6E63",
     careInfo: {
       water: { min: 30, max: 60, desc: "물이 너무 많으면 감자가 썩어요" },
-      sun: { min: 45, max: 75, desc: "부드러본 간접 햇빛이 좋아요" },
+      sun: { min: 45, max: 75, desc: "부드러운 간접 햇빛이 좋아요" },
       wind: { min: 35, max: 70, desc: "답답하지 않은 환기가 필요해요" },
       soil: { min: 35, max: 75, desc: "보슬보슬한 가벼운 흙을 좋아해요" }
     }
@@ -83,7 +82,7 @@ const plantProfiles = {
   cabbage: {
     name: "배추",
     slogan: "풍성한 잎사귀로 포근하게 감싸 안아주는 김장 대장 메이트",
-    desc: "배추는 시원한 가을바람 속에서 속이 꽉 찬 잎들을 둥글게 모아 풍성하게 자라나는 우리 전통 채소입니다. 차분하고 사려 깊으며 주변 사람들을 포근하게 챙겨주길 좋아하는 정원사님처럼, 넓고 튼튼한 초록 잎사귀를 펼쳐 평화로운 마음을 느끼게 해 줄 든든한 힐링 친구입니다.",
+    desc: "배추는 시원한 바람 속에서 넓은 잎을 동그랗게 모으며 자라는 채소예요. 친구들을 따뜻하게 챙겨 주는 마음 넓은 정원사님과 닮았어요. 푸른 잎이 자라는 모습을 보면 마음이 편안해질 거예요!",
     personality: "온화하고 사려 깊은 성격. 늘 정원사님을 포근하게 토닥여 주는 다정함을 보임.",
     themeColor: "#4CAF50",
     careInfo: {
@@ -96,7 +95,7 @@ const plantProfiles = {
   cucumber: {
     name: "오이",
     slogan: "넝쿨을 따라 하늘 높이 뻗어 나가는 아삭아삭 성장 메이트",
-    desc: "오이는 지지대를 감고 쑥쑥 자라나 시원하고 아삭한 열매를 맺는 넝쿨 채소입니다. 물을 무척 좋아하고 매일 눈에 띄게 줄기가 길어지는 활동적인 성질을 가져서, 매일 꾸준한 관심과 규칙적인 돌봄을 제공할 줄 아는 성실하고 적극적인 정원사님과 환상의 케미를 뽐냅니다.",
+    desc: "오이는 줄기를 위로 쭉쭉 뻗으며 빠르게 자라고 아삭한 열매를 맺는 채소예요. 물을 아주 좋아해서, 날마다 꾸준히 돌봐 주는 성실한 정원사님과 잘 맞아요. 매일 자라는 모습을 보는 재미가 쏠쏠해요!",
     personality: "명랑하고 장난기 가득한 성격. 물과 햇빛을 만날 때 아삭하고 톡 쏘는 기쁨을 표현함.",
     themeColor: "#2E7D32",
     careInfo: {
@@ -109,7 +108,7 @@ const plantProfiles = {
   apple: {
     name: "사과",
     slogan: "새콤달콤 빨간 사과나무와 함께 떠나는 설레는 시간 여행",
-    desc: "사과나무는 아름다운 꽃을 피우고 오랜 시간 정성을 들여 새콤달콤한 붉은 과일을 익히는 과수 작물입니다. 한 번 심으면 오랫동안 마주하며 감정을 나누는 깊은 유대감을 선호하는 정원사님에게 최고의 반려 식물입니다. 느리지만 확실한 자연의 변화를 보여주며 힐링과 따스함을 선물합니다.",
+    desc: "사과나무는 예쁜 꽃을 피우고, 오랜 시간 정성을 들여야 달콤한 사과가 열리는 나무예요. 천천히 기다리며 정을 쌓는 걸 좋아하는 정원사님과 닮았어요. 느리지만 멋진 변화를 보여 줄 거예요!",
     personality: "인내심 있고 지혜로운 어조. 시적이고 여유 있는 말솜씨로 정원사님을 이끌어 줌.",
     themeColor: "#D32F2F",
     careInfo: {
@@ -121,129 +120,50 @@ const plantProfiles = {
   }
 };
 
-// Curriculum Quizzes — 3-Stage Quest System (6th Grade Practical Arts)
-const questStages = [
-  {
-    stageName: "씨앗 탐험가",
-    stageEmoji: "🌱",
-    stageDesc: "식물이 자라는 기본 조건을 배워보아요!",
-    questions: [
-      {
-        question: "식물이 스스로 자라고 건강한 생명을 유지하는 데 꼭 필요한 '성장 4대 필수 요소'가 아닌 것은 무엇일까요?",
-        options: ["적당한 수분(물)", "따뜻한 햇빛", "공기 순환(바람과 환기)", "매일 주는 설탕물"],
-        answer: 3,
-        explanation: "식물에게는 적절한 수분, 햇빛, 환기(바람/이산화탄소 공급), 그리고 흙 속의 영양분이 필수적입니다. 설탕물을 많이 주면 오히려 삼투압 현상 때문에 뿌리가 상하고 썩을 수 있으니 삼가야 해요!"
-      },
-      {
-        question: "씨앗이 싹을 틔우기 위해 반드시 필요한 조건 세 가지를 모두 고른 것은 무엇일까요?",
-        options: ["물, 적절한 온도, 공기(산소)", "물, 비료, 햇빛", "햇빛, 바람, 설탕", "흙, 비료, 햇빛"],
-        answer: 0,
-        explanation: "씨앗이 발아(싹트기)하려면 물, 적절한 온도, 공기(산소)가 필요합니다. 햇빛은 싹이 튼 이후 자라는 데 필요하지만, 발아 자체에는 필수가 아닙니다. 씨앗을 흙에 묻으면 어두워도 싹이 트는 이유가 바로 이 때문이에요!"
-      },
-      {
-        question: "화분에 물을 주는 정원사의 가장 올바른 습관은 무엇일까요?",
-        options: [
-          "식물이 지루하지 않게 1시간마다 조금씩 물을 뿌려준다.",
-          "매일 아침 찰랑찰랑하게 화분을 물바다로 채워둔다.",
-          "손가락으로 겉흙을 한 마디 정도 만져보고 완전히 보슬하게 말랐을 때, 배수구로 물이 나올 때까지 듬뿍 준다.",
-          "시들기 전까지는 절대 물을 주지 않고 몇 달간 그대로 둔다."
-        ],
-        answer: 2,
-        explanation: "정답은 흙 상태를 손가락이나 이쑤시개 등으로 체크한 뒤, 물을 줄 때는 화분 받침대 밑으로 흘러나올 때까지 골고루 듬뿍 주는 것입니다. 잦은 찔끔 물주기는 뿌리를 숨 막히게 만듭니다."
-      },
-      {
-        question: "식물의 뿌리가 하는 아주 고마운 일 중 거리가 먼 것은 무엇일까요?",
-        options: [
-          "화분 속 흙을 움켜쥐어 식물이 쓰러지지 않게 고정해준다.",
-          "이산화탄소를 흡수하고 산소를 잎 밖으로 내뱉는 호흡 및 광합성을 총괄한다.",
-          "흙 속 물과 녹아있는 영양 성분을 빨아들여 온몸으로 전달한다.",
-          "남는 영양분을 뿌리 통통한 곳에 저장하여 보관하기도 한다."
-        ],
-        answer: 1,
-        explanation: "광합성과 기체 교환은 주로 식물의 '잎'에 있는 엽록체와 기공을 통해 이루어집니다. 뿌리는 흡수, 지탱, 저장의 역할을 훌륭히 수행한답니다!"
-      }
-    ]
-  },
-  {
-    stageName: "성장 수호자",
-    stageEmoji: "🌿",
-    stageDesc: "광합성과 식물이 자라는 비밀을 파헤쳐보아요!",
-    questions: [
-      {
-        question: "식물의 초록색 잎 속 엽록체에서 햇빛, 이산화탄소, 물을 이용해 스스로 유기 양분을 만들어내는 놀라운 생명 현상을 무엇이라고 부를까요?",
-        options: ["광합성 작용", "증산 작용", "호흡 작용", "화분 작용"],
-        answer: 0,
-        explanation: "정답은 광합성 작용입니다! 식물은 동물처럼 먹이를 찾지 않는 대신 햇빛을 받아 녹말과 같은 양분을 직접 제조해요. 이때 산소도 함께 발생시켜 지구를 맑게 해준답니다."
-      },
-      {
-        question: "방울토마토나 허브 등을 키울 때, 잎 겨드랑이에서 삐져나오는 불필요한 어린 곁가지를 손으로 꺾어주어 원줄기가 튼튼하게 열매를 맺도록 돕는 작업을 무엇이라고 할까요?",
-        options: ["솎아내기", "곁순 따기", "꽃눈 자르기", "북주기"],
-        answer: 1,
-        explanation: "정답은 곁순 따기입니다! 곁순을 떼어내지 않으면 쓸데없는 줄기가 번성하여 영양분이 다 분산되므로, 열매나 본줄기가 작고 약하게 자라게 됩니다. 정리가 필수적이에요."
-      },
-      {
-        question: "식물의 잎이 초록색으로 보이는 이유는 무엇일까요?",
-        options: [
-          "잎 속에 물이 가득 차 있어서",
-          "잎 세포 안에 엽록소(클로로필)라는 초록 색소가 있어서",
-          "흙의 갈색이 반대 색인 초록으로 보여서",
-          "햇빛이 초록색 파장만 잎에 반사시켜서"
-        ],
-        answer: 1,
-        explanation: "잎이 초록색인 것은 세포 안 엽록체에 '엽록소(클로로필)'라는 초록 색소가 있기 때문입니다. 엽록소는 빨간색·파란색 빛은 흡수하고 초록색 빛은 반사하기 때문에 우리 눈에 초록으로 보인답니다!"
-      },
-      {
-        question: "식물이 뿌리로 흡수한 물을 잎의 기공을 통해 수증기로 내보내는 현상을 무엇이라고 하나요?",
-        options: ["광합성", "증산 작용", "삼투압 현상", "호흡 작용"],
-        answer: 1,
-        explanation: "증산 작용입니다! 식물은 증산을 통해 체온을 조절하고 뿌리에서 물을 위로 끌어올리는 힘을 만들어냅니다. 더운 여름날 숲이 시원한 이유 중 하나가 바로 나무들의 증산 작용 덕분이에요."
-      }
-    ]
-  },
-  {
-    stageName: "한살이 마스터",
-    stageEmoji: "🍎",
-    stageDesc: "씨앗에서 열매까지, 식물의 한살이를 완성해 보아요!",
-    questions: [
-      {
-        question: "식물의 꽃이 열매로 변하기 위해 꼭 필요한 과정은 무엇일까요?",
-        options: [
-          "물을 많이 주면 꽃이 저절로 열매로 변한다.",
-          "꽃가루가 암술머리에 옮겨지는 수분(꽃가루받이)이 이루어져야 한다.",
-          "꽃잎이 모두 떨어져야만 열매가 생긴다.",
-          "비가 오면 꽃이 자동으로 열매가 된다."
-        ],
-        answer: 1,
-        explanation: "꽃이 열매가 되려면 꽃가루가 암술머리에 닿는 '수분(꽃가루받이)'이 이루어져야 합니다! 꿀벌이나 바람이 꽃가루를 옮겨주는 역할을 하지요. 수분 후 씨방이 자라 열매가 되고, 그 안에 씨앗이 생겨납니다."
-      },
-      {
-        question: "한 해 살이 식물(방울토마토 등)의 한살이 순서로 올바른 것은 무엇일까요?",
-        options: [
-          "씨앗 → 꽃 → 새싹 → 잎 → 열매",
-          "씨앗 → 새싹 → 잎과 줄기 → 꽃 → 열매 → 씨앗",
-          "씨앗 → 잎 → 열매 → 꽃 → 새싹",
-          "새싹 → 씨앗 → 꽃 → 잎 → 열매"
-        ],
-        answer: 1,
-        explanation: "씨앗 → 새싹(발아) → 잎과 줄기(성장) → 꽃(개화) → 열매(결실) → 씨앗(채종)으로 이어지는 것이 한 해 살이 식물의 한살이입니다. 우리가 기르는 반려 식물도 이 과정을 거친답니다!"
-      },
-      {
-        question: "방울토마토의 꽃은 어떤 색깔인가요?",
-        options: ["빨간색", "파란색", "노란색", "보라색"],
-        answer: 2,
-        explanation: "방울토마토의 꽃은 노란색입니다! 작은 별 모양의 노란 꽃이 피고 나면, 꽃가루받이를 거쳐 초록색 열매가 열립니다. 그 열매가 익으면서 빨갛게 변하는 거예요. 꽃과 열매의 색이 다르다는 게 신기하죠?"
-      },
-      {
-        question: "식물의 씨앗 속에 들어있는, 싹이 될 어린 식물체를 무엇이라고 하나요?",
-        options: ["배유(배젖)", "종피(씨껍질)", "배(배아)", "떡잎"],
-        answer: 2,
-        explanation: "씨앗 속의 어린 식물체를 '배(胚, 배아)'라고 합니다! 씨앗을 심으면 배아가 자라 새싹이 됩니다. 배유(배젖)는 배아에게 영양을 공급하는 저장 조직이고, 종피는 씨앗을 보호하는 껍질이에요."
-      }
-    ]
-  }
+
+// 식물 퀴즈 문제 풀 (초등학생 수준, 랜덤 출제)
+const quizPool = [
+  // 뿌리
+  { question: "뿌리가 하는 일이 아닌 것은 무엇일까요?", options: ["물을 흡수해요", "식물을 땅에 고정해요", "광합성을 해요", "영양분을 저장해요"], answer: 2, explanation: "광합성은 잎이 하는 일이에요! 뿌리는 물과 영양분을 흡수하고, 식물이 쓰러지지 않게 땅에 붙잡아 주는 역할을 해요." },
+  { question: "뿌리는 어디서 물을 흡수할까요?", options: ["하늘에서", "흙 속에서", "잎에서", "꽃에서"], answer: 1, explanation: "뿌리는 흙 속에 뻗어 있어서 흙에 있는 물과 영양분을 빨아들여요. 그래서 화분에 물을 주면 뿌리가 흡수하는 거예요!" },
+  { question: "감자의 먹는 부분은 식물의 어떤 기관일까요?", options: ["잎", "꽃", "뿌리(덩이줄기)", "씨앗"], answer: 2, explanation: "우리가 먹는 감자는 땅속에서 자라는 줄기(덩이줄기)예요. 영양분이 가득 저장된 덩어리랍니다!" },
+  // 줄기
+  { question: "줄기가 하는 일은 무엇일까요?", options: ["씨앗을 만들어요", "물과 영양분을 위아래로 옮겨줘요", "햇빛을 흡수해요", "뿌리에서 광합성을 해요"], answer: 1, explanation: "줄기는 물과 영양분이 다니는 길이에요! 뿌리에서 흡수한 물을 잎까지 올려 보내고, 잎에서 만든 양분을 뿌리까지 내려 보내는 통로 역할을 해요." },
+  { question: "오이는 줄기로 무엇을 하면서 높이 올라갈까요?", options: ["날아서", "덩굴손으로 감으면서", "뿌리로 붙어서", "꽃으로 잡아서"], answer: 1, explanation: "오이는 덩굴손이라는 가는 실 같은 기관으로 다른 것을 감으면서 위로 올라가요. 그래서 지지대를 세워주면 높이 잘 자란답니다!" },
+  { question: "식물의 줄기 색이 보통 초록색인 이유는 무엇일까요?", options: ["흙이 초록색이라서", "줄기에도 엽록소가 있어서", "물이 초록색이라서", "햇빛이 초록색이라서"], answer: 1, explanation: "줄기에도 엽록소가 들어있어서 초록색으로 보여요. 잎뿐 아니라 어린 줄기도 광합성을 조금씩 할 수 있답니다!" },
+  // 잎
+  { question: "잎이 하는 가장 중요한 일은 무엇일까요?", options: ["물을 저장해요", "햇빛을 받아 양분을 만들어요(광합성)", "씨앗을 보호해요", "뿌리를 감싸요"], answer: 1, explanation: "잎은 햇빛·물·이산화탄소를 이용해 식물의 먹이(양분)를 직접 만들어요. 이걸 '광합성'이라고 해요!" },
+  { question: "잎이 초록색인 이유는 무엇일까요?", options: ["물이 많아서", "엽록소라는 초록 색소가 있어서", "흙색이 비쳐서", "바람 때문에"], answer: 1, explanation: "잎 안에 엽록소라는 초록색 물질이 있어서 초록으로 보여요. 이 엽록소가 햇빛을 받아 광합성을 해요!" },
+  { question: "잎에는 아주 작은 구멍이 있어요. 이 구멍의 이름은 무엇일까요?", options: ["기공", "씨방", "수술", "화분"], answer: 0, explanation: "잎에는 기공이라는 아주 작은 구멍이 있어요. 이 구멍으로 이산화탄소가 들어오고, 산소와 수증기가 나가요!" },
+  // 꽃
+  { question: "꽃의 역할은 무엇일까요?", options: ["물을 저장해요", "씨앗을 만들기 위해 꽃가루받이를 해요", "광합성을 해요", "뿌리에서 물을 끌어올려요"], answer: 1, explanation: "꽃은 씨앗을 만들기 위한 기관이에요. 꽃가루가 암술에 닿으면(꽃가루받이) 씨앗이 만들어지고, 꽃은 열매가 된답니다!" },
+  { question: "꿀벌이 꽃에서 꿀을 먹을 때 식물에게 도움이 되는 이유는 무엇일까요?", options: ["꿀벌이 물을 줘서", "꿀벌이 꽃가루를 다른 꽃에 옮겨줘서", "꿀벌이 잎을 청소해줘서", "꿀벌이 뿌리를 돌봐줘서"], answer: 1, explanation: "꿀벌이 꽃에서 꽃으로 날아다니면서 몸에 묻은 꽃가루를 옮겨줘요. 이 덕분에 꽃가루받이가 이루어져 씨앗과 열매가 만들어진답니다!" },
+  { question: "방울토마토 꽃의 색깔은 무엇일까요?", options: ["빨간색", "파란색", "노란색", "보라색"], answer: 2, explanation: "방울토마토 꽃은 작고 귀여운 노란 별 모양이에요! 노란 꽃이 지고 나면 초록 열매가 열리고, 그게 빨갛게 익는 거예요." },
+  // 씨앗·한살이
+  { question: "씨앗이 싹을 틔우기 위해 꼭 필요한 것이 아닌 것은?", options: ["물", "따뜻한 온도", "공기", "비료"], answer: 3, explanation: "씨앗이 싹트려면 물, 온도, 공기(산소)가 필요해요. 비료는 싹이 튼 뒤에 도움이 되지만, 발아에는 꼭 필요하지 않아요!" },
+  { question: "식물의 한살이 순서를 바르게 나열한 것은?", options: ["꽃→씨앗→새싹→열매", "씨앗→새싹→꽃→열매→씨앗", "새싹→씨앗→열매→꽃", "열매→꽃→씨앗→새싹"], answer: 1, explanation: "씨앗이 땅에 떨어져 싹이 트고, 잎과 줄기가 자라고, 꽃이 피고, 열매가 맺히고, 그 안에 새 씨앗이 만들어져요. 이게 한살이예요!" },
+  { question: "열매 안에는 무엇이 들어있을까요?", options: ["뿌리", "씨앗", "꽃가루", "엽록소"], answer: 1, explanation: "열매 안에는 씨앗이 들어있어요! 우리가 먹는 토마토·오이·사과도 모두 열매이고, 안에 씨앗이 있답니다." },
+  // 물·햇빛·환기
+  { question: "식물에 물을 너무 많이 주면 어떻게 될까요?", options: ["더 빠르게 자라요", "뿌리가 썩을 수 있어요", "꽃이 더 많이 펴요", "잎이 더 초록해져요"], answer: 1, explanation: "물이 너무 많으면 흙 속에 공기가 없어져서 뿌리가 숨을 못 쉬고 썩어버려요. 흙이 보슬보슬 마를 때 물을 주는 게 좋아요!" },
+  { question: "식물에게 햇빛이 필요한 가장 큰 이유는 무엇일까요?", options: ["몸을 따뜻하게 하려고", "광합성으로 양분을 만들려고", "물을 흡수하려고", "씨앗을 퍼뜨리려고"], answer: 1, explanation: "식물은 햇빛이 있어야 잎에서 광합성을 할 수 있어요. 햇빛이 없으면 양분을 만들지 못해서 점점 시들어버린답니다!" },
+  { question: "식물을 키울 때 환기(바람)가 필요한 이유는 무엇일까요?", options: ["식물이 춥게 해주려고", "신선한 공기를 공급하고 병을 예방하려고", "흙을 말리려고", "꽃을 예쁘게 하려고"], answer: 1, explanation: "환기를 하면 신선한 공기(이산화탄소)가 공급되고, 습기가 줄어들어 곰팡이나 병이 생기는 걸 막아줘요. 바람이 살짝 불어야 줄기도 튼튼해진답니다!" },
+  { question: "식물을 가장 잘 자라게 하려면 어디에 두는 게 좋을까요?", options: ["어둡고 습한 창고", "햇빛이 잘 들고 바람이 통하는 곳", "에어컨 바람이 세게 나오는 곳", "물 속"], answer: 1, explanation: "식물은 햇빛·공기·적당한 온도가 필요해요. 햇빛이 잘 들고 환기가 잘 되는 창가나 베란다가 식물이 자라기 딱 좋은 환경이에요!" },
+  // 광합성
+  { question: "광합성을 할 때 식물이 내놓는 기체는 무엇일까요?", options: ["이산화탄소", "산소", "수소", "질소"], answer: 1, explanation: "식물은 광합성을 하면서 산소를 만들어 공기 중으로 내보내요. 우리가 숨 쉬는 산소의 많은 부분이 식물 덕분이에요!" },
+  { question: "광합성에 필요하지 않은 것은?", options: ["햇빛", "물", "이산화탄소", "비료"], answer: 3, explanation: "광합성은 햇빛 + 물 + 이산화탄소로 이루어져요. 비료는 식물의 영양 보충에 도움을 주지만, 광합성 자체에는 필요하지 않아요!" },
+  // 흙·비료
+  { question: "식물에게 비료를 주는 이유는 무엇일까요?", options: ["물 대신 주려고", "식물에게 필요한 영양분을 보충해주려고", "흙을 단단하게 만들려고", "해충을 쫓으려고"], answer: 1, explanation: "비료에는 식물이 잘 자라는 데 필요한 영양분(질소·인·칼륨 등)이 들어있어요. 흙 속 영양분이 부족해지면 비료를 주어 보충해야 해요!" },
+  { question: "좋은 흙의 조건이 아닌 것은?", options: ["물을 잘 담아둘 수 있어요", "공기가 통해요", "딱딱하고 돌덩어리만 있어요", "미생물이 살고 있어요"], answer: 2, explanation: "좋은 흙은 물을 적당히 머금고, 공기가 잘 통하고, 미생물이 살면서 영양분을 만들어줘요. 딱딱한 흙은 뿌리가 뻗기 어려워요!" },
+  // 식물 기관 종합
+  { question: "식물의 4가지 기관을 모두 고른 것은?", options: ["뿌리·줄기·잎·꽃(열매)", "뿌리·물·햇빛·흙", "씨앗·비료·물·공기", "잎·구름·바람·흙"], answer: 0, explanation: "식물은 뿌리·줄기·잎·꽃(열매)으로 이루어져 있어요. 각 기관이 서로 다른 중요한 역할을 해서 식물이 살아갈 수 있어요!" },
+  { question: "식물에서 양분을 만드는 기관은 어디일까요?", options: ["뿌리", "줄기", "잎", "씨앗"], answer: 2, explanation: "잎에 있는 엽록소가 햇빛을 받아 광합성으로 양분을 만들어요. 잎이 넓고 초록색인 이유도 햇빛을 많이 받기 위해서랍니다!" },
+  { question: "사과나무는 열매를 맺기까지 몇 년 이상 걸릴까요?", options: ["1주일", "1달", "3~5년", "10분"], answer: 2, explanation: "사과나무는 씨앗에서 열매를 맺기까지 보통 3~5년이 걸려요. 식물에 따라 자라는 속도가 모두 달라요!" },
+  { question: "배추를 맛있게 기르려면 어느 계절이 좋을까요?", options: ["한여름", "봄·가을 서늘한 때", "한겨울", "계절은 상관없어요"], answer: 1, explanation: "배추는 너무 덥거나 춥지 않은 봄이나 가을에 잘 자라요. 우리가 먹는 김장 배추도 주로 가을에 수확한답니다!" },
+  { question: "씨앗이 물을 만나면 어떻게 될까요?", options: ["녹아버려요", "씨앗이 불어나다가 싹을 틔워요", "딱딱하게 굳어요", "꽃이 바로 피어요"], answer: 1, explanation: "씨앗은 물을 흡수하면 내부가 활동을 시작해서 점점 부풀다가 싹을 틔워요. 이걸 '발아'라고 해요!" },
+  { question: "식물에 물이 부족하면 어떻게 될까요?", options: ["꽃이 더 예쁘게 피어요", "잎이 시들고 축 처져요", "뿌리가 더 길어져요", "씨앗이 더 많이 생겨요"], answer: 1, explanation: "물이 부족하면 세포가 탱탱함을 잃어서 잎이 축 처지고 시들어요. 빨리 물을 주면 다시 살아나지만, 너무 오래 방치하면 식물이 죽을 수도 있어요!" },
+  { question: "뿌리가 없어서 공중에 떠 있다면 식물이 살 수 있을까요?", options: ["네, 잘 살아요", "아니요, 물과 영양분을 흡수할 수 없어요", "네, 잎으로만 살 수 있어요", "아니요, 줄기가 없어서요"], answer: 1, explanation: "뿌리가 없으면 흙에서 물과 영양분을 흡수할 수 없고, 식물이 쓰러지기도 해요. 뿌리는 식물 생명의 기반이에요!" },
+  { question: "오이의 어떤 부분을 먹을까요?", options: ["뿌리", "씨앗만", "열매", "잎만"], answer: 2, explanation: "우리가 먹는 오이는 식물의 열매예요! 꽃이 지고 나서 만들어지는 열매 안에는 작은 씨앗들이 가득 들어있어요." },
 ];
-
-
 // Plant Part Educational Info (per species)
 const PLANT_PART_INFO = {
   tomato: {
@@ -353,7 +273,7 @@ const PLANT_LIFE_CYCLE_INFO = {
     characteristics: '잎이 겹겹이 쌓여 공처럼 둥글게 뭉치는 채소예요. 서늘한 날씨를 좋아하고, 속잎은 빛이 닿지 않아 노란색이며 가장 달고 부드러워요.',
     uses: '쌈을 싸 먹거나 볶음·샐러드·피클로 먹고, 양배추즙은 위장 건강에 좋아요. 비타민K와 식이섬유가 풍부해요.',
     careWarnings: ['고온에 약해 여름 재배는 어려워요','배추흰나비 애벌레를 자주 확인해요','수확 시기를 놓치면 꽃대가 올라와(추대) 잎이 질겨져요','물이 잎 사이에 고이면 무름병이 생겨요'],
-    funFact: '양배추 속이 노란 이유는 빛이 닿지 못해 엽록소가 없기 때문이에요. 이 부분이 가장 달고 부드러워요!'
+    funFact: '배추의 속이 노란 이유는 빛이 닿지 못해 엽록소가 없기 때문이에요. 이 부분이 가장 달고 부드러워요!'
   },
   cucumber: {
     naturalDuration: '약 2~3개월 (60~90일)',
@@ -393,16 +313,16 @@ let appState = {
   isWindowOpen: false,
   diaryList: [],
   chatLog: [],
-  quizStageIndex: 0,
-  quizQIndexInStage: 0,
-  completedStages: [],
+  quizSeenIndices: [],
+  quizCurrentIdx: null,
+  quizCorrectCount: 0,
   badges: [],
-  stageCorrectCount: 0,
   isSimulating: false,
   simulationIntervalId: null,
   dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
   currentCalendarDate: new Date(),
-  emotionMissionCompleted: false // Tracks if the user completed the current emotion care mission
+  emotionMissionCompleted: false, // Tracks if the user completed the current emotion care mission
+  lastDangerState: {}   // Tracks which stats are in danger to avoid duplicate messages
 };
 
 // Plant Growth Badges
@@ -415,17 +335,17 @@ const BADGES = [
 ];
 const STAGE_BADGE_KEYS = ['seed_explorer', 'growth_guardian', 'lifecycle_master'];
 
-// 인사이드 아웃 감정 정의 (mood key → 표시 정보)
-const INSIDE_OUT_EMOTIONS = {
-  joy:          { label: '기쁨이',  emoji: '😄', color: '#FFD700', causeRain: false, causeSunny: true,  causeWind: false },
-  sadness:      { label: '슬픔이',  emoji: '😢', color: '#4A90D9', causeRain: true,  causeSunny: false, causeWind: false },
-  anger:        { label: '버럭이',  emoji: '😠', color: '#E53935', causeRain: false, causeSunny: false, causeWind: true  },
-  fear:         { label: '소심이',  emoji: '😨', color: '#8E44AD', causeRain: false, causeSunny: false, causeWind: true  },
-  disgust:      { label: '까칠이',  emoji: '🤢', color: '#43A047', causeRain: false, causeSunny: false, causeWind: false },
-  anxiety:      { label: '불안이',  emoji: '😟', color: '#FF7043', causeRain: true,  causeSunny: false, causeWind: false },
-  ennui:        { label: '따분이',  emoji: '😑', color: '#546E7A', causeRain: true,  causeSunny: false, causeWind: false },
-  envy:         { label: '부럵이',  emoji: '🙄', color: '#00897B', causeRain: false, causeSunny: false, causeWind: false },
-  embarrassment:{ label: '당황이',  emoji: '😳', color: '#E91E8C', causeRain: false, causeSunny: false, causeWind: false },
+// 감정 정의 (mood key → 표시 정보)
+const EMOTIONS = {
+  joy:          { label: '기쁨',    emoji: '😄', color: '#FFD700', causeRain: false, causeSunny: true,  causeWind: false },
+  sadness:      { label: '슬픔',    emoji: '😢', color: '#4A90D9', causeRain: true,  causeSunny: false, causeWind: false },
+  anger:        { label: '화남',    emoji: '😠', color: '#E53935', causeRain: false, causeSunny: false, causeWind: true  },
+  fear:         { label: '두려움',  emoji: '😨', color: '#8E44AD', causeRain: false, causeSunny: false, causeWind: true  },
+  disgust:      { label: '싫음',    emoji: '🤢', color: '#43A047', causeRain: false, causeSunny: false, causeWind: false },
+  anxiety:      { label: '불안',    emoji: '😟', color: '#FF7043', causeRain: true,  causeSunny: false, causeWind: false },
+  ennui:        { label: '따분함',  emoji: '😑', color: '#546E7A', causeRain: true,  causeSunny: false, causeWind: false },
+  envy:         { label: '부러움',  emoji: '🙄', color: '#00897B', causeRain: false, causeSunny: false, causeWind: false },
+  embarrassment:{ label: '부끄러움',emoji: '😳', color: '#E91E8C', causeRain: false, causeSunny: false, causeWind: false },
 };
 
 
@@ -664,7 +584,7 @@ function generatePlantSVG(plantKey, stage, stats) {
     </g>
   `;
 
-  const drawRoot = (stage) => {
+  function drawRoot(stage) {
     let roots = '';
     if (stage >= 2) {
       roots += `<path d="M100,135 Q90,150 95,160 M100,135 Q110,150 105,160" fill="none" stroke="#A1887F" stroke-width="2" filter="url(#shadow)"/>`;
@@ -1049,16 +969,16 @@ function processTestResults() {
   
   // Simulate AI matching delay and calculation logging
   let logLines = [
-    ">> 성향 데이터 파싱 완료...",
-    ">> 학생 정원사 스타일 분석 매개변수 계산 완료...",
-    ">> 식물 세포 어포던스 매핑 완료...",
-    ">> 최적의 짝꿍 반려 식물 세포 탐색 성공!"
+    "🌱 답변을 꼼꼼히 읽고 있어요...",
+    "🔍 어떤 식물과 잘 맞을지 살펴보는 중...",
+    "💚 식물 친구들과 성격을 비교하고 있어요...",
+    "✨ 딱 맞는 반려 식물을 찾았어요!"
   ];
   
   const logContainer = document.querySelector('.analysis-logs');
   logContainer.innerHTML = '';
   
-  let delay = 600;
+  let delay = 350;
   logLines.forEach((line, index) => {
     setTimeout(() => {
       const div = document.createElement('div');
@@ -1089,7 +1009,7 @@ function processTestResults() {
 
     appState.selectedPlantKey = maxKey;
     showResultScreen(maxKey);
-  }, 3200);
+  }, 1600);
 }
 
 function showResultScreen(plantKey) {
@@ -1139,7 +1059,7 @@ function simulationTick() {
   let waterDrain = 3;
   let targetSun = 20;
   let targetWind = 20;
-  let soilDrain = 1.5;
+  let soilDrain = 0.4;
 
   // Apply Weather Modifiers
   if (appState.weather === 'sunny') { waterDrain += 2; targetSun += 30; }
@@ -1167,7 +1087,7 @@ function simulationTick() {
       waterDrain += 3;
       targetSun += 35;
       targetWind += 40;
-      soilDrain += 1.0;
+      soilDrain += 0.3;
       break;
   }
 
@@ -1207,7 +1127,7 @@ function triggerStageLevelUp() {
   const stageNames = ["씨앗", "새싹", "성장기", "개화", "결실", "채종"];
   const stageName = stageNames[appState.growthStage - 1] || "완성";
   const stageEmoji = ["🌱","🌿","🍃","🌸","🍎","🌾"][appState.growthStage - 1] || "🌾";
-  addBotMessage(`${stageEmoji} 축하해요! 정원사님 덕분에 [${stageName}] 단계로 성장했어요!`);
+  showToast(`${stageEmoji} 축하해요! 정원사님 덕분에 [${stageName}] 단계로 성장했어요!`, 'celebrate');
   if (appState.growthStage === 6) {
     setTimeout(() => showLifeCycleComplete(), 1500);
   }
@@ -1282,35 +1202,90 @@ function updateDashboardUI() {
   }
 
   // 3. Stats progress bars & Safe-Zones
+  const STAT_CONFIG = {
+    water: {
+      action: '물 주기', icon: 'droplet',
+      low:  { alert: '물이 부족해 말라가고 있어요!',          chip: '😟 목말라요!',    plant: '😟 목말라요! 물이 필요해요 💧' },
+      high: { alert: '과습 상태에요! 뿌리가 썩을 수 있어요.',  chip: '😵 물 너무 많아요!', plant: '😵 물이 너무 많아요! 뿌리가 아파요' }
+    },
+    sun: {
+      action: '햇빛 쬐기', icon: 'sun',
+      low:  { alert: '햇빛이 너무 부족해 시들시들해요.',       chip: '🌑 어두워요!',    plant: '🌑 어두워요! 햇빛이 그리워요 ☀️' },
+      high: { alert: '직사광선이 너무 강해 잎사귀가 타고 있어요!', chip: '🥵 너무 뜨거워요!', plant: '🥵 너무 뜨거워요! 그늘이 필요해요' }
+    },
+    wind: {
+      action: '환기 하기', icon: 'wind',
+      low:  { alert: '공기가 탁해서 숨쉬기 힘들어요.',        chip: '😮‍💨 답답해요!',  plant: '😮‍💨 답답해요! 창문 좀 열어줘요 🪟' },
+      high: { alert: '바람이 너무 강해요.',                   chip: '🌪️ 바람 세요!',  plant: '🌪️ 바람이 너무 강해요!' }
+    },
+    soil: {
+      action: '비료 주기', icon: 'sparkles',
+      low:  { alert: '흙에 영양분이 전부 닳았어요!',          chip: '🌱 배고파요!',    plant: '🌱 배고파요! 비료가 필요해요 🧪' },
+      high: { alert: '영양 성분이 과다하여 해로워요!',         chip: '😰 영양 과다!',  plant: '😰 영양이 너무 많아요!' }
+    }
+  };
+
   const statsList = ['water', 'sun', 'wind', 'soil'];
   let isAnyDanger = false;
   let dangerMessage = "";
 
   statsList.forEach(stat => {
     const val = Math.round(appState.stats[stat]);
+    const cfg = STAT_CONFIG[stat];
+    const { min: minVal, max: maxVal } = profile.careInfo[stat];
 
-    // Check danger
-    const minVal = profile.careInfo[stat].min;
-    const maxVal = profile.careInfo[stat].max;
-    
     let statusLabel = "";
+    let dangerKey = null;
+    let dangerCfg = null;
+
     if (val < minVal) {
       isAnyDanger = true;
-      dangerMessage = `${stat === 'water' ? '물이 부족해 말라가고 있어요!' : stat === 'sun' ? '햇빛이 너무 부족해 시들시들해요.' : stat === 'wind' ? '공기가 탁해서 숨쉬기 힘들어요.' : '흙에 영양분이 전부 닳았어요!'}`;
-      statusLabel = stat === 'water' ? '😟 목말라요!' : stat === 'sun' ? '🌑 어두워요!' : stat === 'wind' ? '😮‍💨 답답해요!' : '🌱 배고파요!';
+      dangerKey = `${stat}_low`;
+      dangerCfg = cfg.low;
     } else if (val > maxVal) {
       isAnyDanger = true;
-      dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 너무 강해요.' : '영양 성분이 과다하여 해로워요!'}`;
-      statusLabel = stat === 'water' ? '😵 물 너무 많아요!' : stat === 'sun' ? '🥵 너무 뜨거워요!' : stat === 'wind' ? '🌪️ 바람 세요!' : '😰 영양 과다!';
+      dangerKey = `${stat}_high`;
+      dangerCfg = cfg.high;
     }
+
+    if (dangerCfg) {
+      dangerMessage = dangerCfg.alert;
+      statusLabel = dangerCfg.chip;
+    }
+
+    if (dangerKey && appState.lastDangerState[stat] !== dangerKey) {
+      showPlantBubble(dangerCfg.plant);
+    }
+    appState.lastDangerState[stat] = dangerKey;
 
     const chipBtn = document.getElementById(`chip-${stat}`);
     if (chipBtn) {
-        const actionName = stat === 'water' ? '물 주기' : stat === 'sun' ? '햇빛 쬐기' : stat === 'wind' ? '환기 하기' : '비료 주기';
-        const iconName = stat === 'water' ? 'droplet' : stat === 'sun' ? 'sun' : stat === 'wind' ? 'wind' : 'sparkles';
-        chipBtn.innerHTML = `<i data-lucide="${iconName}"></i> ${actionName} ${statusLabel}`;
+      chipBtn.innerHTML = `<i data-lucide="${cfg.icon}"></i> ${cfg.action}`;
+      chipBtn.classList.toggle('chip-danger', !!dangerCfg);
     }
   });
+
+  // Stat mini card (water & sun only)
+  const waterVal = Math.round(appState.stats.water);
+  const sunVal   = Math.round(appState.stats.sun);
+  const windVal  = Math.round(appState.stats.wind);
+  const soilVal  = Math.round(appState.stats.soil);
+  const waterFill = document.getElementById('stat-fill-water');
+  const sunFill   = document.getElementById('stat-fill-sun');
+  const windFill  = document.getElementById('stat-fill-wind');
+  const soilFill  = document.getElementById('stat-fill-soil');
+  const waterPct  = document.getElementById('stat-pct-water');
+  const sunPct    = document.getElementById('stat-pct-sun');
+  const windPct   = document.getElementById('stat-pct-wind');
+  const soilPct   = document.getElementById('stat-pct-soil');
+  if (waterFill) waterFill.style.width = `${waterVal}%`;
+  if (sunFill)   sunFill.style.width   = `${sunVal}%`;
+  if (windFill)  windFill.style.width  = `${windVal}%`;
+  if (soilFill)  soilFill.style.width  = `${soilVal}%`;
+  if (waterPct)  waterPct.textContent  = `${waterVal}%`;
+  if (sunPct)    sunPct.textContent    = `${sunVal}%`;
+  if (windPct)   windPct.textContent   = `${windVal}%`;
+  if (soilPct)   soilPct.textContent   = `${soilVal}%`;
 
   // Health warnings box
   const alertBox = document.getElementById('health-alert');
@@ -1378,7 +1353,7 @@ function giveWater() {
     anim.classList.add('hidden-effect');
   }, 1800);
 
-  addBotMessage("💧 시원한 물 감사합니다! 흙이 수분을 머금어 촉촉해졌어요.");
+  showToast("💧 시원한 물 감사합니다! 흙이 수분을 머금어 촉촉해졌어요.");
   checkEmotionCareMission('물 주기');
   updateDashboardUI();
 }
@@ -1387,10 +1362,10 @@ function toggleSunLamp() {
   appState.isSunLampOn = !appState.isSunLampOn;
   if (appState.isSunLampOn) {
     appState.stats.sun = Math.min(100, appState.stats.sun + 15);
-    addBotMessage("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
+    showToast("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
     checkEmotionCareMission('햇빛 쬐기');
   } else {
-    addBotMessage("💡 조명을 껐습니다. 자연 날씨 상태의 빛으로 돌아갑니다.");
+    showToast("💡 조명을 껐어요");
   }
   updateDashboardUI();
 }
@@ -1399,17 +1374,17 @@ function toggleWindow() {
   appState.isWindowOpen = !appState.isWindowOpen;
   if (appState.isWindowOpen) {
     appState.stats.wind = Math.min(100, appState.stats.wind + 20);
-    addBotMessage("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    showToast("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
     checkEmotionCareMission('환기 하기');
   } else {
-    addBotMessage("🪟 창문을 닫아 방 안의 공기 흐름을 진정시켰습니다.");
+    showToast("🪟 창문을 닫았어요");
   }
   updateDashboardUI();
 }
 
 function useFertilizer() {
   if (appState.fertilizerCount <= 0) {
-    addBotMessage("🧪 아이템이 부족합니다! [실과 퀴즈] 탭에서 초등 퀴즈를 풀고 비료를 더 모아보세요!");
+    showToast("🧪 비료가 부족해요! [식물 퀴즈]를 풀어 모아보세요", 'warn');
     return;
   }
 
@@ -1424,7 +1399,7 @@ function useFertilizer() {
     anim.classList.add('hidden-effect');
   }, 1800);
 
-  addBotMessage("🧪 유기농 비료를 흙에 솔솔 뿌렸습니다! 영양분도 공급하고 식물이 빠르게 자라도록 도왔어요.");
+  showToast("🧪 유기농 비료를 흙에 솔솔 뿌렸습니다! 영양분도 공급하고 식물이 빠르게 자라도록 도왔어요.");
   checkEmotionCareMission('비료 주기');
   updateDashboardUI();
 }
@@ -1473,6 +1448,38 @@ function addUserMessage(text) {
   container.appendChild(bubble);
   trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
+}
+
+// 돌보기/시스템 피드백을 채팅과 분리해 토스트로 표시
+// type: '' | 'warn' | 'error' | 'celebrate'
+function showToast(text, type = '') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type ? ` toast-${type}` : '');
+  toast.textContent = text;
+  container.appendChild(toast);
+  // 다음 프레임에 show 클래스 추가 (트랜지션 발동)
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 2600);
+}
+
+// 식물의 needs(목말라요 등)를 식물 위 말풍선으로 표시
+let plantBubbleTimer = null;
+function showPlantBubble(text) {
+  const bubble = document.getElementById('plant-speech-bubble');
+  if (!bubble) return;
+  bubble.textContent = text;
+  bubble.classList.remove('hidden');
+  requestAnimationFrame(() => bubble.classList.add('show'));
+  clearTimeout(plantBubbleTimer);
+  plantBubbleTimer = setTimeout(() => {
+    bubble.classList.remove('show');
+    setTimeout(() => bubble.classList.add('hidden'), 300);
+  }, 3500);
 }
 
 async function processUserChat(messageText) {
@@ -1531,6 +1538,9 @@ async function processUserChat(messageText) {
 }
 
 async function fetchGeminiResponse(userText) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') {
+    throw new Error('API_KEY_MISSING');
+  }
   const profile = plantProfiles[appState.selectedPlantKey] || { name: '반려 식물' };
   const water = appState.stats.water;
   const sun = appState.stats.sun;
@@ -1562,7 +1572,7 @@ async function fetchGeminiResponse(userText) {
   }
 }`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -1581,7 +1591,7 @@ async function fetchGeminiResponse(userText) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error("Gemini API Error:", response.status, errorText);
-    throw new Error('Gemini API 연동 중 오류 발생');
+    throw new Error(`API_ERROR:${response.status}`);
   }
 
   const data = await response.json();
@@ -1653,47 +1663,43 @@ function showBadgeNotification(badge) {
   }, 3500);
 }
 
-function checkStageCompletion(stageIdx) {
-  const stage = questStages[stageIdx];
-  if (appState.stageCorrectCount === stage.questions.length) {
-    awardBadge('perfect_gardener');
-  }
-  awardBadge(STAGE_BADGE_KEYS[stageIdx]);
-  appState.stageCorrectCount = 0;
-}
-
 function renderQuestProgress() {
   const bar = document.getElementById('quest-progress-bar');
   if (!bar) return;
-  bar.innerHTML = '';
-  questStages.forEach((stage, i) => {
-    const chip = document.createElement('div');
-    chip.className = 'quest-chip';
-    if (appState.completedStages.includes(i)) {
-      chip.classList.add('quest-chip-done');
-      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
-    } else if (i === appState.quizStageIndex) {
-      chip.classList.add('quest-chip-active');
-      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
-    } else {
-      chip.classList.add('quest-chip-locked');
-      chip.textContent = `🔒 ${stage.stageName}`;
-    }
-    bar.appendChild(chip);
-  });
+  const seen = appState.quizSeenIndices.length;
+  const total = quizPool.length;
+  const pct = Math.round((seen / total) * 100);
+  bar.innerHTML = `
+    <div class="quest-chip quest-chip-active">🌿 식물 퀴즈 — ${seen}/${total}문제 완료 (${pct}%)</div>
+  `;
 }
 
 function loadQuiz() {
+  // 모든 문제를 다 봤으면 초기화
+  if (appState.quizSeenIndices.length >= quizPool.length) {
+    appState.quizSeenIndices = [];
+    awardBadge('plant_doctor');
+  }
+
+  // 아직 안 나온 문제 중 랜덤 선택
+  const remaining = quizPool
+    .map((_, i) => i)
+    .filter(i => !appState.quizSeenIndices.includes(i));
+  const pick = remaining[Math.floor(Math.random() * remaining.length)];
+  appState.quizCurrentIdx = pick;
+  appState.quizSeenIndices.push(pick);
+
   renderQuestProgress();
 
-  const stage = questStages[appState.quizStageIndex];
-  const qData = stage.questions[appState.quizQIndexInStage];
+  const qData = quizPool[pick];
+  const seen = appState.quizSeenIndices.length;
+  const total = quizPool.length;
 
   const card = document.getElementById('quiz-card');
   card.innerHTML = `
     <div class="quiz-header-badge">
       <i data-lucide="graduation-cap" class="text-green"></i>
-      <span id="quiz-stage-label">${stage.stageEmoji} ${stage.stageName} — ${appState.quizQIndexInStage + 1}/${stage.questions.length}번</span>
+      <span id="quiz-stage-label">🌱 식물 퀴즈 ${seen}/${total}</span>
     </div>
     <h3 id="quiz-question"></h3>
     <div class="quiz-options-list" id="quiz-options-list"></div>
@@ -1727,8 +1733,7 @@ function loadQuiz() {
 }
 
 function handleQuizAnswer(chosenIndex, btnElement) {
-  const stage = questStages[appState.quizStageIndex];
-  const qData = stage.questions[appState.quizQIndexInStage];
+  const qData = quizPool[appState.quizCurrentIdx];
   const optionsWrapper = document.getElementById('quiz-options-list');
 
   optionsWrapper.style.pointerEvents = 'none';
@@ -1739,13 +1744,10 @@ function handleQuizAnswer(chosenIndex, btnElement) {
   const fbIconContainer = document.getElementById('quiz-feedback-icon-container');
   const nextBtn = document.getElementById('btn-next-quiz');
 
-  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
-  const isLastStage = (appState.quizStageIndex === questStages.length - 1);
-
   if (chosenIndex === qData.answer) {
     btnElement.classList.add('correct');
     appState.fertilizerCount++;
-    appState.stageCorrectCount++;
+    appState.quizCorrectCount++;
     document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
     fbTitle.textContent = "정답입니다! 🌟";
     fbTitle.className = "text-green";
@@ -1753,6 +1755,9 @@ function handleQuizAnswer(chosenIndex, btnElement) {
     fbIconContainer.className = "feedback-icon-circle";
     fbIconContainer.innerHTML = '<i data-lucide="check" class="text-green"></i>';
     document.querySelector('.reward-indicator').classList.remove('hidden');
+    if (appState.quizCorrectCount === 5) awardBadge('seed_explorer');
+    if (appState.quizCorrectCount === 10) awardBadge('growth_guardian');
+    if (appState.quizCorrectCount === 20) awardBadge('perfect_gardener');
   } else {
     btnElement.classList.add('wrong');
     const correctBtn = optionsWrapper.children[qData.answer];
@@ -1765,91 +1770,131 @@ function handleQuizAnswer(chosenIndex, btnElement) {
     document.querySelector('.reward-indicator').classList.add('hidden');
   }
 
-  if (isLastQInStage && isLastStage) {
-    nextBtn.textContent = "🎉 모든 퀘스트 완료!";
-  } else if (isLastQInStage) {
-    nextBtn.textContent = "🏆 다음 단계로 이동 →";
-  } else {
-    nextBtn.textContent = "다음 문제 도전하기 →";
-  }
+  const allDone = appState.quizSeenIndices.length >= quizPool.length;
+  nextBtn.textContent = allDone ? "🎉 전체 완료! 다시 도전 →" : "다음 문제 도전하기 →";
 
   feedbackBox.classList.remove('hidden');
   lucide.createIcons();
 }
 
 function nextQuiz() {
-  const stage = questStages[appState.quizStageIndex];
-  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
-
-  if (isLastQInStage) {
-    appState.completedStages.push(appState.quizStageIndex);
-    if (appState.quizStageIndex === questStages.length - 1) {
-      showAllQuestsComplete();
-    } else {
-      showStageComplete();
-    }
-  } else {
-    appState.quizQIndexInStage++;
-    loadQuiz();
-  }
+  loadQuiz();
 }
 
-function showStageComplete() {
-  const completedStageIdx = appState.quizStageIndex;
-  const completedStage = questStages[completedStageIdx];
-  checkStageCompletion(completedStageIdx);
 
-  appState.quizStageIndex++;
-  appState.quizQIndexInStage = 0;
+// 10b. Plant Explorer Tab
+function renderPlantExplorer() {
+  const pane = document.getElementById('pane-explore');
+  if (!pane) return;
+  const plantKey = appState.selectedPlantKey;
+  const profile = plantProfiles[plantKey];
+  const timeline = PLANT_GROWTH_TIMELINE[plantKey];
+  if (!profile || !timeline) return;
 
-  appState.fertilizerCount += 2;
-  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+  let html = `<div class="explore-header" style="background: linear-gradient(135deg, ${profile.themeColor}22, ${profile.themeColor}11); border-radius: 12px; padding: 14px; margin-bottom: 14px; border-left: 4px solid ${profile.themeColor};">
+    <div style="font-size: 1.1em; font-weight: 800; color: ${profile.themeColor};">${profile.name} 성장 탐구</div>
+    <div style="font-size: 12px; color: #666; margin-top: 4px;">${profile.slogan}</div>
+  </div>
+  <div style="font-size: 11px; font-weight: 700; color: #888; margin-bottom: 10px; letter-spacing: 0.3px;">📅 주차별 성장 단계</div>`;
 
-  const nextStage = questStages[appState.quizStageIndex];
-  renderQuestProgress();
+  timeline.forEach(item => {
+    const isCurrent = item.stage === appState.growthStage;
+    const isDone = item.stage < appState.growthStage;
+    const borderColor = isCurrent ? profile.themeColor : isDone ? '#A5D6A7' : '#E0E0E0';
+    const bgColor = isCurrent ? `${profile.themeColor}12` : isDone ? '#F1F8E9' : '#FAFAFA';
+    const stageLabel = isCurrent ? '<span class="explore-current-badge">현재 단계</span>' : isDone ? '<span class="explore-done-badge">✓ 완료</span>' : '<span class="explore-locked-badge">잠김</span>';
 
-  const card = document.getElementById('quiz-card');
-  card.innerHTML = `
-    <div style="text-align:center; padding: 20px 10px;">
-      <div style="font-size: 3em; margin-bottom: 10px;">${completedStage.stageEmoji}</div>
-      <h3 style="color: var(--primary-green); margin-bottom: 8px;">${completedStage.stageName} 완료!</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 16px;">정말 잘했어요! 비료 2개를 추가로 획득했어요 🌿</p>
-      <div style="background: #E8F5E9; border-radius: 12px; padding: 14px; margin-bottom: 20px;">
-        <div style="font-size: 1.6em;">${nextStage.stageEmoji}</div>
-        <div style="font-weight: 700; color: #2E7D32; margin: 4px 0;">${nextStage.stageName}</div>
-        <div style="font-size: 12px; color: #555;">${nextStage.stageDesc}</div>
+    html += `<div class="explore-stage-card" style="border: 2px solid ${borderColor}; background: ${bgColor};">
+      <div class="explore-stage-header">
+        <span class="explore-stage-emoji">${item.emoji}</span>
+        <div class="explore-stage-info">
+          <div class="explore-stage-title">${item.title}</div>
+          <div class="explore-stage-weeks">⏰ ${item.weeks}</div>
+        </div>
+        ${stageLabel}
       </div>
-      <button id="btn-stage-next" class="btn-primary btn-full">다음 단계 시작하기 →</button>
-    </div>
-  `;
-  document.getElementById('btn-stage-next').addEventListener('click', loadQuiz);
+      <div class="explore-parts-list">
+        ${item.parts.map(p => `<div class="explore-part-row">
+          <span class="explore-part-icon">${p.icon}</span>
+          <div><span class="explore-part-name">${p.name}</span><span class="explore-part-desc">${p.desc}</span></div>
+        </div>`).join('')}
+      </div>
+      <div class="explore-tip">💡 ${item.tip}</div>
+    </div>`;
+  });
+
+  pane.innerHTML = html;
 }
 
-function showAllQuestsComplete() {
-  checkStageCompletion(appState.quizStageIndex);
-  awardBadge('plant_doctor');
+function showLifeCycleComplete() {
+  const plantKey = appState.selectedPlantKey;
+  const profile = plantProfiles[plantKey];
+  const cycleInfo = PLANT_LIFE_CYCLE_INFO[plantKey];
+  if (!profile || !cycleInfo) return;
 
-  appState.fertilizerCount += 3;
-  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+  // Calculate growing duration from dailyGrowth records
+  const growthDates = Object.keys(appState.dailyGrowth).sort();
+  const weekCount = growthDates.length > 0
+    ? Math.ceil(growthDates.length / 7)
+    : '여러';
 
-  appState.quizStageIndex = 0;
-  appState.quizQIndexInStage = 0;
-  appState.completedStages = [];
-  renderQuestProgress();
+  // Tally emotions from diary
+  const emotionCounts = {};
+  appState.diaryList.forEach(d => {
+    if (d.moodKey) emotionCounts[d.moodKey] = (emotionCounts[d.moodKey] || 0) + 1;
+  });
+  const topEmotions = Object.entries(emotionCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([key]) => EMOTIONS[key])
+    .filter(Boolean);
+  const emotionStr = topEmotions.length > 0
+    ? topEmotions.map(e => `${e.emoji} ${e.label}`).join('  ')
+    : '😊 설레임과 함께';
 
-  const card = document.getElementById('quiz-card');
-  card.innerHTML = `
-    <div style="text-align:center; padding: 20px 10px;">
-      <div style="font-size: 3.5em; margin-bottom: 10px;">🏆</div>
-      <h3 style="color: var(--primary-green); margin-bottom: 8px;">식물 한살이 마스터!</h3>
-      <p style="font-size: 13px; color: #555; margin-bottom: 12px;">모든 퀘스트를 완료했어요! 비료 3개를 추가로 획득했어요 🌟</p>
-      <p style="font-size: 12px; color: #888; margin-bottom: 20px;">처음부터 다시 도전해서 실력을 확인해 보세요!</p>
-      <button id="btn-quest-replay" class="btn-primary btn-full">🌱 다시 도전하기</button>
-    </div>
-  `;
-  document.getElementById('btn-quest-replay').addEventListener('click', loadQuiz);
+  const modal = document.getElementById('lifecycle-complete-modal');
+  if (!modal) return;
+
+  modal.querySelector('#lc-plant-emoji').textContent = ['🌱','🌿','🍃','🌸','🍎','🌾'][5];
+  modal.querySelector('#lc-plant-name').textContent = profile.name;
+  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount} 주`;
+  modal.querySelector('#lc-emotions').textContent = emotionStr;
+  modal.querySelector('#lc-natural-duration').textContent = cycleInfo.naturalDuration;
+  modal.querySelector('#lc-fun-fact').textContent = cycleInfo.funFact;
+
+  const warningList = modal.querySelector('#lc-warnings');
+  warningList.innerHTML = cycleInfo.careWarnings.map(w => `<li>${w}</li>`).join('');
+
+  modal.classList.remove('hidden');
 }
 
+// 10c. Plant Part Interaction
+function initPlantInteraction() {
+  const holder = document.getElementById('plant-svg-holder');
+  holder.addEventListener('click', (e) => {
+    const hit = e.target.closest('.plant-hit-area');
+    if (!hit) return;
+    showPlantPartInfo(hit.getAttribute('data-part'), appState.selectedPlantKey);
+  });
+  document.getElementById('plant-info-close').addEventListener('click', () => {
+    document.getElementById('plant-info-panel').classList.add('hidden');
+  });
+  document.getElementById('lc-close-btn')?.addEventListener('click', () => {
+    document.getElementById('lifecycle-complete-modal').classList.add('hidden');
+  });
+}
+
+function showPlantPartInfo(part, plantKey) {
+  const info = PLANT_PART_INFO[plantKey]?.[part];
+  if (!info) return;
+  document.getElementById('plant-info-icon').textContent = info.icon;
+  document.getElementById('plant-info-name').textContent = info.name;
+  document.getElementById('plant-info-struct').textContent = info.struct;
+  document.getElementById('plant-info-func').textContent = info.func;
+  const panel = document.getElementById('plant-info-panel');
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
 // 10b. Plant Explorer Tab
 function renderPlantExplorer() {
@@ -1992,7 +2037,7 @@ async function saveDiary() {
 
   const activeMoodBtn = document.querySelector('.mood-btn.active');
   const moodKey = activeMoodBtn ? activeMoodBtn.getAttribute('data-mood') : 'joy';
-  const emotion = INSIDE_OUT_EMOTIONS[moodKey] || INSIDE_OUT_EMOTIONS.joy;
+  const emotion = EMOTIONS[moodKey] || EMOTIONS.joy;
   
   const saveBtn = document.getElementById('btn-save-diary');
   const originalBtnText = saveBtn.innerHTML;
@@ -2052,13 +2097,14 @@ async function saveDiary() {
   lucide.createIcons();
 
   if (appState.weather === 'rainy') {
-    addBotMessage(`🌧️ ${emotion.label}의 시간을 일기로 표현해줘서 고마워요! 비 온 뒤 흙이 더 단단해지듯, 식물이 폭발적으로 성장했어요! ×2.0 XP 획득 🌱`);
+    showToast(`🌧️ 일기 작성 완료! 비 온 뒤 흙처럼 식물이 쑥쑥 자랐어요 ×2.0 XP 🌱`, 'celebrate');
   } else {
-    addBotMessage(`📝 ${emotion.label}의 하루를 일기로 남겨줘서 고마워요! 식물도 함께 성장했답니다 🌱`);
+    showToast(`📝 일기 작성 완료! 식물도 함께 성장했어요 🌱`, 'celebrate');
   }
 }
 
 async function fetchImagePromptFromGemini(text, mood) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
   const prompt = `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
 아래 일기에서 가장 구체적이고 기억에 남는 장면을 딱 하나 골라, 그 순간을 담은 영문 그림 프롬프트를 작성하세요.
 
@@ -2073,7 +2119,7 @@ async function fetchImagePromptFromGemini(text, mood) {
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
@@ -2094,18 +2140,18 @@ async function fetchImagePromptFromGemini(text, mood) {
 
 // 핵심 로직: 최근 3개 일기의 감정 패턴 → 식물 날씨 분석
 //
-// [조건] — 인사이드 아웃 캐릭터 기반
-// ① 슬픔이/따분이/불안이가 2개 이상 → rainy  (성장 x2 보너스!)
-// ② 기쁨이가 2개 이상               → sunny
-// ③ 버럭이/소심이가 2개 이상         → windy
-// ④ 그 외                            → 현재 날씨 유지
+// [조건] — 감정별 날씨 효과
+// ① 슬픔/따분함/불안이 2개 이상 → rainy  (성장 x2 보너스!)
+// ② 기쁨이 2개 이상             → sunny
+// ③ 화남/두려움이 2개 이상       → windy
+// ④ 그 외                        → 현재 날씨 유지
 function analyzeEmotionWeather() {
   const recent = appState.diaryList.slice(0, 3); // 최근 3개
   if (recent.length === 0) return;
 
-  const rainCount  = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeRain).length;
-  const sunnyCount = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeSunny).length;
-  const windCount  = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeWind).length;
+  const rainCount  = recent.filter(e => EMOTIONS[e.moodKey]?.causeRain).length;
+  const sunnyCount = recent.filter(e => EMOTIONS[e.moodKey]?.causeSunny).length;
+  const windCount  = recent.filter(e => EMOTIONS[e.moodKey]?.causeWind).length;
 
   let newWeather = appState.weather;
 
@@ -2118,11 +2164,11 @@ function analyzeEmotionWeather() {
     triggerWeatherEffect();
 
     const msgs = {
-      rainy: '🌧️ 마음 속 감정들이 모여 비가 내리기 시작했어요. 슬픈 마음도 일기로 쓰면 식물의 양분이 된답니다 🌱',
-      sunny: '☀️ 기쁨찬 하루들이 모여서 해가 떠올랐어요! 식물도 덩달아 활짝 웃고 있어요 ☀️',
-      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요. 식물도 함께 힘차게 버텨낼 거예요! 💨',
+      rainy: '🌧️ 감정들이 모여 비가 내려요. 슬픈 마음도 식물의 양분이 돼요 🌱',
+      sunny: '☀️ 기쁜 하루들이 모여 해가 떠올랐어요! 식물도 활짝 웃어요',
+      windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요!',
     };
-    if (msgs[newWeather]) addBotMessage(msgs[newWeather]);
+    if (msgs[newWeather]) showToast(msgs[newWeather]);
     
     appState.emotionMissionCompleted = false;
   }
@@ -2171,7 +2217,7 @@ function checkEmotionCareMission(action) {
   if (isMatch) {
     appState.emotionMissionCompleted = true;
     appState.growthXP = Math.min(100, appState.growthXP + 10);
-    addBotMessage(message);
+    showToast(message, 'celebrate');
     updateEmotionMissionUI();
     
     // Check level up from bonus
@@ -2440,7 +2486,7 @@ async function fetchOpenMeteoWeather(lat, lon, locationName) {
 
     // Post a chat notification about real weather
     const advice = generatePlantWeatherAdvice(realWeatherData);
-    addBotMessage(`🌍 [${locationName}] 실시간 날씨: ${wmo.emoji} ${wmo.text}, 기온 ${realWeatherData.temperature}°C, 풍속 ${realWeatherData.windspeed}m/s — ${advice}`);
+    showToast(`🌍 ${locationName} ${wmo.emoji} ${wmo.text}, ${realWeatherData.temperature}°C — ${advice}`);
 
   } catch (error) {
     console.error("Open-Meteo fetch error:", error);
@@ -2489,13 +2535,18 @@ function showWeatherError() {
 document.addEventListener("DOMContentLoaded", () => {
   // Lucide initialize
   lucide.createIcons();
+
+  // Randomize name placeholder so it feels like real kids
+  const sampleNames = ['김초롱', '박한별', '이새싹', '최푸름', '정하늘', '윤초록', '한빛나', '오나무', '류솔잎', '신꽃님'];
+  const pick = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+  document.getElementById('input-name').placeholder = `예: ${pick}`;
   
   // Event: Start Test
   document.getElementById('btn-start-test').addEventListener('click', () => {
     const nameInput = document.getElementById('input-name');
     const name = nameInput.value.trim();
     if (!name) {
-      alert("정원사의 이름을 써주세요!");
+      alert("이름을 입력해주세요!");
       return;
     }
     appState.userName = name;
@@ -2564,15 +2615,15 @@ document.addEventListener("DOMContentLoaded", () => {
         isWindowOpen: false,
         diaryList: [],
         chatLog: [],
-        quizStageIndex: 0,
-        quizQIndexInStage: 0,
-        completedStages: [],
+        quizSeenIndices: [],
+        quizCurrentIdx: null,
+        quizCorrectCount: 0,
         badges: [],
-        stageCorrectCount: 0,
         isSimulating: false,
         simulationIntervalId: null,
         dailyGrowth: {},
-        currentCalendarDate: new Date()
+        currentCalendarDate: new Date(),
+        lastDangerState: {}
       };
       
       document.getElementById('input-name').value = '';
@@ -2603,7 +2654,7 @@ document.addEventListener("DOMContentLoaded", () => {
       appState.growthXP = 0;
       triggerStageLevelUp();
       updateDashboardUI();
-      addBotMessage("⏩ [빠른 성장] 강제로 다음 단계로 건너뛰었습니다!");
+      showToast("⏩ 다음 단계로 건너뛰었어요!");
     } else {
       alert("이미 마지막 성장 단계(채종)입니다! 씨앗을 수확해 한살이가 완성되었어요 🌾");
     }
@@ -2741,7 +2792,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 다음 문장의 뒷부분(3~5단어 정도)을 자연스럽게 이어지도록 예상해서 완성해주세요. 반드시 이어질 단어만 출력하고 다른 설명은 하지 마세요.
 현재까지 쓴 내용: "${diaryInput.value}"`;
             
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
               method: 'POST',
