@@ -1073,7 +1073,7 @@ function showResultScreen(plantKey) {
   
   document.getElementById('recommended-plant-name').innerText = profile.name;
   document.getElementById('recommended-plant-slogan').innerText = profile.slogan;
-  document.getElementById('recommended-plant-desc').innerText = profile.desc;
+  document.getElementById('recommended-plant-desc').innerText = profile.desc.replace(/정원사님/g, `${appState.userName} 님`);
   
   // Inject Preview SVG
   const previewBox = document.getElementById('result-plant-preview');
@@ -1680,6 +1680,7 @@ async function fetchGeminiResponse(userText) {
   const systemPrompt = `당신은 초등학교의 다정하고 똑똑한 식물학자이자 따뜻한 담임 선생님입니다. 학생(사용자)이 교실에서 가상의 반려 식물을 기르는 것을 도와주고 있습니다.
 
 [현재 상태]
+- 학생의 이름: ${appState.userName}
 - 기르는 식물: '${profile.name}'
 - 식물의 환경: 수분 ${Math.round(water)}%, 햇빛 ${Math.round(sun)}%, 환기 ${Math.round(wind)}%, 영양 ${Math.round(soil)}%. (40~80%가 적당)
 - 학생의 감정: ${recentEmotion} (마음 날씨: ${weatherLabel})
