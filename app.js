@@ -336,26 +336,36 @@ const PLANT_GROWTH_TIMELINE = {
 const PLANT_LIFE_CYCLE_INFO = {
   tomato: {
     naturalDuration: '약 3~4개월 (90~120일)',
+    characteristics: '덩굴성 한해살이 식물로 줄기에서 곁가지가 많이 자라요. 열매는 처음엔 초록색이다가 익으면 빨간색으로 변해요. 꽃이 노란색이고 작은 열매가 송이로 열려요.',
+    uses: '생으로 먹거나 주스·케첩·파스타 소스로 활용해요. 비타민C와 항산화 성분인 리코펜이 풍부해 건강에도 아주 좋아요.',
     careWarnings: ['줄기 밑동이 과습하면 역병(무름병)이 생겨요','곁순을 제때 따줘야 열매가 커요','지지대를 꼭 세워 쓰러짐을 막아요','강한 직사광선에 오래 노출되면 잎이 타요'],
     funFact: '방울토마토는 식물학적으로 채소가 아니라 과일이에요! 씨앗이 있는 씨방이 발달한 열매이기 때문이에요.'
   },
   potato: {
     naturalDuration: '약 3~4개월 (90~120일)',
+    characteristics: '땅 속에 덩이줄기(감자)를 만드는 식물이에요. 지상부는 여름에 마르고, 땅 속에 영양분이 가득 찬 감자가 남아요. 꽃은 흰색 또는 보라색이에요.',
+    uses: '찌거나 구워 먹고, 감자볶음·감자탕·감자튀김·매시드포테이토 등 다양하게 활용해요. 탄수화물과 비타민C가 풍부해요.',
     careWarnings: ['과습하면 역병과 무름병이 생겨요','감자가 빛에 노출되면 솔라닌(독소)이 생겨 녹색이 돼요','북주기(흙 덮기)를 꼭 해줘야 감자가 많이 달려요','씨감자의 눈(芽)을 살려서 심어야 해요'],
     funFact: '감자는 뿌리가 아니라 줄기(땅속줄기=덩이줄기)예요! 눈(芽)에서 싹이 나는 것이 바로 그 증거예요.'
   },
   cabbage: {
     naturalDuration: '약 3~4개월 (90~120일)',
+    characteristics: '잎이 겹겹이 쌓여 공처럼 둥글게 뭉치는 채소예요. 서늘한 날씨를 좋아하고, 속잎은 빛이 닿지 않아 노란색이며 가장 달고 부드러워요.',
+    uses: '쌈을 싸 먹거나 볶음·샐러드·피클로 먹고, 양배추즙은 위장 건강에 좋아요. 비타민K와 식이섬유가 풍부해요.',
     careWarnings: ['고온에 약해 여름 재배는 어려워요','배추흰나비 애벌레를 자주 확인해요','수확 시기를 놓치면 꽃대가 올라와(추대) 잎이 질겨져요','물이 잎 사이에 고이면 무름병이 생겨요'],
-    funFact: '배추의 속이 노란 이유는 빛이 닿지 못해 엽록소가 없기 때문이에요. 이 부분이 가장 달고 부드러워요!'
+    funFact: '양배추 속이 노란 이유는 빛이 닿지 못해 엽록소가 없기 때문이에요. 이 부분이 가장 달고 부드러워요!'
   },
   cucumber: {
     naturalDuration: '약 2~3개월 (60~90일)',
+    characteristics: '덩굴손으로 지지대를 타고 오르는 한해살이 채소예요. 열매는 수분이 95%로 매우 많고, 씨를 심은 지 2달 만에 수확할 수 있을 만큼 빠르게 자라요.',
+    uses: '오이무침·피클·냉국·비빔밥 재료로 다양하게 쓰여요. 수분이 많아 더운 여름에 시원하게 먹기 좋고, 피부 팩으로도 활용해요.',
     careWarnings: ['뿌리가 약해 이식 시 조심해야 해요','물을 많이 필요로 해 건조하면 쓴맛이 나요','덩굴손을 지지대에 자주 유인해줘야 해요','흰가루병(잎에 흰 가루 같은 병)을 조심해야 해요'],
     funFact: '오이 열매의 95%가 수분이에요! 더운 여름날 오이를 먹으면 수분 보충에 최고예요.'
   },
   apple: {
     naturalDuration: '꽃이 핀 후 130~150일 (나무 자체는 수십 년 다년생)',
+    characteristics: '여러 해 동안 자라는 낙엽 과일나무예요. 봄에 분홍빛 흰 꽃이 피고, 꿀벌이 꽃가루를 다른 품종으로 옮겨야 열매가 맺혀요. 가을에 잎이 단풍이 들고 떨어져요.',
+    uses: '생과일로 먹거나 주스·잼·사과식초·사이다·파이 등으로 다양하게 활용해요. 식이섬유와 비타민C가 풍부하고 소화에도 좋아요.',
     careWarnings: ['다른 품종과 함께 심어야 꽃가루받이가 잘 돼요(타가수분)','가지치기를 매년 해야 햇빛이 잘 들어요','병해충(사과 응애, 붉은별무늬병)을 자주 확인해야 해요','열매가 많이 달리면 솎아내야(적과) 큰 사과가 돼요'],
     funFact: '사과는 씨를 심으면 부모와 다른 사과나무가 자라요! 그래서 농부들은 좋은 사과를 접목(접붙이기)해서 재배해요.'
   }
@@ -1502,7 +1512,14 @@ async function processUserChat(messageText) {
   } catch (error) {
     console.error(error);
     thinkingBubble.remove();
-    addBotMessage("앗, 선생님이 지금 교무실에 다녀오느라 바쁘네요. 조금 뒤에 다시 말해줄래요?");
+    if (error.message === 'API_KEY_MISSING') {
+      addBotMessage("선생님 연결이 아직 준비되지 않았어요. 선생님께 API 키 설정을 부탁드려요! 🔑");
+    } else if (error.message.startsWith('API_ERROR:')) {
+      const status = error.message.split(':')[1];
+      addBotMessage(`API 오류 (${status}): ${status === '400' ? '요청이 잘못됐어요 — API 키를 확인해주세요.' : status === '403' ? 'API 키가 유효하지 않아요.' : status === '404' ? 'AI 모델을 찾을 수 없어요. API 키가 올바른지 확인해주세요.' : status === '429' ? '요청이 너무 많아요. 잠시 후 다시 시도해주세요.' : '서버 오류가 발생했어요.'}`);
+    } else {
+      addBotMessage("앗, 선생님이 잠깐 자리를 비웠어요. 조금 뒤에 다시 말해줄래요? 😊");
+    }
   } finally {
     isProcessingChat = false;
   }
@@ -1875,9 +1892,21 @@ function showLifeCycleComplete() {
 
   // Calculate growing duration from dailyGrowth records
   const growthDates = Object.keys(appState.dailyGrowth).sort();
-  const weekCount = growthDates.length > 0
-    ? Math.ceil(growthDates.length / 7)
-    : '여러';
+  let durationText = '여러 날';
+  if (growthDates.length > 0) {
+    const firstDate = new Date(growthDates[0]);
+    const lastDate = new Date(growthDates[growthDates.length - 1]);
+    const totalDays = Math.round((lastDate - firstDate) / (1000 * 60 * 60 * 24)) + 1;
+    const weeks = Math.floor(totalDays / 7);
+    const days = totalDays % 7;
+    if (weeks > 0 && days > 0) {
+      durationText = `약 ${weeks}주 ${days}일`;
+    } else if (weeks > 0) {
+      durationText = `약 ${weeks}주`;
+    } else {
+      durationText = `약 ${totalDays}일`;
+    }
+  }
 
   // Tally emotions from diary
   const emotionCounts = {};
@@ -1898,9 +1927,11 @@ function showLifeCycleComplete() {
 
   modal.querySelector('#lc-plant-emoji').textContent = ['🌱','🌿','🍃','🌸','🍎','🌾'][5];
   modal.querySelector('#lc-plant-name').textContent = profile.name;
-  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount}주`;
+  modal.querySelector('#lc-weeks').textContent = durationText;
   modal.querySelector('#lc-emotions').textContent = emotionStr;
   modal.querySelector('#lc-natural-duration').textContent = cycleInfo.naturalDuration;
+  modal.querySelector('#lc-characteristics').textContent = cycleInfo.characteristics;
+  modal.querySelector('#lc-uses').textContent = cycleInfo.uses;
   modal.querySelector('#lc-fun-fact').textContent = cycleInfo.funFact;
 
   const warningList = modal.querySelector('#lc-warnings');
@@ -1934,7 +1965,6 @@ function showPlantPartInfo(part, plantKey) {
   document.getElementById('plant-info-func').textContent = info.func;
   const panel = document.getElementById('plant-info-panel');
   panel.classList.remove('hidden');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // 11. Observation Diary Logic

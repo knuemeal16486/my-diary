@@ -291,21 +291,22 @@
                 <div id="plant-svg-holder">
                   <!-- JS builds SVG here -->
                 </div>
-                <!-- Plant part info panel -->
-                <div id="plant-info-panel" class="plant-info-panel hidden">
-                  <button id="plant-info-close" class="plant-info-close" aria-label="닫기">✕</button>
-                  <div class="plant-info-header">
-                    <span class="plant-info-icon" id="plant-info-icon">🍃</span>
-                    <h4 id="plant-info-name">잎</h4>
-                  </div>
-                  <div class="plant-info-section">
-                    <span class="plant-info-label">🔬 구조</span>
-                    <p id="plant-info-struct"></p>
-                  </div>
-                  <div class="plant-info-section">
-                    <span class="plant-info-label">⚡ 기능</span>
-                    <p id="plant-info-func"></p>
-                  </div>
+              </div>
+
+              <!-- Plant part info panel (absolute overlay, does not push SVG) -->
+              <div id="plant-info-panel" class="plant-info-panel hidden">
+                <button id="plant-info-close" class="plant-info-close" aria-label="닫기">✕</button>
+                <div class="plant-info-header">
+                  <span class="plant-info-icon" id="plant-info-icon">🍃</span>
+                  <h4 id="plant-info-name">잎</h4>
+                </div>
+                <div class="plant-info-section">
+                  <span class="plant-info-label">🔬 구조</span>
+                  <p id="plant-info-struct"></p>
+                </div>
+                <div class="plant-info-section">
+                  <span class="plant-info-label">⚡ 기능</span>
+                  <p id="plant-info-func"></p>
                 </div>
               </div>
 
@@ -591,6 +592,14 @@
       <div class="lifecycle-section">
         <div class="lifecycle-label">⏳ 실제 한살이 기간</div>
         <div id="lc-natural-duration" class="lifecycle-value"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">🌿 이 식물의 특징</div>
+        <div id="lc-characteristics" class="lifecycle-value"></div>
+      </div>
+      <div class="lifecycle-section">
+        <div class="lifecycle-label">🍽️ 활용 방법</div>
+        <div id="lc-uses" class="lifecycle-value"></div>
       </div>
       <div class="lifecycle-section">
         <div class="lifecycle-label">⚠️ 이 식물을 키울 때 조심할 것</div>

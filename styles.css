@@ -2121,10 +2121,13 @@ body {
   background: white;
   border-radius: 14px;
   padding: 14px 16px;
-  margin-top: 8px;
   border: 1.5px solid #E8F5E9;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 5;
   animation: fade-in 0.25s ease;
 }
 .plant-info-close {
