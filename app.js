@@ -405,17 +405,17 @@ const BADGES = [
 ];
 const STAGE_BADGE_KEYS = ['seed_explorer', 'growth_guardian', 'lifecycle_master'];
 
-// 인사이드 아웃 감정 정의 (mood key → 표시 정보)
-const INSIDE_OUT_EMOTIONS = {
-  joy:          { label: '기쁨이',  emoji: '😄', color: '#FFD700', causeRain: false, causeSunny: true,  causeWind: false },
-  sadness:      { label: '슬픔이',  emoji: '😢', color: '#4A90D9', causeRain: true,  causeSunny: false, causeWind: false },
-  anger:        { label: '버럭이',  emoji: '😠', color: '#E53935', causeRain: false, causeSunny: false, causeWind: true  },
-  fear:         { label: '소심이',  emoji: '😨', color: '#8E44AD', causeRain: false, causeSunny: false, causeWind: true  },
-  disgust:      { label: '까칠이',  emoji: '🤢', color: '#43A047', causeRain: false, causeSunny: false, causeWind: false },
-  anxiety:      { label: '불안이',  emoji: '😟', color: '#FF7043', causeRain: true,  causeSunny: false, causeWind: false },
-  ennui:        { label: '따분이',  emoji: '😑', color: '#546E7A', causeRain: true,  causeSunny: false, causeWind: false },
-  envy:         { label: '부럵이',  emoji: '🙄', color: '#00897B', causeRain: false, causeSunny: false, causeWind: false },
-  embarrassment:{ label: '당황이',  emoji: '😳', color: '#E91E8C', causeRain: false, causeSunny: false, causeWind: false },
+// 감정 정의 (mood key → 표시 정보)
+const EMOTIONS = {
+  joy:          { label: '기쁨',    emoji: '😄', color: '#FFD700', causeRain: false, causeSunny: true,  causeWind: false },
+  sadness:      { label: '슬픔',    emoji: '😢', color: '#4A90D9', causeRain: true,  causeSunny: false, causeWind: false },
+  anger:        { label: '화남',    emoji: '😠', color: '#E53935', causeRain: false, causeSunny: false, causeWind: true  },
+  fear:         { label: '두려움',  emoji: '😨', color: '#8E44AD', causeRain: false, causeSunny: false, causeWind: true  },
+  disgust:      { label: '싫음',    emoji: '🤢', color: '#43A047', causeRain: false, causeSunny: false, causeWind: false },
+  anxiety:      { label: '불안',    emoji: '😟', color: '#FF7043', causeRain: true,  causeSunny: false, causeWind: false },
+  ennui:        { label: '따분함',  emoji: '😑', color: '#546E7A', causeRain: true,  causeSunny: false, causeWind: false },
+  envy:         { label: '부러움',  emoji: '🙄', color: '#00897B', causeRain: false, causeSunny: false, causeWind: false },
+  embarrassment:{ label: '부끄러움',emoji: '😳', color: '#E91E8C', causeRain: false, causeSunny: false, causeWind: false },
 };
 
 
@@ -1936,7 +1936,7 @@ function showLifeCycleComplete() {
   const topEmotions = Object.entries(emotionCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-    .map(([key]) => INSIDE_OUT_EMOTIONS[key])
+    .map(([key]) => EMOTIONS[key])
     .filter(Boolean);
   const emotionStr = topEmotions.length > 0
     ? topEmotions.map(e => `${e.emoji} ${e.label}`).join('  ')
@@ -2000,7 +2000,7 @@ async function saveDiary() {
 
   const activeMoodBtn = document.querySelector('.mood-btn.active');
   const moodKey = activeMoodBtn ? activeMoodBtn.getAttribute('data-mood') : 'joy';
-  const emotion = INSIDE_OUT_EMOTIONS[moodKey] || INSIDE_OUT_EMOTIONS.joy;
+  const emotion = EMOTIONS[moodKey] || EMOTIONS.joy;
   
   const saveBtn = document.getElementById('btn-save-diary');
   const originalBtnText = saveBtn.innerHTML;
@@ -2102,18 +2102,18 @@ async function fetchImagePromptFromGemini(text, mood) {
 
 // 핵심 로직: 최근 3개 일기의 감정 패턴 → 식물 날씨 분석
 //
-// [조건] — 인사이드 아웃 캐릭터 기반
-// ① 슬픔이/따분이/불안이가 2개 이상 → rainy  (성장 x2 보너스!)
-// ② 기쁨이가 2개 이상               → sunny
-// ③ 버럭이/소심이가 2개 이상         → windy
-// ④ 그 외                            → 현재 날씨 유지
+// [조건] — 감정별 날씨 효과
+// ① 슬픔/따분함/불안이 2개 이상 → rainy  (성장 x2 보너스!)
+// ② 기쁨이 2개 이상             → sunny
+// ③ 화남/두려움이 2개 이상       → windy
+// ④ 그 외                        → 현재 날씨 유지
 function analyzeEmotionWeather() {
   const recent = appState.diaryList.slice(0, 3); // 최근 3개
   if (recent.length === 0) return;
 
-  const rainCount  = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeRain).length;
-  const sunnyCount = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeSunny).length;
-  const windCount  = recent.filter(e => INSIDE_OUT_EMOTIONS[e.moodKey]?.causeWind).length;
+  const rainCount  = recent.filter(e => EMOTIONS[e.moodKey]?.causeRain).length;
+  const sunnyCount = recent.filter(e => EMOTIONS[e.moodKey]?.causeSunny).length;
+  const windCount  = recent.filter(e => EMOTIONS[e.moodKey]?.causeWind).length;
 
   let newWeather = appState.weather;
 
