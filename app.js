@@ -16,38 +16,38 @@ const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
 // Personality Test Questions
 const testQuestions = [
   {
-    title: "혹시 예전에 집이나 학교에서 식물을 직접 심고 키워본 경험이 있니?",
+    title: "혹시 예전에 집이나 학교에서 식물을 직접 심고 키워본 경험이 있나요?",
     options: [
-      { text: "응! 물도 주고 싹이 트고 자라는 것을 끝까지 책임감 있게 지켜본 적이 있어.", scores: { tomato: 3, apple: 3, potato: 0, cucumber: 0, cabbage: 0 } },
-      { text: "아니, 식물을 내 손으로 오랫동안 보살펴본 경험은 거의 없는 것 같아.", scores: { potato: 3, cabbage: 3, cucumber: 2, tomato: 0, apple: 0 } }
+      { text: "네! 물도 주고 싹이 트고 자라는 것을 끝까지 책임감 있게 지켜본 적이 있어요.", scores: { tomato: 3, apple: 3, potato: 0, cucumber: 0, cabbage: 0 } },
+      { text: "아니요, 식물을 제 손으로 오랫동안 보살펴본 경험은 거의 없는 것 같아요.", scores: { potato: 3, cabbage: 3, cucumber: 2, tomato: 0, apple: 0 } }
     ]
   },
   {
-    title: "스스로 생각하기에 나는 규칙적인 생활 습관(아침 기상, 숙제 등)을 잘 지키는 편이니?",
+    title: "스스로 생각하기에 규칙적인 생활 습관(아침 기상, 숙제 등)을 잘 지키는 편인가요?",
     options: [
-      { text: "매일 계획한 일정을 제시간에 척척 해내고, 약속을 성실하게 잘 지키는 규칙적인 편이야!", scores: { cucumber: 3, tomato: 3, apple: 2, potato: 0, cabbage: 0 } },
-      { text: "그때그때 내 기분에 따라 자유롭게 행동하거나 가끔 늦잠도 자는 편안한 스타일이야~", scores: { potato: 3, cabbage: 3, apple: 1, tomato: 0, cucumber: 0 } }
+      { text: "매일 계획한 일정을 제시간에 척척 해내고, 약속을 성실하게 잘 지키는 규칙적인 편이에요!", scores: { cucumber: 3, tomato: 3, apple: 2, potato: 0, cabbage: 0 } },
+      { text: "그때그때 기분에 따라 자유롭게 행동하거나 가끔 늦잠도 자는 편안한 스타일이에요~", scores: { potato: 3, cabbage: 3, apple: 1, tomato: 0, cucumber: 0 } }
     ]
   },
   {
-    title: "평소 운동장이나 밖에서 뛰어놀기처럼 활동적이고 몸을 움직이는 것을 좋아하는 편이니?",
+    title: "평소 운동장이나 밖에서 뛰어놀기처럼 활동적이고 몸을 움직이는 것을 좋아하는 편인가요?",
     options: [
-      { text: "완전 좋아해! 활발하게 뛰어놀고 친구들과 게임을 할 때 온몸에 에너지가 가득해져!", scores: { tomato: 3, cucumber: 3, apple: 0, potato: 0, cabbage: 0 } },
-      { text: "방 안에서 조용히 만들기, 그리기, 책 읽기나 퍼즐처럼 차분하게 집중하는 게 더 좋아.", scores: { potato: 3, cabbage: 3, apple: 3, tomato: 0, cucumber: 0 } }
+      { text: "완전 좋아해요! 활발하게 뛰어놀고 친구들과 게임을 할 때 온몸에 에너지가 가득해져요!", scores: { tomato: 3, cucumber: 3, apple: 0, potato: 0, cabbage: 0 } },
+      { text: "방 안에서 조용히 만들기, 그리기, 책 읽기나 퍼즐처럼 차분하게 집중하는 게 더 좋아요.", scores: { potato: 3, cabbage: 3, apple: 3, tomato: 0, cucumber: 0 } }
     ]
   },
   {
-    title: "만약 나만의 초록 친구를 들여놓는다면, 내 방의 어디에 두고 가꾸고 싶니?",
+    title: "만약 나만의 초록 친구를 들여놓는다면, 방의 어디에 두고 가꾸고 싶나요?",
     options: [
-      { text: "햇빛이 잘 들고 따뜻한 창가나 베란다 틈에 놓아 매일 햇살 목욕을 시켜줄래.", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "내 공부 책상이나 침대 머리맡처럼 내가 늘 앉아서 공부하고 쉴 때 가까이 볼 수 있게 할래.", scores: { potato: 3, cabbage: 3, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "햇빛이 잘 들고 따뜻한 창가나 베란다 틈에 놓아 매일 햇살 목욕을 시켜줄래요.", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
+      { text: "공부 책상이나 침대 머리맡처럼 제가 늘 앉아서 공부하고 쉴 때 가까이 볼 수 있게 할래요.", scores: { potato: 3, cabbage: 3, apple: 0, tomato: 0, cucumber: 0 } }
     ]
   },
   {
-    title: "식물을 기르면서 너는 어떤 즐거움을 가장 느껴보고 싶니?",
+    title: "식물을 기르면서 어떤 즐거움을 가장 느껴보고 싶나요?",
     options: [
-      { text: "식물이 자라서 맛있는 열매를 맺거나 향을 맡으며 무언가 수확하는 기쁨!", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "매일 자라나는 예쁜 꽃과 푸르른 잎사귀들을 조용히 보면서 마음이 편안해지는 정서적 힐링!", scores: { cabbage: 3, potato: 3, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "식물이 자라서 맛있는 열매를 맺거나 향을 맡으며 무언가 수확하는 기쁨이요!", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
+      { text: "매일 자라나는 예쁜 꽃과 푸르른 잎사귀들을 조용히 보면서 마음이 편안해지는 정서적 힐링이요!", scores: { cabbage: 3, potato: 3, apple: 0, tomato: 0, cucumber: 0 } }
     ]
   }
 ];
@@ -126,7 +126,7 @@ const questStages = [
   {
     stageName: "씨앗 탐험가",
     stageEmoji: "🌱",
-    stageDesc: "식물이 자라는 기본 조건을 배워보자!",
+    stageDesc: "식물이 자라는 기본 조건을 배워보아요!",
     questions: [
       {
         question: "식물이 스스로 자라고 건강한 생명을 유지하는 데 꼭 필요한 '성장 4대 필수 요소'가 아닌 것은 무엇일까요?",
@@ -167,7 +167,7 @@ const questStages = [
   {
     stageName: "성장 수호자",
     stageEmoji: "🌿",
-    stageDesc: "광합성과 식물이 자라는 비밀을 파헤쳐보자!",
+    stageDesc: "광합성과 식물이 자라는 비밀을 파헤쳐보아요!",
     questions: [
       {
         question: "식물의 초록색 잎 속 엽록체에서 햇빛, 이산화탄소, 물을 이용해 스스로 유기 양분을 만들어내는 놀라운 생명 현상을 무엇이라고 부를까요?",
@@ -203,7 +203,7 @@ const questStages = [
   {
     stageName: "한살이 마스터",
     stageEmoji: "🍎",
-    stageDesc: "씨앗에서 열매까지, 식물의 한살이를 완성하자!",
+    stageDesc: "씨앗에서 열매까지, 식물의 한살이를 완성해 보아요!",
     questions: [
       {
         question: "식물의 꽃이 열매로 변하기 위해 꼭 필요한 과정은 무엇일까요?",
@@ -2473,7 +2473,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderDiaries();
     
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
-    addBotMessage(`🌱 안녕, ${appState.userName} 정원사님! 드디어 내가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어. 물, 햇빛, 흙, 바람 게이지를 조절하여 내가 튼튼하게 자랄 수 있게 도와줘!`);
+    addBotMessage(`🌱 안녕하세요, ${appState.userName} 정원사님! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
   });
 
   // Reset Application to Initial Screen
