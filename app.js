@@ -269,11 +269,23 @@ let appState = {
   quizStageIndex: 0,
   quizQIndexInStage: 0,
   completedStages: [],
+  badges: [],
+  stageCorrectCount: 0,
   isSimulating: false,
   simulationIntervalId: null,
   dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
   currentCalendarDate: new Date()
 };
+
+// Plant Growth Badges
+const BADGES = [
+  { key: 'seed_explorer',    emoji: '🌱', name: '씨앗 탐험가',   desc: '씨앗이 싹트는 비밀을 배웠어요!' },
+  { key: 'growth_guardian',  emoji: '🌿', name: '광합성 박사',   desc: '광합성으로 식물이 자라는 원리를 알았어요!' },
+  { key: 'lifecycle_master', emoji: '🍎', name: '한살이 완성자', desc: '씨앗부터 열매까지 한살이를 완성했어요!' },
+  { key: 'plant_doctor',     emoji: '🔬', name: '식물 박사',     desc: '모든 퀘스트를 완료한 진짜 식물 박사!' },
+  { key: 'perfect_gardener', emoji: '⭐', name: '완벽 정원사',   desc: '한 단계를 오답 없이 완주했어요!' },
+];
+const STAGE_BADGE_KEYS = ['seed_explorer', 'growth_guardian', 'lifecycle_master'];
 
 // 인사이드 아웃 감정 정의 (mood key → 표시 정보)
 const INSIDE_OUT_EMOTIONS = {
@@ -1414,6 +1426,61 @@ async function fetchGeminiResponse(userText) {
 
 // 10. Educational Quizzes Logic
 
+function renderBadges() {
+  const rack = document.getElementById('badge-rack');
+  if (!rack) return;
+  rack.innerHTML = '';
+  BADGES.forEach(badge => {
+    const earned = appState.badges.includes(badge.key);
+    const item = document.createElement('div');
+    item.className = `badge-item${earned ? ' badge-earned' : ' badge-locked'}`;
+    item.title = earned ? badge.desc : '아직 획득하지 못한 뱃지';
+    item.innerHTML = `<div class="badge-circle">${earned ? badge.emoji : '🔒'}</div><div class="badge-name">${badge.name}</div>`;
+    rack.appendChild(item);
+  });
+}
+
+function awardBadge(key) {
+  if (appState.badges.includes(key)) return;
+  appState.badges.push(key);
+  renderBadges();
+  const badge = BADGES.find(b => b.key === key);
+  if (badge) showBadgeNotification(badge);
+}
+
+function showBadgeNotification(badge) {
+  const existing = document.getElementById('badge-notification');
+  if (existing) existing.remove();
+  const notif = document.createElement('div');
+  notif.id = 'badge-notification';
+  notif.className = 'badge-notification';
+  notif.innerHTML = `
+    <div class="badge-notif-inner">
+      <div class="badge-notif-emoji">${badge.emoji}</div>
+      <div>
+        <div class="badge-notif-title">🎉 새 뱃지 획득!</div>
+        <div class="badge-notif-name">${badge.name}</div>
+        <div class="badge-notif-desc">${badge.desc}</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(notif);
+  setTimeout(() => notif.classList.add('badge-notif-show'), 50);
+  setTimeout(() => {
+    notif.classList.remove('badge-notif-show');
+    setTimeout(() => notif.remove(), 400);
+  }, 3500);
+}
+
+function checkStageCompletion(stageIdx) {
+  const stage = questStages[stageIdx];
+  if (appState.stageCorrectCount === stage.questions.length) {
+    awardBadge('perfect_gardener');
+  }
+  awardBadge(STAGE_BADGE_KEYS[stageIdx]);
+  appState.stageCorrectCount = 0;
+}
+
 function renderQuestProgress() {
   const bar = document.getElementById('quest-progress-bar');
   if (!bar) return;
@@ -1497,6 +1564,7 @@ function handleQuizAnswer(chosenIndex, btnElement) {
   if (chosenIndex === qData.answer) {
     btnElement.classList.add('correct');
     appState.fertilizerCount++;
+    appState.stageCorrectCount++;
     document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
     fbTitle.textContent = "정답입니다! 🌟";
     fbTitle.className = "text-green";
@@ -1546,7 +1614,10 @@ function nextQuiz() {
 }
 
 function showStageComplete() {
-  const completedStage = questStages[appState.quizStageIndex];
+  const completedStageIdx = appState.quizStageIndex;
+  const completedStage = questStages[completedStageIdx];
+  checkStageCompletion(completedStageIdx);
+
   appState.quizStageIndex++;
   appState.quizQIndexInStage = 0;
 
@@ -1574,6 +1645,9 @@ function showStageComplete() {
 }
 
 function showAllQuestsComplete() {
+  checkStageCompletion(appState.quizStageIndex);
+  awardBadge('plant_doctor');
+
   appState.fertilizerCount += 3;
   document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
 
@@ -2096,6 +2170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Load initial systems
     loadQuiz();
+    renderBadges();
     renderDiaries();
     
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
@@ -2125,6 +2200,8 @@ document.addEventListener("DOMContentLoaded", () => {
         quizStageIndex: 0,
         quizQIndexInStage: 0,
         completedStages: [],
+        badges: [],
+        stageCorrectCount: 0,
         isSimulating: false,
         simulationIntervalId: null,
         dailyGrowth: {},

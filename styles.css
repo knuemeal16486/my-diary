@@ -1464,6 +1464,92 @@ body {
   color: #BDBDBD;
 }
 
+/* Badge Rack */
+.badge-rack-section {
+  margin-bottom: 14px;
+}
+.badge-rack-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+.badge-rack {
+  display: flex;
+  gap: 6px;
+}
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+}
+.badge-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: transform 0.2s;
+}
+.badge-earned .badge-circle {
+  background: linear-gradient(135deg, #FFF8E1, #FFD54F);
+  box-shadow: 0 3px 10px rgba(255,193,7,0.45);
+  border: 2px solid #FFC107;
+  animation: badge-pop 0.45s ease;
+}
+.badge-locked .badge-circle {
+  background: #F5F5F5;
+  border: 2px solid #E0E0E0;
+  font-size: 16px;
+}
+.badge-name {
+  font-size: 9px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+.badge-earned .badge-name { color: #E65100; }
+.badge-locked .badge-name { color: #BDBDBD; }
+
+@keyframes badge-pop {
+  0%   { transform: scale(0.4); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Badge Notification Toast */
+.badge-notification {
+  position: fixed;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: white;
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  border: 2px solid #FFC107;
+  transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  min-width: 250px;
+  max-width: 310px;
+}
+.badge-notif-show { top: 16px; }
+.badge-notif-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.badge-notif-emoji { font-size: 2.4em; }
+.badge-notif-title { font-size: 10px; color: #FFA000; font-weight: 700; margin-bottom: 2px; }
+.badge-notif-name  { font-size: 14px; font-weight: 700; color: #333; }
+.badge-notif-desc  { font-size: 11px; color: #666; margin-top: 2px; }
+
 .quiz-card-box {
   background: white;
   border: 1px solid rgba(0,0,0,0.05);
