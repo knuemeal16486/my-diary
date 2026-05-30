@@ -1129,7 +1129,7 @@ function simulationTick() {
   let waterDrain = 3;
   let targetSun = 20;
   let targetWind = 20;
-  let soilDrain = 1.5;
+  let soilDrain = 0.4;
 
   // Apply Weather Modifiers
   if (appState.weather === 'sunny') { waterDrain += 2; targetSun += 30; }
@@ -1157,7 +1157,7 @@ function simulationTick() {
       waterDrain += 3;
       targetSun += 35;
       targetWind += 40;
-      soilDrain += 1.0;
+      soilDrain += 0.3;
       break;
   }
 
