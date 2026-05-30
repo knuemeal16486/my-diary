@@ -1725,6 +1725,34 @@ body {
   animation: sway-fast 0.9s infinite ease-in-out;
 }
 
+/* Emotion Weather Animations */
+.weather-windy .plant-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: sway-fast 0.6s infinite ease-in-out;
+}
+.weather-rainy .plant-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: shiver-slight 2s infinite alternate ease-in-out;
+}
+@keyframes shiver-slight {
+  0% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(0.98) translateY(1%) rotate(-1deg); }
+  100% { transform: scaleY(1) translateY(0) rotate(1deg); }
+}
+
+.weather-sunny .plant-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: bounce-joy 3s infinite alternate ease-in-out;
+}
+@keyframes bounce-joy {
+  0% { transform: scaleY(1) translateY(0); }
+  50% { transform: scaleY(1.02) translateY(-1%); }
+  100% { transform: scaleY(1) translateY(0); }
+}
+
 @keyframes sway {
   0%, 100% { transform: rotate(-1deg); }
   50% { transform: rotate(1.5deg); }

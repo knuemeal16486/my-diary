@@ -401,7 +401,8 @@ let appState = {
   isSimulating: false,
   simulationIntervalId: null,
   dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
-  currentCalendarDate: new Date()
+  currentCalendarDate: new Date(),
+  emotionMissionCompleted: false // Tracks if the user completed the current emotion care mission
 };
 
 // Plant Growth Badges
@@ -1378,6 +1379,7 @@ function giveWater() {
   }, 1800);
 
   addBotMessage("💧 시원한 물 감사합니다! 흙이 수분을 머금어 촉촉해졌어요.");
+  checkEmotionCareMission('물 주기');
   updateDashboardUI();
 }
 
@@ -1386,6 +1388,7 @@ function toggleSunLamp() {
   if (appState.isSunLampOn) {
     appState.stats.sun = Math.min(100, appState.stats.sun + 15);
     addBotMessage("💡 인공 조명(생장용 LED)을 켰습니다! 식물 잎사귀들이 에너지를 내기 시작했어요.");
+    checkEmotionCareMission('햇빛 쬐기');
   } else {
     addBotMessage("💡 조명을 껐습니다. 자연 날씨 상태의 빛으로 돌아갑니다.");
   }
@@ -1397,6 +1400,7 @@ function toggleWindow() {
   if (appState.isWindowOpen) {
     appState.stats.wind = Math.min(100, appState.stats.wind + 20);
     addBotMessage("🪟 창문을 시원하게 열었어요! 맑은 바깥바람이 화분 사이로 흘러 들어옵니다.");
+    checkEmotionCareMission('환기 하기');
   } else {
     addBotMessage("🪟 창문을 닫아 방 안의 공기 흐름을 진정시켰습니다.");
   }
@@ -1421,6 +1425,7 @@ function useFertilizer() {
   }, 1800);
 
   addBotMessage("🧪 유기농 비료를 흙에 솔솔 뿌렸습니다! 영양분도 공급하고 식물이 빠르게 자라도록 도왔어요.");
+  checkEmotionCareMission('비료 주기');
   updateDashboardUI();
 }
 
@@ -1532,12 +1537,18 @@ async function fetchGeminiResponse(userText) {
   const wind = appState.stats.wind;
   const soil = appState.stats.soil;
 
+  const recentDiary = appState.diaryList[0];
+  const recentEmotion = recentDiary ? recentDiary.mood : "평온";
+  const weatherLabel = appState.weather === 'rainy' ? '마음에 비가 옴(우울/슬픔)' : appState.weather === 'windy' ? '마음에 바람이 붊(화/두려움)' : appState.weather === 'sunny' ? '마음에 해가 뜸(기쁨/행복)' : '평온함';
+
   const systemPrompt = `당신은 초등학교의 다정하고 따뜻한 담임 선생님입니다. 학생(사용자)이 교실에서 가상의 반려 식물을 기르는 것을 도와주고 있습니다.
 현재 학생이 기르는 식물은 '${profile.name}'입니다.
 현재 식물의 환경 상태: 수분 ${Math.round(water)}%, 햇빛 ${Math.round(sun)}%, 환기 ${Math.round(wind)}%, 영양 ${Math.round(soil)}%. (모든 수치는 40~80%가 적당하며, 너무 낮거나 높으면 식물이 힘들어합니다.)
+학생의 최근 감정 상태: ${recentEmotion} (현재 마음 날씨: ${weatherLabel})
 학생의 메시지: "${userText}"
 
-학생이 식물을 돌보는 행동('물 주기', '햇빛 쬐기', '환기 하기', '비료 주기' 등)을 할 때는 무조건 1문장(한 줄)으로만 아주 짧고 다정하게 코멘트해 주세요. 긴 설명은 생략하세요. 일반적인 대화에서도 짧고 간결하게 대답해 주세요.
+학생이 식물을 돌보는 행동('물 주기', '햇빛 쬐기', '환기 하기', '비료 주기' 등)을 할 때는 무조건 1문장(한 줄)으로만 아주 짧고 다정하게 코멘트해 주세요. 일반적인 대화에서도 짧고 간결하게 대답해 주세요.
+특별히 학생이 식물에게 말을 걸었거나 감정을 표현했을 때는, 학생의 최근 감정 상태(${recentEmotion})를 바탕으로 공감하고 위로하거나 칭찬하는 다정한 답변을 1~2문장으로 해주세요.
 학생이 식물에게 도움이 되는 행동(물 주기, 햇빛 쬐기 등)을 했거나 질문에 좋은 대답을 했다면, 수치(water, sun, wind, soil 중 해당하는 것)를 +10 ~ +20 올려주고, 동시에 경험치(growth)를 +10 ~ +20 올려주세요. 행동에 실패했거나 무관한 대답이라면 0을 주세요.
 반드시 아래 JSON 형식으로만 응답해야 합니다.
 {
@@ -2112,6 +2123,63 @@ function analyzeEmotionWeather() {
       windy: '💨 강렬한 감정들이 맞닿아 바람이 불어요. 식물도 함께 힘차게 버텨낼 거예요! 💨',
     };
     if (msgs[newWeather]) addBotMessage(msgs[newWeather]);
+    
+    appState.emotionMissionCompleted = false;
+  }
+  updateEmotionMissionUI();
+}
+
+function updateEmotionMissionUI() {
+  const alertBox = document.getElementById('emotion-mission-alert');
+  const alertText = document.getElementById('emotion-mission-text');
+  if (!alertBox || !alertText) return;
+
+  if (appState.emotionMissionCompleted) {
+    alertBox.classList.add('hidden');
+    return;
+  }
+
+  alertBox.classList.remove('hidden');
+  if (appState.weather === 'rainy') {
+    alertText.innerHTML = "마음에 비가 내리는 날엔 따뜻한 위로가 필요해요. 식물에게 <strong>[햇빛 쬐기]</strong>를 선물해 줄까요?";
+  } else if (appState.weather === 'windy') {
+    alertText.innerHTML = "마음에 거센 바람이 불고 있군요! 깊은 심호흡으로 마음을 환기하듯, 식물에게 <strong>[환기 하기]</strong> 버튼을 눌러주세요.";
+  } else if (appState.weather === 'sunny') {
+    alertText.innerHTML = "행복한 에너지가 가득하네요! 이 에너지를 나누어 식물에게 <strong>[비료 주기]</strong>를 해보세요.";
+  } else {
+    alertBox.classList.add('hidden');
+  }
+}
+
+function checkEmotionCareMission(action) {
+  if (appState.emotionMissionCompleted) return;
+
+  let isMatch = false;
+  let message = "";
+
+  if (appState.weather === 'rainy' && action === '햇빛 쬐기') {
+    isMatch = true;
+    message = "💖 마음에 비가 올 때 따뜻한 햇빛을 쬐어주셨군요! 기분이 한결 나아지고 식물도 쑥쑥 자라납니다. (보너스 XP +10)";
+  } else if (appState.weather === 'windy' && action === '환기 하기') {
+    isMatch = true;
+    message = "💖 마음에 거센 바람이 불 때, 창문을 열어 환기해 주셨군요! 마음이 차분해지고 식물도 상쾌해합니다. (보너스 XP +10)";
+  } else if (appState.weather === 'sunny' && action === '비료 주기') {
+    isMatch = true;
+    message = "💖 행복한 햇살 아래서 비료를 주셨군요! 기쁨의 에너지가 식물에게 듬뿍 전해졌어요. (보너스 XP +10)";
+  }
+
+  if (isMatch) {
+    appState.emotionMissionCompleted = true;
+    appState.growthXP = Math.min(100, appState.growthXP + 10);
+    addBotMessage(message);
+    updateEmotionMissionUI();
+    
+    // Check level up from bonus
+    if (appState.growthXP >= 100 && appState.growthStage < 6) {
+      appState.growthStage++;
+      appState.growthXP = 0;
+      triggerStageLevelUp();
+    }
   }
 }
 
@@ -2799,5 +2867,111 @@ document.addEventListener("DOMContentLoaded", () => {
       renderCalendar();
     });
   }
+
+  // Emotion Report Bindings
+  const btnEmotionReport = document.getElementById('btn-emotion-report');
+  const erModal = document.getElementById('emotion-report-modal');
+  const erClose = document.getElementById('er-close-btn');
+  const erOk = document.getElementById('er-ok-btn');
+
+  if (btnEmotionReport) {
+    btnEmotionReport.addEventListener('click', () => {
+      generateEmotionReport();
+    });
+  }
+
+  const closeERModal = () => {
+    if (erModal) erModal.classList.add('hidden');
+  };
+
+  if (erClose) erClose.addEventListener('click', closeERModal);
+  if (erOk) erOk.addEventListener('click', closeERModal);
 });
+
+// ----------------------------------------------------
+// Emotion Calendar Report Generation
+// ----------------------------------------------------
+async function generateEmotionReport() {
+  const modal = document.getElementById('emotion-report-modal');
+  const content = document.getElementById('er-content');
+  const loading = document.getElementById('er-loading');
+  const title = document.getElementById('er-month-title');
+  
+  if (!modal || !content || !loading || !title) return;
+
+  modal.classList.remove('hidden');
+  content.style.display = 'none';
+  loading.style.display = 'flex';
+  
+  const currentMonth = appState.currentCalendarDate.getMonth();
+  const currentYear = appState.currentCalendarDate.getFullYear();
+  title.innerText = `${currentYear}년 ${currentMonth + 1}월`;
+
+  // Collect this month's diaries
+  const monthlyDiaries = appState.diaryList.filter(d => {
+    const dDate = new Date(d.date);
+    return dDate.getMonth() === currentMonth && dDate.getFullYear() === currentYear;
+  });
+
+  if (monthlyDiaries.length === 0) {
+    loading.style.display = 'none';
+    content.style.display = 'block';
+    content.innerHTML = "<p>이번 달에는 아직 작성된 일기가 없어요. 나의 감정을 들려주면 식물이 더 기뻐할 거예요!</p>";
+    return;
+  }
+
+  // Count emotions
+  let emotionCounts = {};
+  monthlyDiaries.forEach(d => {
+    // d.mood format is usually "emoji label" e.g., "😄 기쁨이"
+    const moodName = d.mood.split(' ')[1] || d.mood;
+    emotionCounts[moodName] = (emotionCounts[moodName] || 0) + 1;
+  });
+  
+  const emotionSummary = Object.entries(emotionCounts).map(([mood, count]) => `${mood} ${count}번`).join(', ');
+
+  const prompt = `당신은 초등학교 다정하고 따뜻한 담임 선생님입니다. 학생이 반려 식물(현재 ${appState.growthStage}단계)을 기르면서 작성한 한 달치 감정 일기 통계를 바탕으로 다정하고 따뜻한 회고 보고서를 작성해 주세요.
+  
+이번 달 학생의 감정 통계: ${emotionSummary}
+총 작성한 일기 수: ${monthlyDiaries.length}개
+
+요구사항:
+1. 학생이 다양한 감정을 느꼈음을 인정하고 공감해 주세요.
+2. 비(슬픔/우울/불안)나 바람(화/두려움) 같은 감정의 날씨도 식물이 튼튼하게 자라는데 큰 도움이 되었다는 점을 꼭 칭찬해 주세요. (실제로 비가 올 때 식물이 물을 듬뿍 마셔서 경험치를 2배로 얻었습니다)
+3. 햇빛(기쁨/행복)이 식물을 미소 짓게 했다는 점도 언급해 주세요.
+4. 초등학생 6학년이 읽기 좋게 다정하고 부드러운 '해요체(존댓말)'로 작성해 주세요.
+5. 3~4문단 정도로 구성하고, 마크다운(HTML)을 약간 섞어서 보기 좋게 작성해 주세요. (예: <strong>강조</strong>, <br> 등)
+6. 반드시 선생님이 학생에게 편지를 쓰는 듯한 어조로 작성하세요.`;
+
+  try {
+    const url = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=\${GEMINI_API_KEY}\`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 400 }
+      })
+    });
+    
+    if (!response.ok) throw new Error("API Request Failed");
+    const data = await response.json();
+    let reportHtml = "보고서를 불러올 수 없어요.";
+    if (data.candidates && data.candidates.length > 0) {
+      reportHtml = data.candidates[0].content.parts[0].text;
+    }
+
+    // Convert markdown bold to HTML and newlines to <br>
+    reportHtml = reportHtml.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');
+    reportHtml = reportHtml.replace(/\\n/g, '<br>');
+
+    content.innerHTML = reportHtml;
+  } catch (err) {
+    console.error(err);
+    content.innerHTML = "<p>앗, 선생님이 바쁘셔서 보고서를 작성하지 못했어요. 잠시 후 다시 시도해 주세요!</p>";
+  } finally {
+    loading.style.display = 'none';
+    content.style.display = 'block';
+  }
+}
 

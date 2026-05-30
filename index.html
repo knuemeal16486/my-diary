@@ -379,6 +379,11 @@
                   <span id="health-alert-text">환경이 맞지 않아 식물이 스트레스를 받고 있습니다!</span>
                 </div>
 
+                <div class="health-alert-box info hidden" id="emotion-mission-alert" style="margin-bottom: 10px; background: rgba(74, 144, 226, 0.1); border: 1px solid #4A90D9; color: #1e60a3; display: flex; align-items: center; gap: 8px; padding: 12px; border-radius: 8px;">
+                  <i data-lucide="heart" class="alert-icon" style="color: #4A90D9;"></i>
+                  <span id="emotion-mission-text" style="font-weight: 500; font-size: 0.95rem;"></span>
+                </div>
+
                 <!-- Recommended Prompt Chips (Care Options) -->
                 <div class="prompt-chips" id="chat-prompt-chips">
                   <button class="chip-btn" id="chip-water" data-action="물 주기"><i data-lucide="droplet"></i> 물 주기</button>
@@ -550,6 +555,9 @@
                   <div class="calendar-grid" id="calendar-grid">
                     <!-- Calendar days injected by JS -->
                   </div>
+                  <button id="btn-emotion-report" class="btn-primary btn-full mt-10" style="margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                    <i data-lucide="sparkles"></i> 이번 달 마음 정원 보고서 보기
+                  </button>
                 </div>
               </div>
 
@@ -569,6 +577,28 @@
 
     </main>
 
+  </div>
+
+  <!-- Emotion Report Modal -->
+  <div id="emotion-report-modal" class="lifecycle-modal hidden">
+    <div class="lifecycle-modal-overlay"></div>
+    <div class="lifecycle-modal-card">
+      <button id="er-close-btn" class="lifecycle-close-btn">✕</button>
+      <div class="lifecycle-header">
+        <div style="font-size: 3em;">📝</div>
+        <h2 style="color: #4A90D9; margin-top: 10px;">마음 정원 보고서</h2>
+        <p class="slogan" id="er-month-title">2026년 5월</p>
+      </div>
+      <div class="lifecycle-body" style="text-align: center;">
+        <div id="er-loading" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
+          <i data-lucide="loader" class="spin-icon" style="width: 32px; height: 32px; color: #4A90D9;"></i>
+          <p>선생님이 마음 정원을 살펴보고 있어요...</p>
+        </div>
+        <div id="er-content" style="display: none; text-align: left; line-height: 1.6; color: #333; margin: 20px 0; background: #F8FBFF; padding: 20px; border-radius: 12px; border: 1px solid #D0E3F5;">
+        </div>
+        <button id="er-ok-btn" class="btn-primary btn-full mt-10">확인</button>
+      </div>
+    </div>
   </div>
 
   <!-- Life Cycle Complete Modal -->
