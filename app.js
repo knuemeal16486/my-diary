@@ -1048,7 +1048,7 @@ function processTestResults() {
   const logContainer = document.querySelector('.analysis-logs');
   logContainer.innerHTML = '';
   
-  let delay = 600;
+  let delay = 350;
   logLines.forEach((line, index) => {
     setTimeout(() => {
       const div = document.createElement('div');
@@ -1079,7 +1079,7 @@ function processTestResults() {
 
     appState.selectedPlantKey = maxKey;
     showResultScreen(maxKey);
-  }, 3200);
+  }, 1600);
 }
 
 function showResultScreen(plantKey) {
