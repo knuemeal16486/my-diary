@@ -2053,6 +2053,7 @@ async function saveDiary() {
   lucide.createIcons();
 
   let generatedImageUrl = "";
+  let teacherComment = "";
   try {
     const prompt = await fetchImagePromptFromGemini(text, emotion.label);
     if (prompt) {
@@ -2061,7 +2062,14 @@ async function saveDiary() {
   } catch(e) {
     console.error("Failed to generate image prompt", e);
   }
-  
+
+  try {
+    saveBtn.innerHTML = '<i data-lucide="loader" class="spin-icon"></i> 선생님의 다정한 코멘트를 기다리는 중...';
+    teacherComment = await fetchTeacherCommentFromGemini(text, emotion.label) || "";
+  } catch(e) {
+    console.error("Failed to fetch teacher comment", e);
+  }
+
   const today = new Date();
   const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
@@ -2072,7 +2080,8 @@ async function saveDiary() {
     color: emotion.color,
     content: text,
     imageUrl: generatedImageUrl,
-    userPhotos: uploadedPhotosBase64.slice()
+    userPhotos: uploadedPhotosBase64.slice(),
+    teacherComment: teacherComment
   };
 
   appState.diaryList.unshift(entry);
@@ -2141,6 +2150,37 @@ async function fetchImagePromptFromGemini(text, mood) {
   const data = await response.json();
   if (data.candidates && data.candidates.length > 0) {
     return data.candidates[0].content.parts[0].text.trim();
+  }
+  return null;
+}
+
+async function fetchTeacherCommentFromGemini(text, mood) {
+  if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
+
+  const prompt = `당신은 초등학교의 다정하고 따뜻한 담임 선생님입니다. 학생이 반려 식물을 관찰하고 다음과 같은 일기를 썼습니다.
+일기 내용: "${text}"
+학생의 오늘 감정: ${mood}
+
+학생의 일기를 읽고, 깊은 공감과 칭찬을 담은 따뜻한 선생님의 코멘트를 1~2문장으로 '해요체(존댓말)'를 사용하여 다정하게 작성해 주세요. JSON 포맷 없이 순수 텍스트로만 대답해 주세요.`;
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 150 }
+      })
+    });
+    
+    if (!response.ok) return null;
+    const data = await response.json();
+    if (data.candidates && data.candidates.length > 0) {
+      return data.candidates[0].content.parts[0].text.trim();
+    }
+  } catch(e) {
+    console.error("Teacher comment fetch error:", e);
   }
   return null;
 }
@@ -2271,6 +2311,18 @@ function renderDiaries() {
       mediaHtml += `</div>`;
     }
 
+    let commentHtml = '';
+    if (diary.teacherComment) {
+      commentHtml = `
+        <div style="margin-top: 15px; padding: 12px; background: rgba(74, 144, 226, 0.05); border-left: 3px solid #4A90D9; border-radius: 4px;">
+          <div style="font-weight: bold; color: #4A90D9; margin-bottom: 5px; font-size: 0.9rem; display: flex; align-items: center; gap: 4px;">
+            <i data-lucide="message-square" style="width:14px; height:14px;"></i> 선생님의 코멘트
+          </div>
+          <p style="margin: 0; font-size: 0.95rem; color: #333; line-height: 1.5; font-family: 'GangwonEdu_OTFBoldA', sans-serif;">${escapeHTML(diary.teacherComment)}</p>
+        </div>
+      `;
+    }
+
     card.innerHTML = `
       <div class="diary-card-header">
         <span class="diary-date"><i data-lucide="calendar" class="icon-small"></i> ${diary.date}</span>
@@ -2278,6 +2330,7 @@ function renderDiaries() {
       </div>
       ${mediaHtml}
       <p class="diary-body">${escapeHTML(diary.content)}</p>
+      ${commentHtml}
     `;
     container.appendChild(card);
   });
