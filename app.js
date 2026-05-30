@@ -1592,6 +1592,9 @@ async function processUserChat(messageText) {
     thinkingBubble.remove();
     if (error.message === 'API_KEY_MISSING') {
       addBotMessage("선생님 연결이 아직 준비되지 않았어요. 선생님께 API 키 설정을 부탁드려요! 🔑");
+    } else if (error.message.startsWith('API_ERROR:')) {
+      const status = error.message.split(':')[1];
+      addBotMessage(`API 오류 (${status}): ${status === '400' ? '요청이 잘못됐어요 — API 키를 확인해주세요.' : status === '403' ? 'API 키가 유효하지 않아요.' : status === '429' ? '요청이 너무 많아요. 잠시 후 다시 시도해주세요.' : '서버 오류가 발생했어요.'}`);
     } else {
       addBotMessage("앗, 선생님이 잠깐 자리를 비웠어요. 조금 뒤에 다시 말해줄래요? 😊");
     }
@@ -1648,7 +1651,7 @@ async function fetchGeminiResponse(userText) {
   if (!response.ok) {
     const errorText = await response.text();
     console.error("Gemini API Error:", response.status, errorText);
-    throw new Error('Gemini API 연동 중 오류 발생');
+    throw new Error(`API_ERROR:${response.status}`);
   }
 
   const data = await response.json();
