@@ -121,47 +121,125 @@ const plantProfiles = {
   }
 };
 
-// Curriculum Quizzes (6th Grade Practical Arts)
-const quizQuestions = [
+// Curriculum Quizzes — 3-Stage Quest System (6th Grade Practical Arts)
+const questStages = [
   {
-    question: "식물이 스스로 자라고 건강한 생명을 유지하는 데 꼭 필요한 '성장 4대 필수 요소'가 아닌 것은 무엇일까요?",
-    options: ["적당한 수분(물)", "따뜻한 햇빛", "공기 순환(바람과 환기)", "매일 주는 설탕물"],
-    answer: 3,
-    explanation: "식물에게는 적절한 수분, 햇빛, 환기(바람/이산화탄소 공급), 그리고 흙 속의 영양분이 필수적입니다. 설탕물을 많이 주면 오히려 삼투압 현상 때문에 뿌리가 상하고 썩을 수 있으니 삼가야 해요!"
+    stageName: "씨앗 탐험가",
+    stageEmoji: "🌱",
+    stageDesc: "식물이 자라는 기본 조건을 배워보자!",
+    questions: [
+      {
+        question: "식물이 스스로 자라고 건강한 생명을 유지하는 데 꼭 필요한 '성장 4대 필수 요소'가 아닌 것은 무엇일까요?",
+        options: ["적당한 수분(물)", "따뜻한 햇빛", "공기 순환(바람과 환기)", "매일 주는 설탕물"],
+        answer: 3,
+        explanation: "식물에게는 적절한 수분, 햇빛, 환기(바람/이산화탄소 공급), 그리고 흙 속의 영양분이 필수적입니다. 설탕물을 많이 주면 오히려 삼투압 현상 때문에 뿌리가 상하고 썩을 수 있으니 삼가야 해요!"
+      },
+      {
+        question: "씨앗이 싹을 틔우기 위해 반드시 필요한 조건 세 가지를 모두 고른 것은 무엇일까요?",
+        options: ["물, 적절한 온도, 공기(산소)", "물, 비료, 햇빛", "햇빛, 바람, 설탕", "흙, 비료, 햇빛"],
+        answer: 0,
+        explanation: "씨앗이 발아(싹트기)하려면 물, 적절한 온도, 공기(산소)가 필요합니다. 햇빛은 싹이 튼 이후 자라는 데 필요하지만, 발아 자체에는 필수가 아닙니다. 씨앗을 흙에 묻으면 어두워도 싹이 트는 이유가 바로 이 때문이에요!"
+      },
+      {
+        question: "화분에 물을 주는 정원사의 가장 올바른 습관은 무엇일까요?",
+        options: [
+          "식물이 지루하지 않게 1시간마다 조금씩 물을 뿌려준다.",
+          "매일 아침 찰랑찰랑하게 화분을 물바다로 채워둔다.",
+          "손가락으로 겉흙을 한 마디 정도 만져보고 완전히 보슬하게 말랐을 때, 배수구로 물이 나올 때까지 듬뿍 준다.",
+          "시들기 전까지는 절대 물을 주지 않고 몇 달간 그대로 둔다."
+        ],
+        answer: 2,
+        explanation: "정답은 흙 상태를 손가락이나 이쑤시개 등으로 체크한 뒤, 물을 줄 때는 화분 받침대 밑으로 흘러나올 때까지 골고루 듬뿍 주는 것입니다. 잦은 찔끔 물주기는 뿌리를 숨 막히게 만듭니다."
+      },
+      {
+        question: "식물의 뿌리가 하는 아주 고마운 일 중 거리가 먼 것은 무엇일까요?",
+        options: [
+          "화분 속 흙을 움켜쥐어 식물이 쓰러지지 않게 고정해준다.",
+          "이산화탄소를 흡수하고 산소를 잎 밖으로 내뱉는 호흡 및 광합성을 총괄한다.",
+          "흙 속 물과 녹아있는 영양 성분을 빨아들여 온몸으로 전달한다.",
+          "남는 영양분을 뿌리 통통한 곳에 저장하여 보관하기도 한다."
+        ],
+        answer: 1,
+        explanation: "광합성과 기체 교환은 주로 식물의 '잎'에 있는 엽록체와 기공을 통해 이루어집니다. 뿌리는 흡수, 지탱, 저장의 역할을 훌륭히 수행한답니다!"
+      }
+    ]
   },
   {
-    question: "식물의 초록색 잎 속 엽록체에서 햇빛, 이산화탄소, 물을 이용해 스스로 유기 양분을 만들어내는 놀라운 생명 현상을 무엇이라고 부를까요?",
-    options: ["광합성 작용", "증산 작용", "호흡 작용", "화분 작용"],
-    answer: 0,
-    explanation: "정답은 광합성 작용입니다! 식물은 동물처럼 먹이를 찾지 않는 대신 햇빛을 받아 녹말과 같은 양분을 직접 제조해요. 이때 산소도 함께 발생시켜 지구를 맑게 해준답니다."
+    stageName: "성장 수호자",
+    stageEmoji: "🌿",
+    stageDesc: "광합성과 식물이 자라는 비밀을 파헤쳐보자!",
+    questions: [
+      {
+        question: "식물의 초록색 잎 속 엽록체에서 햇빛, 이산화탄소, 물을 이용해 스스로 유기 양분을 만들어내는 놀라운 생명 현상을 무엇이라고 부를까요?",
+        options: ["광합성 작용", "증산 작용", "호흡 작용", "화분 작용"],
+        answer: 0,
+        explanation: "정답은 광합성 작용입니다! 식물은 동물처럼 먹이를 찾지 않는 대신 햇빛을 받아 녹말과 같은 양분을 직접 제조해요. 이때 산소도 함께 발생시켜 지구를 맑게 해준답니다."
+      },
+      {
+        question: "방울토마토나 허브 등을 키울 때, 잎 겨드랑이에서 삐져나오는 불필요한 어린 곁가지를 손으로 꺾어주어 원줄기가 튼튼하게 열매를 맺도록 돕는 작업을 무엇이라고 할까요?",
+        options: ["솎아내기", "곁순 따기", "꽃눈 자르기", "북주기"],
+        answer: 1,
+        explanation: "정답은 곁순 따기입니다! 곁순을 떼어내지 않으면 쓸데없는 줄기가 번성하여 영양분이 다 분산되므로, 열매나 본줄기가 작고 약하게 자라게 됩니다. 정리가 필수적이에요."
+      },
+      {
+        question: "식물의 잎이 초록색으로 보이는 이유는 무엇일까요?",
+        options: [
+          "잎 속에 물이 가득 차 있어서",
+          "잎 세포 안에 엽록소(클로로필)라는 초록 색소가 있어서",
+          "흙의 갈색이 반대 색인 초록으로 보여서",
+          "햇빛이 초록색 파장만 잎에 반사시켜서"
+        ],
+        answer: 1,
+        explanation: "잎이 초록색인 것은 세포 안 엽록체에 '엽록소(클로로필)'라는 초록 색소가 있기 때문입니다. 엽록소는 빨간색·파란색 빛은 흡수하고 초록색 빛은 반사하기 때문에 우리 눈에 초록으로 보인답니다!"
+      },
+      {
+        question: "식물이 뿌리로 흡수한 물을 잎의 기공을 통해 수증기로 내보내는 현상을 무엇이라고 하나요?",
+        options: ["광합성", "증산 작용", "삼투압 현상", "호흡 작용"],
+        answer: 1,
+        explanation: "증산 작용입니다! 식물은 증산을 통해 체온을 조절하고 뿌리에서 물을 위로 끌어올리는 힘을 만들어냅니다. 더운 여름날 숲이 시원한 이유 중 하나가 바로 나무들의 증산 작용 덕분이에요."
+      }
+    ]
   },
   {
-    question: "방울토마토나 허브 등을 키울 때, 잎 겨드랑이에서 삐져나오는 불필요한 어린 곁가지를 손으로 꺾어주어 원줄기가 튼튼하게 열매를 맺도록 돕는 작업을 무엇이라고 할까요?",
-    options: ["솎아내기", "곁순 따기", "꽃눈 자르기", "북주기"],
-    answer: 1,
-    explanation: "정답은 곁순 따기입니다! 곁순을 떼어내지 않으면 쓸데없는 줄기가 번성하여 영양분이 다 분산되므로, 열매나 본줄기가 작고 약하게 자라게 됩니다. 정리가 필수적이에요."
-  },
-  {
-    question: "화분에 물을 주는 정원사의 가장 올바른 습관은 무엇일까요?",
-    options: [
-      "식물이 지루하지 않게 1시간마다 조금씩 물을 뿌려준다.",
-      "매일 아침 찰랑찰랑하게 화분을 물바다로 채워둔다.",
-      "손가락으로 겉흙을 한 마디 정도 만져보고 완전히 보슬하게 말랐을 때, 배수구로 물이 나올 때까지 듬뿍 준다.",
-      "시들기 전까지는 절대 물을 주지 않고 몇 달간 그대로 둔다."
-    ],
-    answer: 2,
-    explanation: "정답은 흙 상태를 손가락이나 이쑤시개 등으로 체크한 뒤, 물을 줄 때는 화분 받침대 밑으로 흘러나올 때까지 골고루 듬뿍 주는 것입니다. 잦은 찔끔 물주기는 뿌리를 숨 막히게 만듭니다."
-  },
-  {
-    question: "식물의 뿌리가 하는 아주 고마운 일 중 거리가 먼 것은 무엇일까요?",
-    options: [
-      "화분 속 흙을 움켜쥐어 식물이 쓰러지지 않게 고정해준다.",
-      "이산화탄소를 흡수하고 산소를 잎 밖으로 내뱉는 호흡 및 광합성을 총괄한다.",
-      "흙 속 물과 녹아있는 영양 성분을 빨아들여 온몸으로 전달한다.",
-      "남는 영양분을 뿌리 통통한 곳에 저장하여 보관하기도 한다."
-    ],
-    answer: 1,
-    explanation: "광합성과 기체 교환은 주로 식물의 '잎'에 있는 엽록체와 기공을 통해 이루어집니다. 뿌리는 흡수, 지탱, 저장의 역할을 훌륭히 수행한답니다!"
+    stageName: "한살이 마스터",
+    stageEmoji: "🍎",
+    stageDesc: "씨앗에서 열매까지, 식물의 한살이를 완성하자!",
+    questions: [
+      {
+        question: "식물의 꽃이 열매로 변하기 위해 꼭 필요한 과정은 무엇일까요?",
+        options: [
+          "물을 많이 주면 꽃이 저절로 열매로 변한다.",
+          "꽃가루가 암술머리에 옮겨지는 수분(꽃가루받이)이 이루어져야 한다.",
+          "꽃잎이 모두 떨어져야만 열매가 생긴다.",
+          "비가 오면 꽃이 자동으로 열매가 된다."
+        ],
+        answer: 1,
+        explanation: "꽃이 열매가 되려면 꽃가루가 암술머리에 닿는 '수분(꽃가루받이)'이 이루어져야 합니다! 꿀벌이나 바람이 꽃가루를 옮겨주는 역할을 하지요. 수분 후 씨방이 자라 열매가 되고, 그 안에 씨앗이 생겨납니다."
+      },
+      {
+        question: "한 해 살이 식물(방울토마토 등)의 한살이 순서로 올바른 것은 무엇일까요?",
+        options: [
+          "씨앗 → 꽃 → 새싹 → 잎 → 열매",
+          "씨앗 → 새싹 → 잎과 줄기 → 꽃 → 열매 → 씨앗",
+          "씨앗 → 잎 → 열매 → 꽃 → 새싹",
+          "새싹 → 씨앗 → 꽃 → 잎 → 열매"
+        ],
+        answer: 1,
+        explanation: "씨앗 → 새싹(발아) → 잎과 줄기(성장) → 꽃(개화) → 열매(결실) → 씨앗(채종)으로 이어지는 것이 한 해 살이 식물의 한살이입니다. 우리가 기르는 반려 식물도 이 과정을 거친답니다!"
+      },
+      {
+        question: "방울토마토의 꽃은 어떤 색깔인가요?",
+        options: ["빨간색", "파란색", "노란색", "보라색"],
+        answer: 2,
+        explanation: "방울토마토의 꽃은 노란색입니다! 작은 별 모양의 노란 꽃이 피고 나면, 꽃가루받이를 거쳐 초록색 열매가 열립니다. 그 열매가 익으면서 빨갛게 변하는 거예요. 꽃과 열매의 색이 다르다는 게 신기하죠?"
+      },
+      {
+        question: "식물의 씨앗 속에 들어있는, 싹이 될 어린 식물체를 무엇이라고 하나요?",
+        options: ["배유(배젖)", "종피(씨껍질)", "배(배아)", "떡잎"],
+        answer: 2,
+        explanation: "씨앗 속의 어린 식물체를 '배(胚, 배아)'라고 합니다! 씨앗을 심으면 배아가 자라 새싹이 됩니다. 배유(배젖)는 배아에게 영양을 공급하는 저장 조직이고, 종피는 씨앗을 보호하는 껍질이에요."
+      }
+    ]
   }
 ];
 
@@ -188,12 +266,26 @@ let appState = {
   isWindowOpen: false,
   diaryList: [],
   chatLog: [],
-  quizIndex: 0,
+  quizStageIndex: 0,
+  quizQIndexInStage: 0,
+  completedStages: [],
+  badges: [],
+  stageCorrectCount: 0,
   isSimulating: false,
   simulationIntervalId: null,
   dailyGrowth: {},      // Record of XP gained per date "YYYY-MM-DD"
   currentCalendarDate: new Date()
 };
+
+// Plant Growth Badges
+const BADGES = [
+  { key: 'seed_explorer',    emoji: '🌱', name: '씨앗 탐험가',   desc: '씨앗이 싹트는 비밀을 배웠어요!' },
+  { key: 'growth_guardian',  emoji: '🌿', name: '광합성 박사',   desc: '광합성으로 식물이 자라는 원리를 알았어요!' },
+  { key: 'lifecycle_master', emoji: '🍎', name: '한살이 완성자', desc: '씨앗부터 열매까지 한살이를 완성했어요!' },
+  { key: 'plant_doctor',     emoji: '🔬', name: '식물 박사',     desc: '모든 퀘스트를 완료한 진짜 식물 박사!' },
+  { key: 'perfect_gardener', emoji: '⭐', name: '완벽 정원사',   desc: '한 단계를 오답 없이 완주했어요!' },
+];
+const STAGE_BADGE_KEYS = ['seed_explorer', 'growth_guardian', 'lifecycle_master'];
 
 // 인사이드 아웃 감정 정의 (mood key → 표시 정보)
 const INSIDE_OUT_EMOTIONS = {
@@ -1333,66 +1425,171 @@ async function fetchGeminiResponse(userText) {
 
 
 // 10. Educational Quizzes Logic
-function loadQuiz() {
-  const qData = quizQuestions[appState.quizIndex];
-  
-  // Hide feedback, load question
-  document.getElementById('quiz-result-feedback').classList.add('hidden');
-  document.getElementById('quiz-question').innerText = qData.question;
-  
-  const optionsWrapper = document.getElementById('quiz-options-list');
-  optionsWrapper.innerHTML = '';
-  optionsWrapper.style.pointerEvents = 'all'; // Re-enable clicks
 
-  qData.options.forEach((opt, index) => {
-    const btn = document.createElement('button');
-    btn.className = 'quiz-opt-btn';
-    btn.innerText = opt;
-    btn.addEventListener('click', () => handleQuizAnswer(index, btn));
-    optionsWrapper.appendChild(btn);
+function renderBadges() {
+  const rack = document.getElementById('badge-rack');
+  if (!rack) return;
+  rack.innerHTML = '';
+  BADGES.forEach(badge => {
+    const earned = appState.badges.includes(badge.key);
+    const item = document.createElement('div');
+    item.className = `badge-item${earned ? ' badge-earned' : ' badge-locked'}`;
+    item.title = earned ? badge.desc : '아직 획득하지 못한 뱃지';
+    item.innerHTML = `<div class="badge-circle">${earned ? badge.emoji : '🔒'}</div><div class="badge-name">${badge.name}</div>`;
+    rack.appendChild(item);
   });
 }
 
-function handleQuizAnswer(chosenIndex, btnElement) {
-  const qData = quizQuestions[appState.quizIndex];
+function awardBadge(key) {
+  if (appState.badges.includes(key)) return;
+  appState.badges.push(key);
+  renderBadges();
+  const badge = BADGES.find(b => b.key === key);
+  if (badge) showBadgeNotification(badge);
+}
+
+function showBadgeNotification(badge) {
+  const existing = document.getElementById('badge-notification');
+  if (existing) existing.remove();
+  const notif = document.createElement('div');
+  notif.id = 'badge-notification';
+  notif.className = 'badge-notification';
+  notif.innerHTML = `
+    <div class="badge-notif-inner">
+      <div class="badge-notif-emoji">${badge.emoji}</div>
+      <div>
+        <div class="badge-notif-title">🎉 새 뱃지 획득!</div>
+        <div class="badge-notif-name">${badge.name}</div>
+        <div class="badge-notif-desc">${badge.desc}</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(notif);
+  setTimeout(() => notif.classList.add('badge-notif-show'), 50);
+  setTimeout(() => {
+    notif.classList.remove('badge-notif-show');
+    setTimeout(() => notif.remove(), 400);
+  }, 3500);
+}
+
+function checkStageCompletion(stageIdx) {
+  const stage = questStages[stageIdx];
+  if (appState.stageCorrectCount === stage.questions.length) {
+    awardBadge('perfect_gardener');
+  }
+  awardBadge(STAGE_BADGE_KEYS[stageIdx]);
+  appState.stageCorrectCount = 0;
+}
+
+function renderQuestProgress() {
+  const bar = document.getElementById('quest-progress-bar');
+  if (!bar) return;
+  bar.innerHTML = '';
+  questStages.forEach((stage, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'quest-chip';
+    if (appState.completedStages.includes(i)) {
+      chip.classList.add('quest-chip-done');
+      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
+    } else if (i === appState.quizStageIndex) {
+      chip.classList.add('quest-chip-active');
+      chip.textContent = `${stage.stageEmoji} ${stage.stageName}`;
+    } else {
+      chip.classList.add('quest-chip-locked');
+      chip.textContent = `🔒 ${stage.stageName}`;
+    }
+    bar.appendChild(chip);
+  });
+}
+
+function loadQuiz() {
+  renderQuestProgress();
+
+  const stage = questStages[appState.quizStageIndex];
+  const qData = stage.questions[appState.quizQIndexInStage];
+
+  const card = document.getElementById('quiz-card');
+  card.innerHTML = `
+    <div class="quiz-header-badge">
+      <i data-lucide="graduation-cap" class="text-green"></i>
+      <span id="quiz-stage-label">${stage.stageEmoji} ${stage.stageName} — ${appState.quizQIndexInStage + 1}/${stage.questions.length}번</span>
+    </div>
+    <h3 id="quiz-question"></h3>
+    <div class="quiz-options-list" id="quiz-options-list"></div>
+    <div id="quiz-result-feedback" class="quiz-feedback-box hidden">
+      <div class="feedback-icon-circle" id="quiz-feedback-icon-container">
+        <i data-lucide="check" class="text-green"></i>
+      </div>
+      <h4 id="quiz-feedback-title">정답입니다!</h4>
+      <p id="quiz-feedback-desc">설명이 여기에 나타납니다.</p>
+      <div class="reward-indicator text-green">
+        <i data-lucide="sparkles"></i> 친환경 비료 1개 획득!
+      </div>
+      <button id="btn-next-quiz" class="btn-primary btn-full mt-10">다음 문제 도전하기 →</button>
+    </div>
+  `;
+
+  document.getElementById('quiz-question').textContent = qData.question;
+
   const optionsWrapper = document.getElementById('quiz-options-list');
-  
-  // Disable further clicks
+  optionsWrapper.style.pointerEvents = 'all';
+  qData.options.forEach((opt, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => handleQuizAnswer(index, btn));
+    optionsWrapper.appendChild(btn);
+  });
+
+  document.getElementById('btn-next-quiz').addEventListener('click', nextQuiz);
+  lucide.createIcons();
+}
+
+function handleQuizAnswer(chosenIndex, btnElement) {
+  const stage = questStages[appState.quizStageIndex];
+  const qData = stage.questions[appState.quizQIndexInStage];
+  const optionsWrapper = document.getElementById('quiz-options-list');
+
   optionsWrapper.style.pointerEvents = 'none';
 
   const feedbackBox = document.getElementById('quiz-result-feedback');
   const fbTitle = document.getElementById('quiz-feedback-title');
   const fbDesc = document.getElementById('quiz-feedback-desc');
   const fbIconContainer = document.getElementById('quiz-feedback-icon-container');
+  const nextBtn = document.getElementById('btn-next-quiz');
+
+  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
+  const isLastStage = (appState.quizStageIndex === questStages.length - 1);
 
   if (chosenIndex === qData.answer) {
-    // Correct!
     btnElement.classList.add('correct');
-    
-    // Reward points and items
     appState.fertilizerCount++;
-    document.getElementById('fertilizer-count').innerText = appState.fertilizerCount;
-    
-    fbTitle.innerText = "정답입니다! 🌟";
+    appState.stageCorrectCount++;
+    document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+    fbTitle.textContent = "정답입니다! 🌟";
     fbTitle.className = "text-green";
-    fbDesc.innerText = qData.explanation;
+    fbDesc.textContent = qData.explanation;
     fbIconContainer.className = "feedback-icon-circle";
     fbIconContainer.innerHTML = '<i data-lucide="check" class="text-green"></i>';
     document.querySelector('.reward-indicator').classList.remove('hidden');
   } else {
-    // Wrong!
     btnElement.classList.add('wrong');
-    
-    // Highlight correct answer
     const correctBtn = optionsWrapper.children[qData.answer];
     if (correctBtn) correctBtn.classList.add('correct');
-
-    fbTitle.innerText = "아쉬워요! 💡";
+    fbTitle.textContent = "아쉬워요! 💡";
     fbTitle.className = "text-brown";
-    fbDesc.innerText = qData.explanation;
+    fbDesc.textContent = qData.explanation;
     fbIconContainer.className = "feedback-icon-circle wrong-icon";
     fbIconContainer.innerHTML = '<i data-lucide="x"></i>';
     document.querySelector('.reward-indicator').classList.add('hidden');
+  }
+
+  if (isLastQInStage && isLastStage) {
+    nextBtn.textContent = "🎉 모든 퀘스트 완료!";
+  } else if (isLastQInStage) {
+    nextBtn.textContent = "🏆 다음 단계로 이동 →";
+  } else {
+    nextBtn.textContent = "다음 문제 도전하기 →";
   }
 
   feedbackBox.classList.remove('hidden');
@@ -1400,8 +1597,76 @@ function handleQuizAnswer(chosenIndex, btnElement) {
 }
 
 function nextQuiz() {
-  appState.quizIndex = (appState.quizIndex + 1) % quizQuestions.length;
-  loadQuiz();
+  const stage = questStages[appState.quizStageIndex];
+  const isLastQInStage = (appState.quizQIndexInStage === stage.questions.length - 1);
+
+  if (isLastQInStage) {
+    appState.completedStages.push(appState.quizStageIndex);
+    if (appState.quizStageIndex === questStages.length - 1) {
+      showAllQuestsComplete();
+    } else {
+      showStageComplete();
+    }
+  } else {
+    appState.quizQIndexInStage++;
+    loadQuiz();
+  }
+}
+
+function showStageComplete() {
+  const completedStageIdx = appState.quizStageIndex;
+  const completedStage = questStages[completedStageIdx];
+  checkStageCompletion(completedStageIdx);
+
+  appState.quizStageIndex++;
+  appState.quizQIndexInStage = 0;
+
+  appState.fertilizerCount += 2;
+  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+
+  const nextStage = questStages[appState.quizStageIndex];
+  renderQuestProgress();
+
+  const card = document.getElementById('quiz-card');
+  card.innerHTML = `
+    <div style="text-align:center; padding: 20px 10px;">
+      <div style="font-size: 3em; margin-bottom: 10px;">${completedStage.stageEmoji}</div>
+      <h3 style="color: var(--primary-green); margin-bottom: 8px;">${completedStage.stageName} 완료!</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 16px;">정말 잘했어요! 비료 2개를 추가로 획득했어요 🌿</p>
+      <div style="background: #E8F5E9; border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+        <div style="font-size: 1.6em;">${nextStage.stageEmoji}</div>
+        <div style="font-weight: 700; color: #2E7D32; margin: 4px 0;">${nextStage.stageName}</div>
+        <div style="font-size: 12px; color: #555;">${nextStage.stageDesc}</div>
+      </div>
+      <button id="btn-stage-next" class="btn-primary btn-full">다음 단계 시작하기 →</button>
+    </div>
+  `;
+  document.getElementById('btn-stage-next').addEventListener('click', loadQuiz);
+}
+
+function showAllQuestsComplete() {
+  checkStageCompletion(appState.quizStageIndex);
+  awardBadge('plant_doctor');
+
+  appState.fertilizerCount += 3;
+  document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+
+  appState.quizStageIndex = 0;
+  appState.quizQIndexInStage = 0;
+  appState.completedStages = [];
+  renderQuestProgress();
+
+  const card = document.getElementById('quiz-card');
+  card.innerHTML = `
+    <div style="text-align:center; padding: 20px 10px;">
+      <div style="font-size: 3.5em; margin-bottom: 10px;">🏆</div>
+      <h3 style="color: var(--primary-green); margin-bottom: 8px;">식물 한살이 마스터!</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 12px;">모든 퀘스트를 완료했어요! 비료 3개를 추가로 획득했어요 🌟</p>
+      <p style="font-size: 12px; color: #888; margin-bottom: 20px;">처음부터 다시 도전해서 실력을 확인해 보세요!</p>
+      <button id="btn-quest-replay" class="btn-primary btn-full">🌱 다시 도전하기</button>
+    </div>
+  `;
+  document.getElementById('btn-quest-replay').addEventListener('click', loadQuiz);
 }
 
 
@@ -1905,6 +2170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Load initial systems
     loadQuiz();
+    renderBadges();
     renderDiaries();
     
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
@@ -1931,7 +2197,11 @@ document.addEventListener("DOMContentLoaded", () => {
         isWindowOpen: false,
         diaryList: [],
         chatLog: [],
-        quizIndex: 0,
+        quizStageIndex: 0,
+        quizQIndexInStage: 0,
+        completedStages: [],
+        badges: [],
+        stageCorrectCount: 0,
         isSimulating: false,
         simulationIntervalId: null,
         dailyGrowth: {},
@@ -2027,9 +2297,6 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (action === '비료 주기') useFertilizer();
     else processUserChat(action);
   });
-
-  // Quiz next events
-  document.getElementById('btn-next-quiz').addEventListener('click', nextQuiz);
 
   // Diary mood buttons action
   document.querySelectorAll('.mood-btn').forEach(btn => {
