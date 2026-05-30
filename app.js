@@ -244,6 +244,50 @@ const questStages = [
 ];
 
 
+// Plant Part Educational Info (per species)
+const PLANT_PART_INFO = {
+  tomato: {
+    root:   { icon: '🌱', name: '방울토마토 뿌리', struct: '주뿌리에서 가느다란 곁뿌리와 뿌리털이 사방으로 뻗어요.', func: '흙 속의 물과 무기 양분을 빨아들여 줄기로 보내요. 식물이 쓰러지지 않게 흙에 고정해 줘요.' },
+    stem:   { icon: '🌿', name: '토마토 줄기', struct: '속이 꽉 찬 둥근 줄기예요. 표면에 짧은 털이 빽빽이 나 있고 독특한 향이 나요.', func: '뿌리에서 올라온 물과 영양분을 잎·열매에 전달해요. 겨드랑이에서 곁순이 자라 영양분을 빼앗으므로 제때 따줘야 해요.' },
+    leaf:   { icon: '🍃', name: '토마토 잎 (겹깃꼴겹잎)', struct: '작은 잎 여러 장이 깃털처럼 모인 복엽이에요. 가장자리는 톱니 모양이에요.', func: '햇빛·물·이산화탄소로 광합성을 해 양분을 만들어요. 기공을 통해 증산 작용도 해요.' },
+    flower: { icon: '🌼', name: '토마토 꽃 (노란 별 모양)', struct: '작은 별 모양의 노란 꽃이에요. 꽃잎 5장, 수술과 암술이 꽃 안에 함께 있어요.', func: '꽃가루받이(수분) 후 씨방이 자라 열매가 돼요. 자기 꽃가루로 수분하는 자가수분 식물이에요.' },
+    fruit:  { icon: '🍅', name: '방울토마토 열매', struct: '둥글고 빨간 열매예요. 처음엔 초록색이다가 익으면 빨갛게 변해요. 씨가 여러 개 들어있어요.', func: '씨앗을 보호해요. 동물이 먹으면 씨앗을 다른 곳에 퍼뜨려줘요. 리코펜·비타민 C가 풍부해요.' },
+    soil:   { icon: '🌍', name: '흙 (토양)', struct: '미세한 모래·점토·유기물·물·공기·미생물이 뒤섞여 있어요.', func: '뿌리를 지탱하고 물과 영양분(질소·인·칼륨)을 저장해요. 미생물이 죽은 생물을 분해해 식물의 비료로 만들어줘요.' }
+  },
+  potato: {
+    root:   { icon: '🌱', name: '감자 뿌리', struct: '덩이줄기(감자)에서 가느다란 뿌리가 사방으로 뻗어요.', func: '흙 속의 물과 무기 양분을 흡수해 줄기와 잎에 공급해요.' },
+    stem:   { icon: '🥔', name: '감자 덩이줄기 (줄기식물!)', struct: '땅속에서 굵어진 줄기예요! 겉에 오목한 눈(芽)이 여러 개 있어요. 뿌리가 아니라 줄기가 변형된 것이에요.', func: '광합성으로 만든 녹말을 저장해요. 눈에서 새 싹이 돋아 새 식물이 될 수 있어요. 씨감자로 번식에 사용해요.' },
+    leaf:   { icon: '🍃', name: '감자 잎 (겹깃꼴겹잎)', struct: '작은 잎 여러 쌍이 좌우로 달린 복엽이에요. 부드럽고 진한 초록색이에요.', func: '광합성을 통해 양분을 만들어요. 만든 양분은 줄기를 타고 내려가 땅속 감자에 저장돼요.' },
+    flower: { icon: '🌸', name: '감자 꽃 (흰색/연보라)', struct: '별 모양의 작은 꽃이 모여 피어요. 흰색이나 연보라색이에요.', func: '꽃가루받이 후 작은 초록 열매를 맺어요. 하지만 감자는 주로 씨감자(덩이줄기)로 번식해요.' },
+    fruit:  { icon: '🥔', name: '감자 덩이줄기 (먹는 부분)', struct: "\'눈(芽)\'이라는 오목한 부분이 여러 개 있어요. 속은 노란빛이나 흰빛이에요.", func: '겨울이나 건조한 계절에 살아남기 위해 에너지(녹말)를 저장해요. 사람의 중요한 식량이에요.' },
+    soil:   { icon: '🌍', name: '흙 (토양)', struct: '미세한 모래·점토·유기물·물·공기·미생물이 뒤섞여 있어요.', func: '감자는 과습에 약해요. 배수가 잘 되는 보슬보슬한 흙이 필요해요. 영양분이 풍부한 흙에서 잘 자라요.' }
+  },
+  cabbage: {
+    root:   { icon: '🌱', name: '배추 뿌리', struct: '굵은 주뿌리에서 많은 곁뿌리가 뻗어요. 비교적 얕게 퍼지는 천근성 뿌리예요.', func: '물과 무기 양분(질소·인·칼륨 등)을 흡수해요. 식물을 흙에 고정시켜요.' },
+    stem:   { icon: '🌿', name: '배추 줄기 (밑동)', struct: '짧고 굵은 줄기에 잎이 빽빽하게 달려 있어요. 밑동이 단단하게 결구를 이뤄요.', func: '물과 양분의 이동 통로예요. 잎이 단단하게 붙어 있도록 지지대 역할을 해요.' },
+    leaf:   { icon: '🥬', name: '배추 잎 (결구엽)', struct: '넓고 부드러운 잎이 속을 향해 겹겹이 말려 있어요. 바깥잎은 짙은 초록, 속잎은 연한 노란색이에요.', func: '광합성을 해 양분을 만들어요. 겹겹이 쌓여 수분을 저장하고 속을 보호해요. 비타민·무기질이 풍부해요.' },
+    flower: { icon: '🌼', name: '배추 꽃 (추대)', struct: '봄이 되면 가운데서 꽃대가 올라와 노란 십자 모양의 작은 꽃이 피어요.', func: '꽃가루받이 후 씨앗이 만들어져요. 꽃대가 올라오면(추대) 잎이 질겨지고 단맛이 줄어들어요.' },
+    fruit:  { icon: '🥬', name: '배추 결구 (우리가 먹는 부분)', struct: '잎이 안으로 말려 단단하고 촘촘한 구 모양을 만들어요. 속은 연한 노란색이에요.', func: '우리가 먹는 부분이에요! 김치의 주재료로 각종 비타민과 섬유질이 풍부해요.' },
+    soil:   { icon: '🌍', name: '흙 (토양)', struct: '미세한 모래·점토·유기물·물·공기·미생물이 뒤섞여 있어요.', func: '배추는 물을 많이 필요로 해 수분 보유력이 좋은 흙을 좋아해요. 영양분이 풍부한 흙에서 잘 자라요.' }
+  },
+  cucumber: {
+    root:   { icon: '🌱', name: '오이 뿌리', struct: '얕고 넓게 퍼지는 천근성 뿌리예요. 뿌리가 상처를 잘 입으므로 조심해야 해요.', func: '많은 수분을 흡수해요(오이 열매의 95%가 수분!). 뿌리가 얕아서 화분에서도 잘 자라요.' },
+    stem:   { icon: '🌿', name: '오이 줄기 (덩굴줄기)', struct: '가늘고 긴 덩굴 줄기예요. 마디마다 잎과 덩굴손이 달리고 거친 털이 있어요.', func: '덩굴손으로 지지대를 감아 위로 올라가요. 물과 양분의 이동 통로예요. 덩굴로 자라야 열매가 잘 열려요.' },
+    leaf:   { icon: '🍃', name: '오이 잎 (손바닥 모양)', struct: '오각형 손바닥 모양 잎이에요. 표면에 거친 털이 있고 가장자리가 톱니 모양이에요.', func: '광합성을 해요. 표면의 털이 해충과 강한 햇빛을 막아줘요. 마디에서 덩굴손이 나와 지지대를 감아요.' },
+    flower: { icon: '🌼', name: '오이 꽃 (노란색)', struct: '수꽃과 암꽃이 같은 식물에 따로 피어요. 암꽃 아래에 작은 오이 모양이 보여요.', func: '꿀벌이 꽃가루를 옮겨 수분이 이루어져야 열매가 커져요. 수꽃과 암꽃이 분리된 단성화 식물이에요.' },
+    fruit:  { icon: '🥒', name: '오이 열매', struct: '길고 초록색인 열매예요. 표면에 작은 혹과 가시가 있고 속에 씨가 줄지어 있어요.', func: '씨앗을 보호해요. 95%가 수분이라 시원하고 아삭한 식감을 줘요. 수분 보충과 피부 미용에 좋아요.' },
+    soil:   { icon: '🌍', name: '흙 (토양)', struct: '미세한 모래·점토·유기물·물·공기·미생물이 뒤섞여 있어요.', func: '오이는 수분을 매우 좋아해 촉촉한 흙이 필요해요. 뿌리가 얕아서 가볍고 통기성 좋은 흙을 선호해요.' }
+  },
+  apple: {
+    root:   { icon: '🌱', name: '사과나무 뿌리', struct: '굵고 깊은 주뿌리와 넓게 퍼지는 곁뿌리로 구성돼요. 뿌리 끝 뿌리털이 흡수를 담당해요.', func: '깊은 땅속에서 물과 무기 양분을 끌어올려요. 나무가 쓰러지지 않도록 지탱해요. 겨울 동안 양분을 저장해요.' },
+    stem:   { icon: '🌲', name: '사과나무 줄기 (목질줄기)', struct: '나무처럼 딱딱한 목질부 줄기예요. 껍질(수피) 아래에 물관과 체관이 있어요.', func: '물관으로 물·무기 양분을 위로 보내요. 체관으로 잎에서 만든 양분을 열매·뿌리에 전달해요. 해마다 나이테가 생겨요.' },
+    leaf:   { icon: '🍃', name: '사과 잎 (긴 타원형)', struct: '끝이 뾰족한 타원형 잎이에요. 가장자리에 작은 톱니가 있고 앞면은 광택이 나요.', func: '광합성으로 당분을 만들어요. 가을이 되면 엽록소가 분해되어 빨간색·노란색 단풍이 들어요.' },
+    flower: { icon: '🌸', name: '사과꽃 (분홍빛 흰색)', struct: '분홍빛이 도는 흰 꽃이에요. 꽃잎 5장, 수술 여러 개, 암술 1개로 구성돼요.', func: '꿀벌이 다른 품종의 사과나무에 꽃가루를 옮겨 줘야 열매가 잘 맺혀요. 이를 타가수분이라고 해요.' },
+    fruit:  { icon: '🍎', name: '사과 열매', struct: '빨갛고 동그란 열매예요. 우리가 먹는 과육은 꽃받침이 발달한 부분이에요. 가운데에 씨앗 5개가 있어요.', func: '씨앗을 보호하고 퍼뜨려요. 사과산과 비타민 C가 풍부해요. 열매가 빨갛게 익으려면 130~150일이 걸려요.' },
+    soil:   { icon: '🌍', name: '흙 (토양)', struct: '미세한 모래·점토·유기물·물·공기·미생물이 뒤섞여 있어요.', func: '사과나무는 깊고 배수가 잘 되는 흙을 좋아해요. 뿌리가 깊어 화분보다 넓은 땅이 필요해요.' }
+  }
+};
+
 // 2. Application State Variables
 let appState = {
   userName: "꼬마 정원사",
@@ -303,6 +347,55 @@ const INSIDE_OUT_EMOTIONS = {
 
 // 3. Dynamic SVG Generator
 // Renders vector graphic of the plant based on its key, growth stage, and safety status
+
+function buildInfoMarkers(plantKey, stage) {
+  let m = '';
+  // Soil marker — bottom right (always shown)
+  m += `<g class="plant-hit-area" data-part="soil" style="cursor:pointer">
+    <circle cx="182" cy="188" r="13" fill="#4E342E" opacity="0.9" stroke="white" stroke-width="1.5"/>
+    <text x="182" y="193" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">흙</text>
+  </g>`;
+  // Root marker — left, underground zone
+  m += `<g class="plant-hit-area" data-part="root" style="cursor:pointer">
+    <circle cx="18" cy="167" r="13" fill="#795548" opacity="0.9" stroke="white" stroke-width="1.5"/>
+    <text x="18" y="172" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">뿌리</text>
+  </g>`;
+  // Stem marker
+  if (plantKey === 'potato' && stage >= 3) {
+    // Potato: underground tuber = stem
+    m += `<g class="plant-hit-area" data-part="stem" style="cursor:pointer">
+      <circle cx="182" cy="165" r="13" fill="#8D6E63" opacity="0.9" stroke="white" stroke-width="1.5"/>
+      <text x="182" y="170" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">줄기</text>
+    </g>`;
+  } else if (plantKey !== 'potato' && stage >= 1) {
+    m += `<g class="plant-hit-area" data-part="stem" style="cursor:pointer">
+      <circle cx="18" cy="108" r="13" fill="#33691E" opacity="0.9" stroke="white" stroke-width="1.5"/>
+      <text x="18" y="113" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">줄기</text>
+    </g>`;
+  }
+  // Leaf marker — left, upper zone
+  if (stage >= 1) {
+    m += `<g class="plant-hit-area" data-part="leaf" style="cursor:pointer">
+      <circle cx="18" cy="55" r="13" fill="#43A047" opacity="0.9" stroke="white" stroke-width="1.5"/>
+      <text x="18" y="60" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">잎</text>
+    </g>`;
+  }
+  // Flower or fruit marker — right, upper zone
+  if (stage === 3) {
+    m += `<g class="plant-hit-area" data-part="flower" style="cursor:pointer">
+      <circle cx="182" cy="55" r="13" fill="#FFA000" opacity="0.9" stroke="white" stroke-width="1.5"/>
+      <text x="182" y="60" text-anchor="middle" fill="white" font-size="9" font-weight="bold" font-family="sans-serif">꽃</text>
+    </g>`;
+  } else if (stage >= 4) {
+    const fruitFill = plantKey==='tomato'?'#E53935':plantKey==='apple'?'#C62828':plantKey==='cucumber'?'#2E7D32':plantKey==='potato'?'#8D6E63':'#558B2F';
+    m += `<g class="plant-hit-area" data-part="fruit" style="cursor:pointer">
+      <circle cx="182" cy="55" r="13" fill="${fruitFill}" opacity="0.9" stroke="white" stroke-width="1.5"/>
+      <text x="182" y="60" text-anchor="middle" fill="white" font-size="8" font-weight="bold" font-family="sans-serif">열매</text>
+    </g>`;
+  }
+  return m;
+}
+
 let _svgUid = 0;
 function generatePlantSVG(plantKey, stage, stats) {
   const profile = plantProfiles[plantKey];
@@ -375,7 +468,8 @@ function generatePlantSVG(plantKey, stage, stats) {
     </defs>
   `;
 
-  // Draw Unified Cut-away Soil Background for all plants
+  // Soil group — static, never sways
+  svg += `<g class="plant-soil">`;
   svg += `
     <g filter="url(#shadow)">
       <path d="M20,130 L180,130 L180,195 Q100,205 20,195 Z" fill="#5D4037" />
@@ -390,6 +484,13 @@ function generatePlantSVG(plantKey, stage, stats) {
       <circle cx="40" cy="175" r="3" fill="#3E2723" opacity="0.6"/>
     </g>
   `;
+  // Roots go inside the soil group so they never sway
+  if (plantKey !== 'potato') {
+    svg += drawRoot(stage);
+  }
+  svg += `</g>`;
+  // Plant body — everything above ground sways
+  svg += `<g class="plant-body">`;
 
   // Helpers for realistic drawing
   const drawStem = (x1, y1, x2, y2, w, color = stemColor) => {
@@ -514,11 +615,6 @@ function generatePlantSVG(plantKey, stage, stats) {
     }
     return roots;
   };
-
-  // Draw generic roots for all non-potato plants
-  if (plantKey !== 'potato') {
-    svg += drawRoot(stage);
-  }
 
   if (stage === 1) {
     if (plantKey === 'tomato') {
@@ -785,6 +881,8 @@ function generatePlantSVG(plantKey, stage, stats) {
     }
   }
   
+  svg += `</g>`; // close plant-body
+  svg += buildInfoMarkers(plantKey, stage);
   svg += `</svg>`;
 
   // Scope all SVG IDs to this call to prevent conflicts when multiple SVGs coexist in DOM
@@ -1670,6 +1768,31 @@ function showAllQuestsComplete() {
 }
 
 
+// 10b. Plant Part Interaction
+function initPlantInteraction() {
+  const holder = document.getElementById('plant-svg-holder');
+  holder.addEventListener('click', (e) => {
+    const hit = e.target.closest('.plant-hit-area');
+    if (!hit) return;
+    showPlantPartInfo(hit.getAttribute('data-part'), appState.selectedPlantKey);
+  });
+  document.getElementById('plant-info-close').addEventListener('click', () => {
+    document.getElementById('plant-info-panel').classList.add('hidden');
+  });
+}
+
+function showPlantPartInfo(part, plantKey) {
+  const info = PLANT_PART_INFO[plantKey]?.[part];
+  if (!info) return;
+  document.getElementById('plant-info-icon').textContent = info.icon;
+  document.getElementById('plant-info-name').textContent = info.name;
+  document.getElementById('plant-info-struct').textContent = info.struct;
+  document.getElementById('plant-info-func').textContent = info.func;
+  const panel = document.getElementById('plant-info-panel');
+  panel.classList.remove('hidden');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 // 11. Observation Diary Logic
 let uploadedPhotosBase64 = [];
 
@@ -2171,6 +2294,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load initial systems
     loadQuiz();
     renderBadges();
+    initPlantInteraction();
     renderDiaries();
     
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
