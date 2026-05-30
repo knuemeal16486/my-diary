@@ -1037,15 +1037,15 @@ function updateDashboardUI() {
     const minVal = profile.careInfo[stat].min;
     const maxVal = profile.careInfo[stat].max;
     
-    let statusLabel = "(적절)";
+    let statusLabel = "";
     if (val < minVal) {
       isAnyDanger = true;
       dangerMessage = `${stat === 'water' ? '물이 부족해 말라가고 있어요!' : stat === 'sun' ? '햇빛이 너무 부족해 시들시들해요.' : stat === 'wind' ? '공기가 탁해서 숨쉬기 힘들어요.' : '흙에 영양분이 전부 닳았어요!'}`;
-      statusLabel = "(부족)";
+      statusLabel = stat === 'water' ? '😟 목말라요!' : stat === 'sun' ? '🌑 어두워요!' : stat === 'wind' ? '😮‍💨 답답해요!' : '🌱 배고파요!';
     } else if (val > maxVal) {
       isAnyDanger = true;
       dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 너무 강해요.' : '영양 성분이 과다하여 해로워요!'}`;
-      statusLabel = "(과다)";
+      statusLabel = stat === 'water' ? '😵 물 너무 많아요!' : stat === 'sun' ? '🥵 너무 뜨거워요!' : stat === 'wind' ? '🌪️ 바람 세요!' : '😰 영양 과다!';
     }
 
     const chipBtn = document.getElementById(`chip-${stat}`);
@@ -1173,6 +1173,16 @@ function useFertilizer() {
 // 9. Simulated AI Chat Engine
 let isProcessingChat = false;
 
+const MAX_CHAT_BUBBLES = 40;
+
+function trimChatHistory(container) {
+  const bubbles = container.querySelectorAll('.chat-bubble');
+  if (bubbles.length > MAX_CHAT_BUBBLES) {
+    bubbles[1].remove();
+  }
+}
+
+
 function addBotMessage(text) {
   const container = document.getElementById('chat-messages-container');
   const bubble = document.createElement('div');
@@ -1185,6 +1195,7 @@ function addBotMessage(text) {
   bubble.appendChild(p);
   bubble.appendChild(time);
   container.appendChild(bubble);
+  trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
 }
 
@@ -1200,6 +1211,7 @@ function addUserMessage(text) {
   bubble.appendChild(p);
   bubble.appendChild(time);
   container.appendChild(bubble);
+  trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
 }
 
@@ -2004,14 +2016,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Chat Prompt Chip Click Actions
+  // Chat Prompt Chip Click Actions — 돌보기 버튼은 즉각 액션 실행
   document.getElementById('chat-prompt-chips').addEventListener('click', (e) => {
     const btn = e.target.closest('.chip-btn');
-    if (btn) {
-      // Use data-action if available, else fallback to innerText
-      const promptText = btn.dataset.action || btn.innerText;
-      processUserChat(promptText);
-    }
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === '물 주기')      giveWater();
+    else if (action === '햇빛 쬐기') toggleSunLamp();
+    else if (action === '환기 하기') toggleWindow();
+    else if (action === '비료 주기') useFertilizer();
+    else processUserChat(action);
   });
 
   // Quiz next events
