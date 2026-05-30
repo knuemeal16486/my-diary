@@ -1056,38 +1056,38 @@ function simulationTick() {
   if (!profile) return;
 
   // 1. Natural drain of water, wind levels, and soil nutrient
-  let waterDrain = 3;
+  let waterDrain = 0.5;
   let targetSun = 20;
   let targetWind = 20;
-  let soilDrain = 0.4;
+  let soilDrain = 0.1;
 
   // Apply Weather Modifiers
-  if (appState.weather === 'sunny') { waterDrain += 2; targetSun += 30; }
-  if (appState.weather === 'rainy') { waterDrain -= 10; targetSun -= 10; }
-  if (appState.weather === 'windy') { waterDrain += 1; targetWind += 40; }
+  if (appState.weather === 'sunny') { waterDrain += 0.5; targetSun += 30; }
+  if (appState.weather === 'rainy') { waterDrain -= 1.0; targetSun -= 10; }
+  if (appState.weather === 'windy') { waterDrain += 0.2; targetWind += 40; }
 
   // Apply Environment Modifiers
   switch (appState.environment) {
     case 'window':
-      waterDrain += 2;
+      waterDrain += 0.3;
       targetSun += 25;
       targetWind += 5;
       break;
     case 'balcony':
-      waterDrain += 1;
+      waterDrain += 0.2;
       targetSun += 15;
       targetWind += 30;
       break;
     case 'room':
-      waterDrain -= 1;
+      waterDrain -= 0.2;
       targetSun -= 10;
       targetWind -= 10;
       break;
     case 'outdoor':
-      waterDrain += 3;
+      waterDrain += 0.5;
       targetSun += 35;
       targetWind += 40;
-      soilDrain += 0.3;
+      soilDrain += 0.1;
       break;
   }
 
