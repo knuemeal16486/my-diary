@@ -1330,9 +1330,22 @@ function updateDashboardUI() {
 
     const chipBtn = document.getElementById(`chip-${stat}`);
     if (chipBtn) {
-      chipBtn.innerHTML = `<i data-lucide="${cfg.icon}"></i> ${cfg.action} ${statusLabel}`;
+      chipBtn.innerHTML = `<i data-lucide="${cfg.icon}"></i> ${cfg.action}`;
+      chipBtn.classList.toggle('chip-danger', !!dangerCfg);
     }
   });
+
+  // Stat mini card (water & sun only)
+  const waterVal = Math.round(appState.stats.water);
+  const sunVal   = Math.round(appState.stats.sun);
+  const waterFill = document.getElementById('stat-fill-water');
+  const sunFill   = document.getElementById('stat-fill-sun');
+  const waterPct  = document.getElementById('stat-pct-water');
+  const sunPct    = document.getElementById('stat-pct-sun');
+  if (waterFill) waterFill.style.width = `${waterVal}%`;
+  if (sunFill)   sunFill.style.width   = `${sunVal}%`;
+  if (waterPct)  waterPct.textContent  = `${waterVal}%`;
+  if (sunPct)    sunPct.textContent    = `${sunVal}%`;
 
   // Health warnings box
   const alertBox = document.getElementById('health-alert');
