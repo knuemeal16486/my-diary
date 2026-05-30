@@ -934,8 +934,8 @@ function generatePlantSVG(plantKey, stage, stats) {
     }
   }
   
-  svg += `</g>`; // close plant-body
   svg += buildClickZones(plantKey, stage);
+  svg += `</g>`; // close plant-body
   svg += `</svg>`;
 
   // Scope all SVG IDs to this call to prevent conflicts when multiple SVGs coexist in DOM
@@ -1272,49 +1272,65 @@ function updateDashboardUI() {
   }
 
   // 3. Stats progress bars & Safe-Zones
+  const STAT_CONFIG = {
+    water: {
+      action: '물 주기', icon: 'droplet',
+      low:  { alert: '물이 부족해 말라가고 있어요!',          chip: '😟 목말라요!',    plant: '😟 목말라요! 물이 필요해요 💧' },
+      high: { alert: '과습 상태에요! 뿌리가 썩을 수 있어요.',  chip: '😵 물 너무 많아요!', plant: '😵 물이 너무 많아요! 뿌리가 아파요' }
+    },
+    sun: {
+      action: '햇빛 쬐기', icon: 'sun',
+      low:  { alert: '햇빛이 너무 부족해 시들시들해요.',       chip: '🌑 어두워요!',    plant: '🌑 어두워요! 햇빛이 그리워요 ☀️' },
+      high: { alert: '직사광선이 너무 강해 잎사귀가 타고 있어요!', chip: '🥵 너무 뜨거워요!', plant: '🥵 너무 뜨거워요! 그늘이 필요해요' }
+    },
+    wind: {
+      action: '환기 하기', icon: 'wind',
+      low:  { alert: '공기가 탁해서 숨쉬기 힘들어요.',        chip: '😮‍💨 답답해요!',  plant: '😮‍💨 답답해요! 창문 좀 열어줘요 🪟' },
+      high: { alert: '바람이 너무 강해요.',                   chip: '🌪️ 바람 세요!',  plant: '🌪️ 바람이 너무 강해요!' }
+    },
+    soil: {
+      action: '비료 주기', icon: 'sparkles',
+      low:  { alert: '흙에 영양분이 전부 닳았어요!',          chip: '🌱 배고파요!',    plant: '🌱 배고파요! 비료가 필요해요 🧪' },
+      high: { alert: '영양 성분이 과다하여 해로워요!',         chip: '😰 영양 과다!',  plant: '😰 영양이 너무 많아요!' }
+    }
+  };
+
   const statsList = ['water', 'sun', 'wind', 'soil'];
   let isAnyDanger = false;
   let dangerMessage = "";
 
   statsList.forEach(stat => {
     const val = Math.round(appState.stats[stat]);
+    const cfg = STAT_CONFIG[stat];
+    const { min: minVal, max: maxVal } = profile.careInfo[stat];
 
-    // Check danger
-    const minVal = profile.careInfo[stat].min;
-    const maxVal = profile.careInfo[stat].max;
-    
     let statusLabel = "";
     let dangerKey = null;
+    let dangerCfg = null;
+
     if (val < minVal) {
       isAnyDanger = true;
       dangerKey = `${stat}_low`;
-      dangerMessage = `${stat === 'water' ? '물이 부족해 말라가고 있어요!' : stat === 'sun' ? '햇빛이 너무 부족해 시들시들해요.' : stat === 'wind' ? '공기가 탁해서 숨쉬기 힘들어요.' : '흙에 영양분이 전부 닳았어요!'}`;
-      statusLabel = stat === 'water' ? '😟 목말라요!' : stat === 'sun' ? '🌑 어두워요!' : stat === 'wind' ? '😮‍💨 답답해요!' : '🌱 배고파요!';
+      dangerCfg = cfg.low;
     } else if (val > maxVal) {
       isAnyDanger = true;
       dangerKey = `${stat}_high`;
-      dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 너무 강해요.' : '영양 성분이 과다하여 해로워요!'}`;
-      statusLabel = stat === 'water' ? '😵 물 너무 많아요!' : stat === 'sun' ? '🥵 너무 뜨거워요!' : stat === 'wind' ? '🌪️ 바람 세요!' : '😰 영양 과다!';
+      dangerCfg = cfg.high;
+    }
+
+    if (dangerCfg) {
+      dangerMessage = dangerCfg.alert;
+      statusLabel = dangerCfg.chip;
     }
 
     if (dangerKey && appState.lastDangerState[stat] !== dangerKey) {
-      const plantMsg = stat === 'water' && val < minVal ? '😟 목말라요! 물이 필요해요 💧'
-        : stat === 'sun' && val < minVal ? '🌑 어두워요! 햇빛이 그리워요 ☀️'
-        : stat === 'wind' && val < minVal ? '😮‍💨 답답해요! 창문 좀 열어줘요 🪟'
-        : stat === 'soil' && val < minVal ? '🌱 배고파요! 비료가 필요해요 🧪'
-        : stat === 'water' ? '😵 물이 너무 많아요! 뿌리가 아파요'
-        : stat === 'sun' ? '🥵 너무 뜨거워요! 그늘이 필요해요'
-        : stat === 'wind' ? '🌪️ 바람이 너무 강해요!'
-        : '😰 영양이 너무 많아요!';
-      addPlantMessage(plantMsg);
+      addPlantMessage(dangerCfg.plant);
     }
     appState.lastDangerState[stat] = dangerKey;
 
     const chipBtn = document.getElementById(`chip-${stat}`);
     if (chipBtn) {
-        const actionName = stat === 'water' ? '물 주기' : stat === 'sun' ? '햇빛 쬐기' : stat === 'wind' ? '환기 하기' : '비료 주기';
-        const iconName = stat === 'water' ? 'droplet' : stat === 'sun' ? 'sun' : stat === 'wind' ? 'wind' : 'sparkles';
-        chipBtn.innerHTML = `<i data-lucide="${iconName}"></i> ${actionName} ${statusLabel}`;
+      chipBtn.innerHTML = `<i data-lucide="${cfg.icon}"></i> ${cfg.action} ${statusLabel}`;
     }
   });
 
