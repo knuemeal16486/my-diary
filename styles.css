@@ -1430,6 +1430,40 @@ body {
   flex-direction: column;
 }
 
+.quest-progress-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.quest-chip {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.quest-chip-active {
+  background: var(--primary-green);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(76,175,80,0.4);
+}
+
+.quest-chip-done {
+  background: #E8F5E9;
+  color: #388E3C;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.quest-chip-locked {
+  background: #F5F5F5;
+  color: #BDBDBD;
+}
+
 .quiz-card-box {
   background: white;
   border: 1px solid rgba(0,0,0,0.05);

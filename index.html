@@ -477,13 +477,16 @@
               <div class="tab-pane" id="pane-quiz">
                 <div class="quiz-container-inner">
 
+                  <!-- 퀘스트 진행 상태바 -->
+                  <div class="quest-progress-bar" id="quest-progress-bar"></div>
+
                   <div id="quiz-card" class="quiz-card-box">
                     <div class="quiz-header-badge">
                       <i data-lucide="graduation-cap" class="text-green"></i>
-                      <span>식물 퀴즈</span>
+                      <span id="quiz-stage-label">퀘스트 로딩 중...</span>
                     </div>
 
-                    <h3 id="quiz-question">식물이 싹을 틔우기 위해 필요한 3대 요소가 아닌 것은 무엇일까요?</h3>
+                    <h3 id="quiz-question"></h3>
 
                     <div class="quiz-options-list" id="quiz-options-list">
                       <!-- Dynamic options buttons -->
@@ -491,7 +494,7 @@
 
                     <div id="quiz-result-feedback" class="quiz-feedback-box hidden">
                       <div class="feedback-icon-circle" id="quiz-feedback-icon-container">
-                        <i data-lucide="check" class="text-green" id="quiz-feedback-icon"></i>
+                        <i data-lucide="check" class="text-green"></i>
                       </div>
                       <h4 id="quiz-feedback-title">정답입니다!</h4>
                       <p id="quiz-feedback-desc">설명이 여기에 나타납니다.</p>
@@ -499,7 +502,7 @@
                         <i data-lucide="sparkles"></i> 친환경 비료 1개 획득!
                       </div>
                       <button id="btn-next-quiz" class="btn-primary btn-full mt-10">
-                        다음 퀴즈 도전하기
+                        다음 문제 도전하기 →
                       </button>
                     </div>
                   </div>
