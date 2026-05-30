@@ -2049,7 +2049,7 @@ async function saveDiary() {
   try {
     const prompt = await fetchImagePromptFromGemini(text, emotion.label);
     if (prompt) {
-      generatedImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=400&height=300&nologo=true`;
+      generatedImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=400&height=300&nologo=true&model=flux-pro&enhance=true`;
     }
   } catch(e) {
     console.error("Failed to generate image prompt", e);
