@@ -26,6 +26,9 @@ jobs:
       - name: API 키 주입 (GitHub Secret → app.js)
         run: sed -i "s|__GEMINI_API_KEY__|${{ secrets.GEMINI_API_KEY }}|g" app.js
 
+      - name: 캐시 무력화 (커밋 SHA → script 쿼리 파라미터)
+        run: sed -i "s|app\.js?v=[^\"]*|app.js?v=${{ github.sha }}|g; s|src=\"app\.js\"|src=\"app.js?v=${{ github.sha }}\"|g" index.html
+
       - name: GitHub Pages 설정
         uses: actions/configure-pages@v4
 
