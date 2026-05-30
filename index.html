@@ -5,31 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>마음 정원 - 감정과 함께 자라는 AI 반려 식물</title>
-  <!-- Error Diagnostics Handler -->
-  <script>
-    window.onerror = function (message, source, lineno, colno, error) {
-      const div = document.createElement('div');
-      div.style.position = 'fixed';
-      div.style.top = '0';
-      div.style.left = '0';
-      div.style.width = '100%';
-      div.style.backgroundColor = '#FFEBEE';
-      div.style.color = '#C62828';
-      div.style.padding = '20px';
-      div.style.borderBottom = '2px solid #EF9A9A';
-      div.style.zIndex = '999999';
-      div.style.fontFamily = 'monospace';
-      div.style.fontSize = '14px';
-      div.style.lineHeight = '1.5';
-      div.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-      div.innerHTML = '<h3>🚨 [오류 감지됨] 스크립트 실행 중 문제가 발생했습니다:</h3>' +
-        '<strong>메시지:</strong> ' + message + '<br>' +
-        '<strong>파일:</strong> ' + source + '<br>' +
-        '<strong>위치:</strong> 줄 ' + lineno + ', 열 ' + colno;
-      document.body.appendChild(div);
-      return false;
-    };
-  </script>
   <!-- Google Fonts: Outfit & NanumSquareRound via web font fallback -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,10 +111,7 @@
           <p class="subtitle">내 답변을 바탕으로 가장 잘 어울리는 식물 친구를 고르는 중이에요 🌿</p>
 
           <div class="analysis-logs">
-            <div class="log-line opacity-30">> 성향 데이터 파싱 완료...</div>
-            <div class="log-line opacity-60">> 식물 성장 선호도 매핑 중...</div>
-            <div class="log-line">> 환경 기호도 분석 매개변수 계산 완료...</div>
-            <div class="log-line text-green animate-pulse">> 최적의 매칭 반려 식물을 발견했습니다!</div>
+            <!-- JS가 동적으로 채웁니다 -->
           </div>
         </div>
       </section>
