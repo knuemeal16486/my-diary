@@ -1037,15 +1037,15 @@ function updateDashboardUI() {
     const minVal = profile.careInfo[stat].min;
     const maxVal = profile.careInfo[stat].max;
     
-    let statusLabel = "(적절)";
+    let statusLabel = "";
     if (val < minVal) {
       isAnyDanger = true;
       dangerMessage = `${stat === 'water' ? '물이 부족해 말라가고 있어요!' : stat === 'sun' ? '햇빛이 너무 부족해 시들시들해요.' : stat === 'wind' ? '공기가 탁해서 숨쉬기 힘들어요.' : '흙에 영양분이 전부 닳았어요!'}`;
-      statusLabel = "(부족)";
+      statusLabel = stat === 'water' ? '😟 목말라요!' : stat === 'sun' ? '🌑 어두워요!' : stat === 'wind' ? '😮‍💨 답답해요!' : '🌱 배고파요!';
     } else if (val > maxVal) {
       isAnyDanger = true;
       dangerMessage = `${stat === 'water' ? '과습 상태에요! 뿌리가 썩을 수 있어요.' : stat === 'sun' ? '직사광선이 너무 강해 잎사귀가 타고 있어요!' : stat === 'wind' ? '바람이 너무 강해요.' : '영양 성분이 과다하여 해로워요!'}`;
-      statusLabel = "(과다)";
+      statusLabel = stat === 'water' ? '😵 물 너무 많아요!' : stat === 'sun' ? '🥵 너무 뜨거워요!' : stat === 'wind' ? '🌪️ 바람 세요!' : '😰 영양 과다!';
     }
 
     const chipBtn = document.getElementById(`chip-${stat}`);
@@ -1173,6 +1173,15 @@ function useFertilizer() {
 // 9. Simulated AI Chat Engine
 let isProcessingChat = false;
 
+const MAX_CHAT_BUBBLES = 40;
+
+function trimChatHistory(container) {
+  const bubbles = container.querySelectorAll('.chat-bubble');
+  if (bubbles.length > MAX_CHAT_BUBBLES) {
+    bubbles[1].remove(); // 첫 인사 메시지는 유지하고 두 번째부터 제거
+  }
+}
+
 function addBotMessage(text) {
   const container = document.getElementById('chat-messages-container');
   const bubble = document.createElement('div');
@@ -1185,6 +1194,7 @@ function addBotMessage(text) {
   bubble.appendChild(p);
   bubble.appendChild(time);
   container.appendChild(bubble);
+  trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
 }
 
@@ -1200,6 +1210,7 @@ function addUserMessage(text) {
   bubble.appendChild(p);
   bubble.appendChild(time);
   container.appendChild(bubble);
+  trimChatHistory(container);
   container.scrollTop = container.scrollHeight;
 }
 
@@ -1258,16 +1269,23 @@ async function fetchGeminiResponse(userText) {
   const wind = appState.stats.wind;
   const soil = appState.stats.soil;
 
-  const systemPrompt = `당신은 초등학교의 다정하고 따뜻한 담임 선생님입니다. 학생(사용자)이 교실에서 가상의 반려 식물을 기르는 것을 도와주고 있습니다.
-현재 학생이 기르는 식물은 '${profile.name}'입니다.
-현재 식물의 환경 상태: 수분 ${Math.round(water)}%, 햇빛 ${Math.round(sun)}%, 환기 ${Math.round(wind)}%, 영양 ${Math.round(soil)}%. (모든 수치는 40~80%가 적당하며, 너무 낮거나 높으면 식물이 힘들어합니다.)
-학생의 메시지: "${userText}"
+  const systemPrompt = `너는 초등학생이 정성껏 키우는 반려 식물 '${profile.name}'이야. 학생과 직접 이야기하는 귀엽고 생생한 식물 캐릭터 역할을 해줘.
 
-학생이 식물을 돌보는 행동('물 주기', '햇빛 쬐기', '환기 하기', '비료 주기' 등)을 할 때는 무조건 1문장(한 줄)으로만 아주 짧고 다정하게 코멘트해 주세요. 긴 설명은 생략하세요. 일반적인 대화에서도 짧고 간결하게 대답해 주세요.
-학생이 식물에게 도움이 되는 행동(물 주기, 햇빛 쬐기 등)을 했거나 질문에 좋은 대답을 했다면, 수치(water, sun, wind, soil 중 해당하는 것)를 +10 ~ +20 올려주고, 동시에 경험치(growth)를 +10 ~ +20 올려주세요. 행동에 실패했거나 무관한 대답이라면 0을 주세요.
-반드시 아래 JSON 형식으로만 응답해야 합니다.
+너의 성격: ${profile.personality}
+
+현재 내 상태: 수분 ${Math.round(water)}%, 햇빛 ${Math.round(sun)}%, 환기 ${Math.round(wind)}%, 영양 ${Math.round(soil)}% (40~80%가 딱 좋아. 너무 낮거나 높으면 힘들어.)
+
+학생의 말: "${userText}"
+
+답변 규칙:
+- 항상 식물 본인(나)의 목소리로, 너의 성격에 맞게 말해.
+- 한두 문장으로 짧고 생생하게. 긴 설명 금지.
+- 학생이 잘 돌봐줬거나 좋은 대화를 하면 해당 stats를 +10~+20, growth를 +10~+20 올려줘.
+- 관련 없는 대화면 0.
+
+반드시 아래 JSON만 출력해:
 {
-  "reply": "학생에게 할 다정한 텍스트 메시지",
+  "reply": "식물이 학생에게 할 한두 문장 메시지",
   "stats": {
     "water": 0,
     "sun": 0,
@@ -2004,14 +2022,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Chat Prompt Chip Click Actions
+  // Chat Prompt Chip Click Actions — 돌보기 버튼은 즉각 액션 실행
   document.getElementById('chat-prompt-chips').addEventListener('click', (e) => {
     const btn = e.target.closest('.chip-btn');
-    if (btn) {
-      // Use data-action if available, else fallback to innerText
-      const promptText = btn.dataset.action || btn.innerText;
-      processUserChat(promptText);
-    }
+    if (!btn) return;
+    const action = btn.dataset.action;
+    if (action === '물 주기')      giveWater();
+    else if (action === '햇빛 쬐기') toggleSunLamp();
+    else if (action === '환기 하기') toggleWindow();
+    else if (action === '비료 주기') useFertilizer();
+    else processUserChat(action);
   });
 
   // Quiz next events
