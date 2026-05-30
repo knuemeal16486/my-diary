@@ -7,9 +7,9 @@ if (typeof lucide === 'undefined') {
   };
 }
 
-// ⚠️ 보안 주의: 이 키는 클라이언트에 노출됩니다. 실 서비스 시 백엔드 프록시를 사용하세요.
-// 키가 유출된 경우 Google AI Studio(aistudio.google.com)에서 즉시 폐기·재발급하세요.
-const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
+// GitHub Actions 배포 시 '__GEMINI_API_KEY__' 플레이스홀더가 GitHub Secret으로 자동 교체됩니다.
+// 로컬 테스트 시에는 아래 값을 직접 입력하되, 절대 커밋하지 마세요.
+const GEMINI_API_KEY = '__GEMINI_API_KEY__';
 
 // 1. Data Definitions
 
