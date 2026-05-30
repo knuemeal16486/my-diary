@@ -40,14 +40,14 @@ const testQuestions = [
     title: "만약 나만의 초록 친구를 들여놓는다면, 방의 어디에 두고 가꾸고 싶나요?",
     options: [
       { text: "햇빛이 잘 들고 따뜻한 창가나 베란다 틈에 놓아 매일 햇살 목욕을 시켜줄래요.", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "공부 책상이나 침대 머리맡처럼 제가 늘 앉아서 공부하고 쉴 때 가까이 볼 수 있게 할래요.", scores: { potato: 3, cabbage: 3, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "공부 책상이나 침대 머리맡처럼 제가 늘 앉아서 공부하고 쉴 때 가까이 볼 수 있게 할래요.", scores: { potato: 3, cabbage: 4, apple: 0, tomato: 0, cucumber: 0 } }
     ]
   },
   {
     title: "식물을 기르면서 어떤 즐거움을 가장 느껴보고 싶나요?",
     options: [
       { text: "식물이 자라서 맛있는 열매를 맺거나 향을 맡으며 무언가 수확하는 기쁨이요!", scores: { tomato: 3, cucumber: 3, apple: 3, potato: 0, cabbage: 0 } },
-      { text: "매일 자라나는 예쁜 꽃과 푸르른 잎사귀들을 조용히 보면서 마음이 편안해지는 정서적 힐링이요!", scores: { cabbage: 3, potato: 3, apple: 0, tomato: 0, cucumber: 0 } }
+      { text: "매일 자라나는 예쁜 꽃과 푸르른 잎사귀들을 조용히 보면서 마음이 편안해지는 정서적 힐링이요!", scores: { cabbage: 5, potato: 3, apple: 0, tomato: 0, cucumber: 0 } }
     ]
   }
 ];
