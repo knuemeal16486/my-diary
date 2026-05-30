@@ -777,48 +777,48 @@ function generatePlantSVG(plantKey, stage, stats) {
     }
     else if (plantKey === 'cabbage') {
       // Base dark green wide outer leaves (flaring outwards)
-      svg += drawNapaLeaf(100, 180, 1.3, -65, "#4CAF50");
-      svg += drawNapaLeaf(100, 180, 1.3, 65, "#4CAF50");
-      svg += drawNapaLeaf(100, 175, 1.4, -45, "#66BB6A");
-      svg += drawNapaLeaf(100, 175, 1.4, 45, "#66BB6A");
+      svg += drawNapaLeaf(100, 180, 1.0, -65, "#4CAF50");
+      svg += drawNapaLeaf(100, 180, 1.0, 65, "#4CAF50");
+      svg += drawNapaLeaf(100, 175, 1.1, -45, "#66BB6A");
+      svg += drawNapaLeaf(100, 175, 1.1, 45, "#66BB6A");
       
       if (stage === 3) {
         // Stage 3: Growing leaves, not tightly packed yet
-        svg += drawNapaLeaf(100, 165, 1.2, -25, "#81C784");
-        svg += drawNapaLeaf(100, 165, 1.2, 25, "#81C784");
-        svg += drawNapaLeaf(100, 160, 1.1, 0, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 165, 0.9, -25, "#81C784");
+        svg += drawNapaLeaf(100, 165, 0.9, 25, "#81C784");
+        svg += drawNapaLeaf(100, 160, 0.8, 0, "#A5D6A7", true);
       } else if (stage === 4) {
         // Stage 4: Starting to head (결구 시작)
-        svg += drawNapaLeaf(100, 165, 1.4, -20, "#81C784");
-        svg += drawNapaLeaf(100, 165, 1.4, 20, "#81C784");
-        svg += drawNapaLeaf(100, 160, 1.3, -10, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 160, 1.3, 10, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 155, 1.2, 0, "#C8E6C9", true);
+        svg += drawNapaLeaf(100, 165, 1.0, -20, "#81C784");
+        svg += drawNapaLeaf(100, 165, 1.0, 20, "#81C784");
+        svg += drawNapaLeaf(100, 160, 0.9, -10, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 160, 0.9, 10, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 155, 0.85, 0, "#C8E6C9", true);
       } else {
         // Stage 5 & 6: Full huge napa cabbage head (꽉 찬 배추)
         // Outer wrapping leaves
-        svg += drawNapaLeaf(100, 170, 1.6, -30, "#81C784");
-        svg += drawNapaLeaf(100, 170, 1.6, 30, "#81C784");
+        svg += drawNapaLeaf(100, 170, 1.2, -30, "#81C784");
+        svg += drawNapaLeaf(100, 170, 1.2, 30, "#81C784");
         
         // Inner head structure (tightly packed, overlapping)
-        svg += drawNapaLeaf(100, 165, 1.5, -15, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 165, 1.5, 15, "#9CCC65", true); // Slight color variation
+        svg += drawNapaLeaf(100, 165, 1.1, -15, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 165, 1.1, 15, "#9CCC65", true); // Slight color variation
         
         // Core
-        svg += drawNapaLeaf(100, 160, 1.4, -5, "#C8E6C9", true);
-        svg += drawNapaLeaf(100, 160, 1.4, 5, "#DCE775", true); // Yellowish center
+        svg += drawNapaLeaf(100, 160, 1.0, -5, "#C8E6C9", true);
+        svg += drawNapaLeaf(100, 160, 1.0, 5, "#DCE775", true); // Yellowish center
         
         // Front most covering leaf
-        svg += drawNapaLeaf(100, 165, 1.45, 0, "#AED581", true);
+        svg += drawNapaLeaf(100, 165, 1.05, 0, "#AED581", true);
         
         if (stage === 6) {
           // Bolting: flower stalk shooting up from head
           svg += `<path d="M100,60 Q95,30 100,-10" stroke="#8BC34A" stroke-width="6" fill="none" filter="url(#shadow)"/>`;
-          svg += drawFlower(100, -10, 1.8, "#FFEE58");
-          svg += drawFlower(85, 0, 1.2, "#FFEE58");
-          svg += drawFlower(115, -5, 1.4, "#FFEE58");
-          svg += drawFlower(95, -20, 1.2, "#FFEE58");
-          svg += drawFlower(105, -25, 1.1, "#FFEE58");
+          svg += drawFlower(100, -10, 1.4, "#FFEE58");
+          svg += drawFlower(85, 0, 0.9, "#FFEE58");
+          svg += drawFlower(115, -5, 1.1, "#FFEE58");
+          svg += drawFlower(95, -20, 0.9, "#FFEE58");
+          svg += drawFlower(105, -25, 0.8, "#FFEE58");
         }
       }
     }
