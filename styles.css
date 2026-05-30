@@ -1301,42 +1301,6 @@ body {
   color: var(--text-sub);
 }
 
-.mood-selector {
-  display: flex;
-  gap: 8px;
-}
-
-.mood-btn {
-  flex: 1;
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: var(--border-radius-sm);
-  padding: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition-spring);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-sub);
-}
-
-.mood-btn:hover {
-  background: rgba(255,255,255,0.8);
-  border-color: var(--text-light);
-}
-
-.mood-btn.active {
-  background: var(--primary-green-light);
-  border-color: var(--accent-green);
-  color: var(--primary-green);
-}
-
-.mood-btn span {
-  font-size: 16px;
-}
 
 .editor-row textarea {
   width: 100%;
@@ -1907,75 +1871,53 @@ body {
  * ============================================================ */
 
 .mood-selector {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 4px 0;
-  border-radius: var(--border-radius-sm);
-  transition: box-shadow 0.3s ease;
 }
 
 .mood-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  padding: 10px 6px;
-  border-radius: 12px;
-  border: 2px solid transparent;
-  background: rgba(255, 255, 255, 0.55);
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
   cursor: pointer;
-  transition: var(--transition-spring);
-  position: relative;
-  overflow: hidden;
-}
-
-.mood-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--emotion-color, #aaa);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  border-radius: inherit;
-}
-
-.mood-btn:hover::before {
-  opacity: 0.12;
+  transition: all 0.2s ease;
+  flex: 1 1 auto;
 }
 
 .mood-btn:hover {
-  transform: translateY(-2px) scale(1.04);
-  border-color: var(--emotion-color, #ccc);
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--emotion-color, #888) 30%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
-/* 선택된 감정 버튼 */
 .mood-btn.active {
-  border-color: var(--emotion-color, #4CAF50);
-  background: color-mix(in srgb, var(--emotion-color, #4CAF50) 18%, white);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--emotion-color, #4CAF50) 25%, transparent),
-    0 6px 18px color-mix(in srgb, var(--emotion-color, #4CAF50) 35%, transparent);
-  transform: scale(1.06);
-}
-
-.mood-btn.active::before {
-  opacity: 0.1;
+  background: var(--emotion-color, #E8F5E9);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
 }
 
 .mood-emoji {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
 }
 
 .mood-name {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--emotion-color, var(--text-sub));
-  letter-spacing: -0.3px;
+  color: var(--text-sub);
+}
+
+.mood-btn.active .mood-name {
+  color: white;
 }
 
 /* 일기 카드의 감정 칩 배지 */
