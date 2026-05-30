@@ -934,8 +934,8 @@ function generatePlantSVG(plantKey, stage, stats) {
     }
   }
   
-  svg += buildClickZones(plantKey, stage);
   svg += `</g>`; // close plant-body
+  svg += buildClickZones(plantKey, stage);
   svg += `</svg>`;
 
   // Scope all SVG IDs to this call to prevent conflicts when multiple SVGs coexist in DOM
@@ -1039,10 +1039,10 @@ function processTestResults() {
   
   // Simulate AI matching delay and calculation logging
   let logLines = [
-    ">> 성향 데이터 파싱 완료...",
-    ">> 학생 정원사 스타일 분석 매개변수 계산 완료...",
-    ">> 식물 세포 어포던스 매핑 완료...",
-    ">> 최적의 짝꿍 반려 식물 세포 탐색 성공!"
+    "🌱 답변을 꼼꼼히 읽고 있어요...",
+    "🔍 어떤 식물과 잘 맞을지 살펴보는 중...",
+    "💚 식물 친구들과 성격을 비교하고 있어요...",
+    "✨ 딱 맞는 반려 식물을 찾았어요!"
   ];
   
   const logContainer = document.querySelector('.analysis-logs');
