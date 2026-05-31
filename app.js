@@ -474,13 +474,26 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
     </defs>
   `;
 
-  const soilPaths = isPreview ? `
-      <path d="M20,130 L180,130 L180,195 Q100,205 20,195 Z" fill="#5D4037" />
-      <path d="M20,130 L180,130 L180,145 Q100,150 20,145 Z" fill="#4E342E" />
-  ` : `
+  const isIndoor = appState.environment && appState.environment !== 'outdoor';
+  let soilPaths = '';
+  
+  if (isPreview || isIndoor) {
+    soilPaths = `
+      <!-- Pot Outer Frame -->
+      <path d="M 20,120 L 180,120 L 165,195 L 35,195 Z" fill="#a86236" />
+      <!-- Pot Top Rim -->
+      <path d="M 15,115 L 185,115 L 180,125 L 20,125 Z" fill="#c37d4e" />
+      <!-- Soil inside pot (cross-section) -->
+      <path d="M 25,125 L 175,125 L 162,192 L 38,192 Z" fill="#5D4037" />
+      <!-- Top layer of soil -->
+      <path d="M 25,125 L 175,125 L 170,135 Q100,140 30,135 Z" fill="#4E342E" />
+    `;
+  } else {
+    soilPaths = `
       <path d="M-2000,130 L2200,130 L2200,1000 L-2000,1000 Z" fill="#5D4037" />
       <path d="M-2000,130 L2200,130 L2200,145 Q100,150 -2000,145 Z" fill="#4E342E" />
-  `;
+    `;
+  }
 
   // Soil group — static, never sways
   svg += `<g class="plant-soil">`;
@@ -2818,8 +2831,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const nextPlantKey = uncompletedPlants[Math.floor(Math.random() * uncompletedPlants.length)];
         const recModal = document.getElementById('recommendation-modal');
         if (recModal) {
-          const emojis = ['🌱','🌿','🍃','🌸','🍎','🌾'];
-          recModal.querySelector('#rec-plant-emoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const plantEmojis = { tomato: '🍅', potato: '🥔', cabbage: '🥬', cucumber: '🥒', apple: '🍎' };
+          recModal.querySelector('#rec-plant-emoji').textContent = plantEmojis[nextPlantKey] || '🌱';
           recModal.querySelector('#rec-plant-name').textContent = plantProfiles[nextPlantKey].name;
           
           document.getElementById('btn-grow-rec-plant').onclick = () => resetToNewPlant(nextPlantKey);
