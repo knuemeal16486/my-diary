@@ -1328,6 +1328,15 @@ function updateDashboardUI() {
   document.getElementById('header-user-name').innerText = appState.userName;
   document.getElementById('fertilizer-count').innerText = appState.fertilizerCount;
   
+  // Environment background
+  const gView = document.getElementById('garden-view-port');
+  if (gView) {
+    gView.classList.remove('env-window', 'env-balcony', 'env-room', 'env-outdoor');
+    if (appState.environment) {
+      gView.classList.add(`env-${appState.environment}`);
+    }
+  }
+  
   // Growth stage HUD
   const stageNames = ["씨앗", "새싹", "성장기", "개화", "결실", "채종"];
   const stageName = stageNames[appState.growthStage - 1] || "채종";

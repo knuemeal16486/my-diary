@@ -753,7 +753,10 @@ body {
 .garden-view {
   flex: 1;
   position: relative;
-  background: linear-gradient(to bottom, #E8F5E9 0%, #C8E6C9 70%, #8D6E63 100%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 70%, rgba(0, 0, 0, 0.1) 100%), var(--env-bg, none);
+  background-color: #E8F5E9;
+  background-size: cover;
+  background-position: center bottom;
   border-radius: var(--border-radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-inset);
@@ -763,6 +766,11 @@ body {
   padding-bottom: 25px;
   transition: background 2s ease;
 }
+
+.garden-view.env-window { --env-bg: url('./assets/bg_window.png'); }
+.garden-view.env-balcony { --env-bg: url('./assets/bg_balcony.png'); }
+.garden-view.env-room { --env-bg: url('./assets/bg_room.png'); }
+.garden-view.env-outdoor { --env-bg: url('./assets/bg_outdoor.png'); }
 
 /* Night theme overlay covering the whole garden */
 .garden-view::before {
@@ -778,13 +786,19 @@ body {
 
 /* Day/Night weather variations */
 .garden-view.weather-sunny {
-  background: linear-gradient(to bottom, #FFE082 0%, #FFE57F 30%, #A5D6A7 80%, #795548 100%);
+  background: linear-gradient(to bottom, rgba(255, 224, 130, 0.3) 0%, rgba(255, 229, 127, 0.2) 30%, rgba(165, 214, 167, 0.1) 80%, rgba(121, 85, 72, 0.3) 100%), var(--env-bg, none);
+  background-size: cover;
+  background-position: center bottom;
 }
 .garden-view.weather-rainy {
-  background: linear-gradient(to bottom, #90A4AE 0%, #78909C 40%, #81C784 80%, #6D4C41 100%);
+  background: linear-gradient(to bottom, rgba(144, 164, 174, 0.6) 0%, rgba(120, 144, 156, 0.5) 40%, rgba(129, 199, 132, 0.3) 80%, rgba(109, 76, 65, 0.5) 100%), var(--env-bg, none);
+  background-size: cover;
+  background-position: center bottom;
 }
 .garden-view.weather-windy {
-  background: linear-gradient(to bottom, #B2DFDB 0%, #80CBC4 40%, #A5D6A7 80%, #795548 100%);
+  background: linear-gradient(to bottom, rgba(178, 223, 219, 0.5) 0%, rgba(128, 203, 196, 0.4) 40%, rgba(165, 214, 167, 0.2) 80%, rgba(121, 85, 72, 0.4) 100%), var(--env-bg, none);
+  background-size: cover;
+  background-position: center bottom;
 }
 
 /* Environment Effects */
