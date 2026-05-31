@@ -2173,6 +2173,7 @@ function resetToNewPlant(specificPlantKey = null) {
 
   document.getElementById('lifecycle-complete-modal')?.classList.add('hidden');
   document.getElementById('recommendation-modal')?.classList.add('hidden');
+  document.getElementById('transplant-modal')?.classList.add('hidden');
   
   if (specificPlantKey) {
     switchView('environment');
