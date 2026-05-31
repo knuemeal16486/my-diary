@@ -56,7 +56,7 @@
           </div>
 
           <div class="intro-form">
-            <label for="input-name">내 이름을 알려줘!</label>
+            <label for="input-name">네 이름을 알려줘!</label>
             <input type="text" id="input-name" placeholder="예: 김초롱, 박한별" maxlength="10" autocomplete="off">
             <button id="btn-start-test" class="btn-primary">
               나만의 반려 식물 찾으러 가기
@@ -402,7 +402,8 @@
                   <span id="health-alert-text">환경이 맞지 않아 식물이 스트레스를 받고 있습니다!</span>
                 </div>
 
-                <div class="health-alert-box info hidden" id="emotion-mission-alert" style="margin-bottom: 10px; background: rgba(74, 144, 226, 0.1); border: 1px solid #4A90D9; color: #1e60a3; display: flex; align-items: center; gap: 8px; padding: 12px; border-radius: 8px;">
+                <div class="health-alert-box info hidden" id="emotion-mission-alert"
+                  style="margin-bottom: 10px; background: rgba(74, 144, 226, 0.1); border: 1px solid #4A90D9; color: #1e60a3; display: flex; align-items: center; gap: 8px; padding: 12px; border-radius: 8px;">
                   <i data-lucide="heart" class="alert-icon" style="color: #4A90D9;"></i>
                   <span id="emotion-mission-text" style="font-weight: 500; font-size: 0.95rem;"></span>
                 </div>
@@ -411,17 +412,21 @@
                 <div class="chat-wrapper">
                   <div class="chat-messages" id="chat-messages-container">
                     <div class="chat-bubble bot">
-                      <p id="initial-bot-message">안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 정원사님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!</p>
+                      <p id="initial-bot-message">안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 정원사님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에
+                        있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!</p>
                       <span class="time">방금 전</span>
                     </div>
                   </div>
 
                   <!-- Recommended Prompt Chips (Care Options) -->
                   <div class="prompt-chips" id="chat-prompt-chips">
-                    <button class="chip-btn" id="chip-water" data-action="물 주기"><i data-lucide="droplet"></i> 물 주기</button>
+                    <button class="chip-btn" id="chip-water" data-action="물 주기"><i data-lucide="droplet"></i> 물
+                      주기</button>
                     <button class="chip-btn" id="chip-sun" data-action="햇빛 쬐기"><i data-lucide="sun"></i> 햇빛 쬐기</button>
-                    <button class="chip-btn" id="chip-wind" data-action="환기 하기"><i data-lucide="wind"></i> 환기 하기</button>
-                    <button class="chip-btn" id="chip-soil" data-action="비료 주기"><i data-lucide="sparkles"></i> 비료 주기</button>
+                    <button class="chip-btn" id="chip-wind" data-action="환기 하기"><i data-lucide="wind"></i> 환기
+                      하기</button>
+                    <button class="chip-btn" id="chip-soil" data-action="비료 주기"><i data-lucide="sparkles"></i> 비료
+                      주기</button>
                   </div>
 
                   <!-- Message Input -->
@@ -490,17 +495,22 @@
                     </div>
 
                     <div class="editor-row relative-editor" style="position: relative;">
-                      <div id="diary-ghost-text" class="ghost-text-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 12px; pointer-events: none; color: rgba(150, 150, 150, 0.7); font-size: 13px; font-weight: 700; font-family: inherit; line-height: normal; white-space: pre-wrap; word-wrap: break-word; overflow: hidden; z-index: 1;"></div>
-                      <textarea id="diary-text" rows="3" placeholder="오늘 하루 어떤 감정을 느꼈나요? 식물에게 나의 마음을 이야기해 보세요... (잠시 멈추면 식물이 위로의 말을 건넬지도 몰라요!)"
+                      <div id="diary-ghost-text" class="ghost-text-overlay"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 12px; pointer-events: none; color: rgba(150, 150, 150, 0.7); font-size: 13px; font-weight: 700; font-family: inherit; line-height: normal; white-space: pre-wrap; word-wrap: break-word; overflow: hidden; z-index: 1;">
+                      </div>
+                      <textarea id="diary-text" rows="3"
+                        placeholder="오늘 하루 어떤 감정을 느꼈나요? 식물에게 나의 마음을 이야기해 보세요... (잠시 멈추면 식물이 위로의 말을 건넬지도 몰라요!)"
                         maxlength="150" style="position: relative; z-index: 2; background: transparent;"></textarea>
                     </div>
 
                     <div class="editor-row file-upload-row" style="margin-top: 10px; margin-bottom: 15px;">
-                      <label for="diary-photo-upload" class="file-upload-label" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px;">
+                      <label for="diary-photo-upload" class="file-upload-label"
+                        style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px;">
                         <i data-lucide="image-plus"></i> 오늘 찍은 사진 첨부하기
                       </label>
                       <input type="file" id="diary-photo-upload" accept="image/*" multiple style="display:none;">
-                      <div id="photo-preview-container" class="photo-preview-container" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
+                      <div id="photo-preview-container" class="photo-preview-container"
+                        style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;"></div>
                     </div>
 
                     <button id="btn-save-diary" class="btn-primary btn-full">
@@ -579,7 +589,8 @@
                   <div class="calendar-grid" id="calendar-grid">
                     <!-- Calendar days injected by JS -->
                   </div>
-                  <button id="btn-emotion-report" class="btn-primary btn-full mt-10" style="margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                  <button id="btn-emotion-report" class="btn-primary btn-full mt-10"
+                    style="margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
                     <i data-lucide="sparkles"></i> 이번 달 마음 정원 보고서 보기
                   </button>
                 </div>
@@ -621,11 +632,13 @@
         <p class="slogan" id="er-month-title">2026년 5월</p>
       </div>
       <div class="lifecycle-body" style="text-align: center;">
-        <div id="er-loading" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
+        <div id="er-loading"
+          style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 20px 0;">
           <i data-lucide="loader" class="spin-icon" style="width: 32px; height: 32px; color: #4A90D9;"></i>
           <p>선생님이 마음 정원을 살펴보고 있어요...</p>
         </div>
-        <div id="er-content" style="display: none; text-align: left; line-height: 1.6; color: #333; margin: 20px 0; background: #F8FBFF; padding: 20px; border-radius: 12px; border: 1px solid #D0E3F5;">
+        <div id="er-content"
+          style="display: none; text-align: left; line-height: 1.6; color: #333; margin: 20px 0; background: #F8FBFF; padding: 20px; border-radius: 12px; border: 1px solid #D0E3F5;">
         </div>
         <button id="er-ok-btn" class="btn-primary btn-full mt-10">확인</button>
       </div>
@@ -679,14 +692,16 @@
     <div class="lifecycle-modal-card" style="text-align: center;">
       <h2 style="color: #2E7D32; margin-bottom: 10px;">🌟 축하합니다!</h2>
       <p style="margin-bottom: 20px;">하나의 식물을 끝까지 훌륭하게 키워내셨군요.<br>다음엔 이 식물을 키워보는 건 어떨까요?</p>
-      
+
       <div style="background: #F1F8E9; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
         <div id="rec-plant-emoji" style="font-size: 3em; margin-bottom: 10px;"></div>
         <div id="rec-plant-name" style="font-size: 1.5em; font-weight: bold; color: #2E7D32;"></div>
       </div>
-      
-      <button id="btn-grow-rec-plant" class="btn-primary btn-full" style="margin-bottom: 10px;">새로운 식물 키우러 가기 🚀</button>
-      <button id="btn-close-rec" class="btn-secondary btn-full" style="background: #e0e0e0; color: #333; border: none;">지금 식물 계속 돌보기 🌱</button>
+
+      <button id="btn-grow-rec-plant" class="btn-primary btn-full" style="margin-bottom: 10px;">새로운 식물 키우러 가기
+        🚀</button>
+      <button id="btn-close-rec" class="btn-secondary btn-full"
+        style="background: #e0e0e0; color: #333; border: none;">지금 식물 계속 돌보기 🌱</button>
     </div>
   </div>
 
@@ -695,23 +710,27 @@
     <div class="lifecycle-modal-overlay"></div>
     <div class="lifecycle-modal-card" style="text-align: center;">
       <h2 style="color: #2E7D32; margin-bottom: 10px;">🏡 정원으로 옮겨 심을 시간!</h2>
-      <p style="margin-bottom: 20px;">식물이 많이 자라서 더 이상 실내 화분에서는 뿌리를 깊게 뻗고 양분을 충분히 흡수하기 어려워요.<br>넓고 쾌적한 야외 정원으로 식물을 옮겨 심어 줄까요?</p>
-      
+      <p style="margin-bottom: 20px;">식물이 많이 자라서 더 이상 실내 화분에서는 뿌리를 깊게 뻗고 양분을 충분히 흡수하기 어려워요.<br>넓고 쾌적한 야외 정원으로 식물을 옮겨 심어
+        줄까요?</p>
+
       <div style="background: #F1F8E9; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
         <div style="font-size: 3em; margin-bottom: 10px;">🏡</div>
         <div style="font-size: 1.2em; font-weight: bold; color: #388E3C;">야외 정원</div>
       </div>
-      
+
       <button id="btn-transplant" class="btn-primary btn-full" style="margin-bottom: 10px;">정원으로 옮겨 심기 🌻</button>
-      <button id="btn-transplant-later" class="btn-secondary btn-full" style="background: #e0e0e0; color: #333; border: none;">조금만 더 실내에 두기</button>
+      <button id="btn-transplant-later" class="btn-secondary btn-full"
+        style="background: #e0e0e0; color: #333; border: none;">조금만 더 실내에 두기</button>
     </div>
   </div>
 
   <!-- Toast notifications (돌보기/시스템 피드백 — 채팅과 분리) -->
   <div id="toast-container" class="toast-container"></div>
+  
   <!-- Scripts: Loaded with defer to ensure non-blocking HTML rendering -->
   <script src="https://unpkg.com/lucide@latest" defer></script>
-  <script src="app.js?v=1" defer></script>
+  <script type="module" src="firebase-db.js" defer></script>
+  <script src="app.js?v=2" defer></script>
 </body>
 
 </html>
