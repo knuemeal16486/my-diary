@@ -2834,6 +2834,24 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('recommendation-modal').classList.add('hidden');
     });
   }
+  
+  // Transplant modal events
+  const btnTransplant = document.getElementById('btn-transplant');
+  if (btnTransplant) {
+    btnTransplant.addEventListener('click', () => {
+      document.getElementById('transplant-modal').classList.add('hidden');
+      appState.environment = 'outdoor';
+      updateDashboardUI();
+      showToast('🏡 넓은 야외 정원으로 옮겨 심었어요! 이제 식물이 더 튼튼하게 자랄 거예요.', 'celebrate');
+    });
+  }
+  
+  const btnTransplantLater = document.getElementById('btn-transplant-later');
+  if (btnTransplantLater) {
+    btnTransplantLater.addEventListener('click', () => {
+      document.getElementById('transplant-modal').classList.add('hidden');
+    });
+  }
 
   // Randomize name placeholder so it feels like real kids
   const sampleNames = ['김초롱', '박한별', '이새싹', '최푸름', '정하늘', '윤초록', '한빛나', '오나무', '류솔잎', '신꽃님'];
