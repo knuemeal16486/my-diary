@@ -28,7 +28,7 @@
       <div class="header-status">
         <div class="user-badge">
           <i data-lucide="user" class="icon-small"></i>
-          <span id="header-user-name">꼬마 정원사</span>
+          <span id="header-user-name">새싹 연구원</span>
         </div>
         <div class="item-badge" id="fertilizer-badge" title="친환경 비료 개수">
           <i data-lucide="sparkles" class="icon-small text-gold animate-bounce-slow"></i>
@@ -411,7 +411,7 @@
                 <div class="chat-wrapper">
                   <div class="chat-messages" id="chat-messages-container">
                     <div class="chat-bubble bot">
-                      <p>안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 정원사님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!</p>
+                      <p id="initial-bot-message">안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 정원사님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!</p>
                       <span class="time">방금 전</span>
                     </div>
                   </div>
@@ -669,7 +669,24 @@
         <div class="lifecycle-label">🌟 알고 있었나요?</div>
         <div id="lc-fun-fact" class="lifecycle-value"></div>
       </div>
-      <button id="lc-close-btn-bottom" class="btn-primary btn-full" onclick="document.getElementById('lifecycle-complete-modal').classList.add('hidden')">계속 돌보기 🌱</button>
+      <button id="lc-close-btn-bottom" class="btn-primary btn-full" style="margin-top: 10px;">계속 돌보기 🌱</button>
+    </div>
+  </div>
+
+  <!-- Recommendation Modal (After Life Cycle) -->
+  <div id="recommendation-modal" class="lifecycle-modal hidden">
+    <div class="lifecycle-modal-overlay"></div>
+    <div class="lifecycle-modal-card" style="text-align: center;">
+      <h2 style="color: #2E7D32; margin-bottom: 10px;">🌟 축하합니다!</h2>
+      <p style="margin-bottom: 20px;">하나의 식물을 끝까지 훌륭하게 키워내셨군요.<br>다음엔 이 식물을 키워보는 건 어떨까요?</p>
+      
+      <div style="background: #F1F8E9; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+        <div id="rec-plant-emoji" style="font-size: 3em; margin-bottom: 10px;"></div>
+        <div id="rec-plant-name" style="font-size: 1.5em; font-weight: bold; color: #2E7D32;"></div>
+      </div>
+      
+      <button id="btn-grow-rec-plant" class="btn-primary btn-full" style="margin-bottom: 10px;">새로운 식물 키우러 가기 🚀</button>
+      <button id="btn-close-rec" class="btn-secondary btn-full" style="background: #e0e0e0; color: #333; border: none;">지금 식물 계속 돌보기 🌱</button>
     </div>
   </div>
 

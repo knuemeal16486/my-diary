@@ -314,7 +314,8 @@ const PLANT_LIFE_CYCLE_INFO = {
 
 // 2. Application State Variables
 let appState = {
-  userName: "꼬마 정원사",
+  userName: "새싹 연구원",
+  completedPlants: [],
   currentView: "intro", // intro, test, loading, result, dashboard
   testAnswers: [],      // User answer choices
   currentQuestionIndex: 0,
@@ -1726,7 +1727,7 @@ async function fetchGeminiResponse(userText) {
 - 학생의 메시지: "${userText}"
 
 [선생님의 역할 및 답변 규칙]
-1. 항상 학생을 존중하고 다정한 '해요체(존댓말)'를 사용하세요.
+1. 항상 학생을 존중하고 다정한 '해요체(존댓말)'를 사용하세요. 학생을 부를 때는 꼭 학생의 진짜 이름('${appState.userName}')을 불러주세요. (예: "${appState.userName}아, 안녕!", "${appState.userName} 님이 이렇게 잘 돌봐주니")
 2. 학생의 질문(특히 식물이나 자연에 관한 질문)에는 사실에 입각하여 정확하면서도 초등학생이 이해하기 쉽게 친절히 설명해 주세요.
 3. 식물 재배 팁이나 성장 과정에 대한 지식을 자연스럽게 알려주어 식물 성장에 대한 모든 것을 커버하세요.
 4. 학생이 감정을 표현하거나 일상적인 대화를 걸어올 때는, 학생의 최근 감정 상태(${recentEmotion})를 세심하게 관찰하고 공감하며 위로하거나 칭찬해 주세요.
@@ -1999,48 +2000,6 @@ function renderPlantExplorer() {
   pane.innerHTML = html;
 }
 
-function showLifeCycleComplete() {
-  const plantKey = appState.selectedPlantKey;
-  const profile = plantProfiles[plantKey];
-  const cycleInfo = PLANT_LIFE_CYCLE_INFO[plantKey];
-  if (!profile || !cycleInfo) return;
-
-  // Calculate growing duration from dailyGrowth records
-  const growthDates = Object.keys(appState.dailyGrowth).sort();
-  const weekCount = growthDates.length > 0
-    ? Math.ceil(growthDates.length / 7)
-    : '여러';
-
-  // Tally emotions from diary
-  const emotionCounts = {};
-  appState.diaryList.forEach(d => {
-    if (d.moodKey) emotionCounts[d.moodKey] = (emotionCounts[d.moodKey] || 0) + 1;
-  });
-  const topEmotions = Object.entries(emotionCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3)
-    .map(([key]) => EMOTIONS[key])
-    .filter(Boolean);
-  const emotionStr = topEmotions.length > 0
-    ? topEmotions.map(e => `${e.emoji} ${e.label}`).join('  ')
-    : '😊 설레임과 함께';
-
-  const modal = document.getElementById('lifecycle-complete-modal');
-  if (!modal) return;
-
-  modal.querySelector('#lc-plant-emoji').textContent = ['🌱','🌿','🍃','🌸','🍎','🌾'][5];
-  modal.querySelector('#lc-plant-name').textContent = profile.name;
-  modal.querySelector('#lc-weeks').textContent = `약 ${weekCount} 주`;
-  modal.querySelector('#lc-emotions').textContent = emotionStr;
-  modal.querySelector('#lc-natural-duration').textContent = cycleInfo.naturalDuration;
-  modal.querySelector('#lc-fun-fact').textContent = cycleInfo.funFact;
-
-  const warningList = modal.querySelector('#lc-warnings');
-  warningList.innerHTML = cycleInfo.careWarnings.map(w => `<li>${w}</li>`).join('');
-
-  modal.classList.remove('hidden');
-}
-
 // 10c. Plant Part Interaction
 function initPlantInteraction() {
   const holder = document.getElementById('plant-svg-holder');
@@ -2121,20 +2080,14 @@ function showLifeCycleComplete() {
 
   // Calculate growing duration from dailyGrowth records
   const growthDates = Object.keys(appState.dailyGrowth).sort();
-  let durationText = '여러 날';
+  let durationText = '0주 0일';
   if (growthDates.length > 0) {
     const firstDate = new Date(growthDates[0]);
     const lastDate = new Date(growthDates[growthDates.length - 1]);
     const totalDays = Math.round((lastDate - firstDate) / (1000 * 60 * 60 * 24)) + 1;
     const weeks = Math.floor(totalDays / 7);
     const days = totalDays % 7;
-    if (weeks > 0 && days > 0) {
-      durationText = `약 ${weeks}주 ${days}일`;
-    } else if (weeks > 0) {
-      durationText = `약 ${weeks}주`;
-    } else {
-      durationText = `약 ${totalDays}일`;
-    }
+    durationText = `${weeks}주 ${days}일`;
   }
 
   // Tally emotions from diary
@@ -2166,7 +2119,60 @@ function showLifeCycleComplete() {
   const warningList = modal.querySelector('#lc-warnings');
   warningList.innerHTML = cycleInfo.careWarnings.map(w => `<li>${w}</li>`).join('');
 
+  if (!appState.completedPlants) appState.completedPlants = [];
+  if (!appState.completedPlants.includes(plantKey)) {
+    appState.completedPlants.push(plantKey);
+  }
+
   modal.classList.remove('hidden');
+}
+
+function resetToNewPlant(specificPlantKey = null) {
+  stopSimulation();
+  
+  const savedUserName = appState.userName;
+  const savedCompletedPlants = appState.completedPlants || [];
+  const savedBadges = appState.badges || [];
+  
+  appState = {
+    userName: savedUserName,
+    completedPlants: savedCompletedPlants,
+    currentView: specificPlantKey ? "environment" : "test",
+    testAnswers: [],
+    currentQuestionIndex: 0,
+    selectedPlantKey: specificPlantKey || "",
+    environment: "",
+    growthXP: 0,
+    growthStage: 1,
+    fertilizerCount: 1,
+    stats: { water: 50, sun: 30, wind: 40, soil: 40 },
+    weather: "sunny",
+    isSunLampOn: false,
+    isWindowOpen: false,
+    diaryList: [],
+    chatLog: [],
+    quizSeenIndices: [],
+    quizCurrentIdx: null,
+    quizCorrectCount: 0,
+    badges: savedBadges,
+    isSimulating: false,
+    simulationIntervalId: null,
+    dailyGrowth: {},
+    currentCalendarDate: new Date(),
+    lastDangerState: {}
+  };
+
+  document.getElementById('lifecycle-complete-modal')?.classList.add('hidden');
+  document.getElementById('recommendation-modal')?.classList.add('hidden');
+  
+  if (specificPlantKey) {
+    switchView('environment');
+    const previewBox = document.getElementById('result-plant-preview');
+    if (previewBox) previewBox.innerHTML = '';
+  } else {
+    switchView('test');
+    initTest();
+  }
 }
 
 // 10c. Plant Part Interaction
@@ -2324,10 +2330,11 @@ async function fetchTeacherCommentFromGemini(text, mood) {
   if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
 
   const prompt = `당신은 초등학교의 다정하고 따뜻한 담임 선생님입니다. 학생이 반려 식물을 관찰하고 다음과 같은 일기를 썼습니다.
+학생 이름: ${appState.userName}
 일기 내용: "${text}"
 학생의 오늘 감정: ${mood}
 
-학생의 일기를 읽고, 깊은 공감과 칭찬을 담은 따뜻한 선생님의 코멘트를 1~2문장으로 '해요체(존댓말)'를 사용하여 다정하게 작성해 주세요. JSON 포맷 없이 순수 텍스트로만 대답해 주세요.`;
+학생의 일기를 읽고, 깊은 공감과 칭찬을 담은 따뜻한 선생님의 코멘트를 1~2문장으로 '해요체(존댓말)'를 사용하여 다정하게 작성해 주세요. 꼭 학생의 이름(${appState.userName})을 다정하게 불러주세요. JSON 포맷 없이 순수 텍스트로만 대답해 주세요.`;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
   try {
@@ -2789,6 +2796,36 @@ document.addEventListener("DOMContentLoaded", () => {
   // Lucide initialize
   lucide.createIcons();
 
+  const btnCloseLc = document.getElementById('lc-close-btn-bottom');
+  if (btnCloseLc) {
+    btnCloseLc.addEventListener('click', () => {
+      document.getElementById('lifecycle-complete-modal').classList.add('hidden');
+      
+      const allPlants = Object.keys(plantProfiles);
+      const uncompletedPlants = allPlants.filter(p => !appState.completedPlants?.includes(p));
+      
+      if (uncompletedPlants.length > 0) {
+        const nextPlantKey = uncompletedPlants[Math.floor(Math.random() * uncompletedPlants.length)];
+        const recModal = document.getElementById('recommendation-modal');
+        if (recModal) {
+          const emojis = ['🌱','🌿','🍃','🌸','🍎','🌾'];
+          recModal.querySelector('#rec-plant-emoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          recModal.querySelector('#rec-plant-name').textContent = plantProfiles[nextPlantKey].name;
+          
+          document.getElementById('btn-grow-rec-plant').onclick = () => resetToNewPlant(nextPlantKey);
+          recModal.classList.remove('hidden');
+        }
+      }
+    });
+  }
+  
+  const btnCloseRec = document.getElementById('btn-close-rec');
+  if (btnCloseRec) {
+    btnCloseRec.addEventListener('click', () => {
+      document.getElementById('recommendation-modal').classList.add('hidden');
+    });
+  }
+
   // Randomize name placeholder so it feels like real kids
   const sampleNames = ['김초롱', '박한별', '이새싹', '최푸름', '정하늘', '윤초록', '한빛나', '오나무', '류솔잎', '신꽃님'];
   const pick = sampleNames[Math.floor(Math.random() * sampleNames.length)];
@@ -2844,8 +2881,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPlantExplorer();
     renderDiaries();
     
+    const initialMsg = document.getElementById('initial-bot-message');
+    if (initialMsg) {
+      initialMsg.innerText = `안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 ${appState.userName} 님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!`;
+    }
+
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
-    addBotMessage(`🌱 안녕하세요, ${appState.userName} 정원사님! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
+    addBotMessage(`🌱 안녕하세요, ${appState.userName} 님! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
   });
 
   // Reset Application to Initial Screen
@@ -2853,7 +2895,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (confirm("처음부터 다시 성향 검사를 하고 식물을 기르시겠습니까?")) {
       stopSimulation();
       appState = {
-        userName: "꼬마 정원사",
+        userName: "새싹 연구원",
         currentView: "intro",
         testAnswers: [],
         currentQuestionIndex: 0,
@@ -3245,7 +3287,7 @@ async function generateEmotionReport() {
   
   const emotionSummary = Object.entries(emotionCounts).map(([mood, count]) => `${mood} ${count}번`).join(', ');
 
-  const prompt = `당신은 초등학교 다정하고 따뜻한 담임 선생님입니다. 학생이 반려 식물(현재 ${appState.growthStage}단계)을 기르면서 작성한 한 달치 감정 일기 통계를 바탕으로 다정하고 따뜻한 회고 보고서를 작성해 주세요.
+  const prompt = `당신은 초등학교 다정하고 따뜻한 담임 선생님입니다. 학생(${appState.userName})이 반려 식물(현재 ${appState.growthStage}단계)을 기르면서 작성한 한 달치 감정 일기 통계를 바탕으로 다정하고 따뜻한 회고 보고서를 작성해 주세요.
   
 이번 달 학생의 감정 통계: ${emotionSummary}
 총 작성한 일기 수: ${monthlyDiaries.length}개
@@ -3256,7 +3298,7 @@ async function generateEmotionReport() {
 3. 햇빛(기쁨/행복)이 식물을 미소 짓게 했다는 점도 언급해 주세요.
 4. 초등학생 6학년이 읽기 좋게 다정하고 부드러운 '해요체(존댓말)'로 작성해 주세요.
 5. 3~4문단 정도로 구성하고, 마크다운(HTML)을 약간 섞어서 보기 좋게 작성해 주세요. (예: <strong>강조</strong>, <br> 등)
-6. 반드시 선생님이 학생에게 편지를 쓰는 듯한 어조로 작성하세요.`;
+6. 반드시 선생님이 학생(${appState.userName})에게 편지를 쓰는 듯한 어조로 작성하고, 꼭 학생의 이름을 불러주세요.`;
 
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
