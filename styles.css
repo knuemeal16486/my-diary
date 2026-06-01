@@ -59,6 +59,11 @@ input, textarea {
   -webkit-user-select: text;
 }
 
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   background: linear-gradient(135deg, #F1F8F3 0%, #E8F0FE 100%);
   background-attachment: fixed;
@@ -229,6 +234,7 @@ body {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+  z-index: 1;
 }
 
 /* Button & Interactive Elements */
@@ -1952,29 +1958,39 @@ body {
 
 /* 13. Responsiveness (Tablet Portrait & Large Mobile) */
 @media (max-width: 900px) {
+  /* CRITICAL FIX: height:auto causes #view-viewport (flex:1) to collapse to 0px because
+     all .view-section children are position:absolute (no intrinsic height). Fix by giving
+     #app-container a definite height so flex:1 can distribute space correctly. */
   #app-container {
-    height: auto;
+    height: calc(100vh - 40px);
+    height: calc(100svh - 40px); /* iOS 15.4+: uses small-viewport height excluding browser chrome */
     max-height: none;
-    min-height: auto;
+    min-height: 580px;
   }
-  
+
+  /* Allow tall content (dashboard single-column) to scroll within the viewport */
+  #view-viewport {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .dashboard-grid {
     grid-template-columns: 1fr;
     height: auto;
   }
-  
+
   .observatory-card {
     height: 400px;
   }
-  
+
   .control-card {
     height: 500px;
   }
-  
+
   .result-body-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .result-visual-card {
     min-height: 200px;
   }
