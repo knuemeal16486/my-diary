@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 // TODO: Replace this with your actual Firebase config
 const firebaseConfig = {
@@ -31,19 +31,20 @@ window.firebaseInitPromise = (async () => {
     const userCredential = await signInAnonymously(auth);
     currentUserUid = userCredential.user.uid;
     console.log("Firebase initialized. User UID:", currentUserUid);
-    
+
   } catch (error) {
     console.warn("Firebase initialization failed:", error.message);
     isOfflineMode = true;
   }
 })();
 
-window.fbLoadState = async () => {
+// Load student state from classrooms/{classCode}/students/{uid}
+window.fbLoadState = async (classCode) => {
   await window.firebaseInitPromise;
-  if (isOfflineMode || !currentUserUid || !db) return null;
+  if (isOfflineMode || !currentUserUid || !db || !classCode) return null;
 
   try {
-    const docRef = doc(db, "users", currentUserUid);
+    const docRef = doc(db, "classrooms", classCode, "students", currentUserUid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -56,15 +57,31 @@ window.fbLoadState = async () => {
   }
 };
 
-window.fbSaveState = async (appState) => {
+// Save student state to classrooms/{classCode}/students/{uid}
+window.fbSaveState = async (appState, classCode) => {
   await window.firebaseInitPromise;
-  if (isOfflineMode || !currentUserUid || !db) return;
+  if (isOfflineMode || !currentUserUid || !db || !classCode) return;
 
   try {
-    const docRef = doc(db, "users", currentUserUid);
+    const docRef = doc(db, "classrooms", classCode, "students", currentUserUid);
     await setDoc(docRef, appState, { merge: true });
     console.log("State successfully synced to Firebase.");
   } catch (e) {
     console.error("Error saving state to Firebase:", e);
+  }
+};
+
+// Teacher: load all students in a class
+window.fbLoadClassStudents = async (classCode) => {
+  await window.firebaseInitPromise;
+  if (isOfflineMode || !db || !classCode) return [];
+
+  try {
+    const colRef = collection(db, "classrooms", classCode, "students");
+    const snapshot = await getDocs(colRef);
+    return snapshot.docs.map(d => ({ uid: d.id, ...d.data() }));
+  } catch (e) {
+    console.error("Error loading class students:", e);
+    return [];
   }
 };

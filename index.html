@@ -46,7 +46,7 @@
     <!-- MAIN VIEW CONTAINER -->
     <main id="view-viewport">
 
-      <!-- 1. INTRO SCREEN -->
+      <!-- 1. INTRO SCREEN (role selection) -->
       <section id="view-intro" class="view-section active">
         <div class="intro-card glassmorphism">
           <div class="intro-header">
@@ -58,17 +58,78 @@
             <p class="subtitle">나의 하루를 일기로 나누고, 초록 친구를 돌보며 마음의 성장을 함께 경험해요!</p>
           </div>
 
-          <div class="intro-form">
-            <label for="input-name">네 이름을 알려줘!</label>
-            <input type="text" id="input-name" placeholder="예: 김초롱, 박한별" maxlength="10" autocomplete="off">
-            <button id="btn-start-test" type="button" class="btn-primary">
-              나만의 반려 식물 찾으러 가기
-              <i data-lucide="arrow-right"></i>
+          <div class="role-select">
+            <button id="btn-role-student" class="role-card">
+              <span class="role-icon">🌱</span>
+              <span class="role-label">학생으로 시작</span>
+              <span class="role-desc">선생님 코드로 참여해요</span>
+            </button>
+            <button id="btn-role-teacher" class="role-card">
+              <span class="role-icon">👩‍🏫</span>
+              <span class="role-label">선생님 열람</span>
+              <span class="role-desc">학생 기록을 확인해요</span>
             </button>
           </div>
 
           <div class="intro-footer">
             <span>초등학교 6학년 실과 [동식물 가꾸기] 단원 연계 학습 프로그램</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1-B. STUDENT CLASS CODE + NAME ENTRY -->
+      <section id="view-class-code" class="view-section hidden">
+        <div class="intro-card glassmorphism">
+          <div class="intro-header">
+            <div class="intro-icon-wrapper animate-float">
+              <i data-lucide="key-round" class="icon-huge text-green"></i>
+            </div>
+            <h2>학급 코드를 입력해요</h2>
+            <p class="subtitle">선생님이 알려준 코드와 내 이름을 입력해요!</p>
+          </div>
+
+          <div class="intro-form">
+            <label for="input-class-code">🔑 학급 코드</label>
+            <input type="text" id="input-class-code" placeholder="선생님이 알려준 코드" maxlength="20" autocomplete="off">
+            <label for="input-name">😊 내 이름</label>
+            <input type="text" id="input-name" placeholder="예: 김초롱, 박한별" maxlength="10" autocomplete="off">
+            <button id="btn-join-class" type="button" class="btn-primary">
+              시작하기
+              <i data-lucide="arrow-right"></i>
+            </button>
+            <button id="btn-back-to-intro" type="button" class="btn-secondary btn-back">← 돌아가기</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1-C. TEACHER VIEW (full screen) -->
+      <section id="view-teacher" class="view-section hidden">
+        <div class="teacher-view-wrap">
+          <!-- Login panel -->
+          <div id="teacher-login-panel" class="teacher-login-card glassmorphism">
+            <div class="intro-icon-wrapper animate-float">
+              <span style="font-size:64px;">👩‍🏫</span>
+            </div>
+            <h2>선생님 열람</h2>
+            <p class="subtitle">학급 코드를 입력하면 참여한 모든 학생의 기록을 확인할 수 있어요.</p>
+            <div class="intro-form">
+              <label for="input-teacher-code">🔑 학급 코드</label>
+              <input type="password" id="input-teacher-code" placeholder="코드 입력" maxlength="20" autocomplete="off">
+              <p id="teacher-code-error" class="teacher-code-error hidden">학생이 없거나 코드가 맞지 않아요 🔒</p>
+              <button id="btn-teacher-enter" type="button" class="btn-primary">학생 목록 보기</button>
+              <button id="btn-back-to-intro2" type="button" class="btn-secondary btn-back">← 돌아가기</button>
+            </div>
+          </div>
+
+          <!-- Students dashboard -->
+          <div id="teacher-dashboard" class="hidden">
+            <div class="teacher-dash-header">
+              <button id="btn-teacher-logout" class="btn-secondary">← 다른 코드로</button>
+              <h2 id="teacher-class-title">📋 학급 기록</h2>
+              <button id="btn-print-teacher" class="btn-secondary">🖨️ 인쇄</button>
+            </div>
+            <div id="student-list" class="student-list"></div>
+            <div id="student-detail" class="student-detail hidden"></div>
           </div>
         </div>
       </section>

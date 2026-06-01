@@ -342,8 +342,9 @@ const PLANT_LIFE_CYCLE_INFO = {
 // 2. Application State Variables
 let appState = {
   userName: "새싹 연구원",
+  classCode: "",         // 학급 코드 (학생 참여 시 설정)
   completedPlants: [],
-  currentView: "intro", // intro, test, loading, result, dashboard
+  currentView: "intro", // intro, class-code, teacher, test, loading, result, dashboard
   testAnswers: [],      // User answer choices
   currentQuestionIndex: 0,
   selectedPlantKey: "", // tomato, potato, cabbage, cucumber, apple
@@ -1004,7 +1005,8 @@ function switchView(viewName) {
 
   // Header display logic
   const header = document.getElementById('main-header');
-  if (viewName === 'intro' || viewName === 'test' || viewName === 'loading') {
+  const noHeaderViews = ['intro', 'class-code', 'teacher', 'test', 'loading'];
+  if (noHeaderViews.includes(viewName)) {
     header.classList.add('hidden');
   } else {
     header.classList.remove('hidden');
@@ -2536,6 +2538,202 @@ async function fetchTeacherCommentFromGemini(text, mood) {
   return null;
 }
 
+// ===== Teacher View =====
+
+async function enterAsTeacher() {
+  const code = document.getElementById('input-teacher-code')?.value.trim();
+  if (!code) return;
+
+  const btn = document.getElementById('btn-teacher-enter');
+  if (btn) { btn.disabled = true; btn.textContent = '불러오는 중...'; }
+
+  const errEl = document.getElementById('teacher-code-error');
+  errEl?.classList.add('hidden');
+
+  const students = window.fbLoadClassStudents
+    ? await window.fbLoadClassStudents(code)
+    : [];
+
+  if (btn) { btn.disabled = false; btn.textContent = '학생 목록 보기'; }
+
+  if (students.length === 0) {
+    errEl?.classList.remove('hidden');
+    document.getElementById('input-teacher-code')?.classList.add('shake');
+    setTimeout(() => document.getElementById('input-teacher-code')?.classList.remove('shake'), 500);
+    return;
+  }
+
+  document.getElementById('teacher-class-title').textContent = `📋 학급 코드: ${code} — 학생 ${students.length}명`;
+  renderStudentList(students);
+  document.getElementById('teacher-login-panel').classList.add('hidden');
+  document.getElementById('teacher-dashboard').classList.remove('hidden');
+}
+
+function renderStudentList(students) {
+  const stageNames = ['씨앗', '새싹', '성장기', '개화', '결실', '채종'];
+  const stageEmojis = ['🌱','🌿','🍃','🌸','🍎','🌾'];
+  const plantNames = { tomato:'방울토마토', potato:'감자', cabbage:'배추', cucumber:'오이', apple:'사과' };
+  const plantEmojis = { tomato:'🍅', potato:'🥔', cabbage:'🥬', cucumber:'🥒', apple:'🍎' };
+
+  const listEl = document.getElementById('student-list');
+  const detailEl = document.getElementById('student-detail');
+  detailEl.classList.add('hidden');
+  detailEl.innerHTML = '';
+
+  listEl.innerHTML = students.map((s, idx) => {
+    const stage = Math.min(Math.max(s.growthStage || 1, 1), 6);
+    const plantKey = s.selectedPlantKey || '';
+    const diaryCount = (s.diaryList || []).length;
+    const quizRate = s.quizSeenIndices?.length
+      ? Math.round((s.quizCorrectCount || 0) / s.quizSeenIndices.length * 100) : 0;
+    return `
+      <div class="student-card" data-idx="${idx}">
+        <div class="sc-left">
+          <span class="sc-avatar">${plantEmojis[plantKey] || '🌱'}</span>
+          <div class="sc-info">
+            <strong class="sc-name">${escapeHTML(s.userName || '이름 없음')}</strong>
+            <span class="sc-plant">${plantNames[plantKey] || '식물 미선택'} · ${stageEmojis[stage-1]}${stageNames[stage-1]}</span>
+          </div>
+        </div>
+        <div class="sc-stats">
+          <span class="sc-stat">📝 ${diaryCount}개</span>
+          <span class="sc-stat">🧩 ${quizRate}%</span>
+        </div>
+        <span class="sc-arrow">›</span>
+      </div>`;
+  }).join('');
+
+  listEl.querySelectorAll('.student-card').forEach((card, idx) => {
+    card.addEventListener('click', () => {
+      listEl.querySelectorAll('.student-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      renderStudentDetail(students[idx]);
+    });
+  });
+}
+
+function renderStudentDetail(s) {
+  const detailEl = document.getElementById('student-detail');
+  detailEl.classList.remove('hidden');
+  detailEl.innerHTML = buildStudentDetailHTML(s);
+  detailEl.scrollTop = 0;
+}
+
+function buildStudentDetailHTML(s) {
+  const stageNames = ['씨앗', '새싹', '성장기', '개화', '결실', '채종'];
+  const stageEmojis = ['🌱','🌿','🍃','🌸','🍎','🌾'];
+  const plantNames = { tomato:'방울토마토', potato:'감자', cabbage:'배추', cucumber:'오이', apple:'사과' };
+  const plantEmojis = { tomato:'🍅', potato:'🥔', cabbage:'🥬', cucumber:'🥒', apple:'🍎' };
+
+  const stage = Math.min(Math.max(s.growthStage || 1, 1), 6);
+  const plantKey = s.selectedPlantKey || '';
+  const diaries = (s.diaryList || []).slice().reverse();
+  const xp = s.growthXP || 0;
+  const quizCorrect = s.quizCorrectCount || 0;
+  const quizTotal = s.quizSeenIndices?.length || 0;
+  const quizRate = quizTotal ? Math.round(quizCorrect / quizTotal * 100) : 0;
+
+  // Emotion counts
+  const emotionCounts = {};
+  diaries.forEach(d => {
+    const key = d.moodKey || 'joy';
+    emotionCounts[key] = (emotionCounts[key] || 0) + 1;
+  });
+  const topEmotions = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  // Summary card
+  let html = `
+    <div class="sd-summary-card">
+      <div class="sd-summary-left">
+        <span class="sd-plant-icon">${plantEmojis[plantKey] || '🌱'}</span>
+        <div>
+          <div class="sd-name">${escapeHTML(s.userName || '이름 없음')}</div>
+          <div class="sd-plant-name">${plantNames[plantKey] || '식물 미선택'}</div>
+        </div>
+      </div>
+      <div class="sd-summary-right">
+        <div class="sd-stage">${stageEmojis[stage-1]} ${stageNames[stage-1]} 단계</div>
+        <div class="sd-xp-bar-wrap">
+          <div class="sd-xp-bar" style="width:${xp}%"></div>
+        </div>
+        <div class="sd-xp-text">성장 XP ${xp} / 100</div>
+      </div>
+    </div>`;
+
+  // Stats row
+  html += `
+    <div class="sd-stats-row">
+      <div class="sd-stat-box">📝<strong>${diaries.length}</strong><span>일기</span></div>
+      <div class="sd-stat-box">🧩<strong>${quizRate}%</strong><span>퀴즈 정답률</span></div>
+      <div class="sd-stat-box">🌿<strong>${s.fertilizerCount || 0}</strong><span>비료</span></div>
+      <div class="sd-stat-box">🏅<strong>${(s.badges || []).length}</strong><span>배지</span></div>
+    </div>`;
+
+  // Emotion summary
+  if (topEmotions.length > 0) {
+    const EMOTION_EMOJI = { joy:'😄', sadness:'😢', anger:'😠', fear:'😨', disgust:'🤢', anxiety:'😰', ennui:'😑', envy:'😒', embarrassment:'😳' };
+    const EMOTION_LABEL = { joy:'기쁨', sadness:'슬픔', anger:'화남', fear:'두려움', disgust:'불쾌', anxiety:'불안', ennui:'따분함', envy:'부러움', embarrassment:'쑥스러움' };
+    html += `
+      <div class="sd-section">
+        <div class="sd-section-title">💭 감정 통계</div>
+        <div class="sd-emotion-row">
+          ${topEmotions.map(([k, cnt]) => `
+            <span class="sd-emotion-chip">${EMOTION_EMOJI[k] || '😊'} ${EMOTION_LABEL[k] || k} <strong>${cnt}</strong></span>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+
+  // Teacher comments collected
+  const commented = diaries.filter(d => d.teacherComment);
+  if (commented.length > 0) {
+    html += `
+      <div class="sd-section">
+        <div class="sd-section-title">💬 선생님 코멘트 모음 (${commented.length}개)</div>
+        ${commented.map(d => `
+          <div class="sd-comment-card">
+            <span class="sd-comment-date">${d.date}</span>
+            <span class="sd-comment-mood">${d.mood || ''}</span>
+            <p class="sd-comment-text">${escapeHTML(d.teacherComment)}</p>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  // Diary list
+  html += `
+    <div class="sd-section">
+      <div class="sd-section-title">📖 일기 전체 (${diaries.length}개)</div>
+      ${diaries.length === 0 ? '<p class="sd-empty">아직 작성된 일기가 없어요.</p>' :
+        diaries.map(d => {
+          const obs = d.observation;
+          const obsHtml = obs ? `
+            <div class="sd-obs">
+              ${obs.leafColor ? `<span>🌿 잎색: ${escapeHTML(obs.leafColor)}</span>` : ''}
+              ${obs.height ? `<span>📏 키: ${escapeHTML(String(obs.height))}cm</span>` : ''}
+              ${obs.careDone?.length ? `<span>🤲 돌봄: ${obs.careDone.map(escapeHTML).join(', ')}</span>` : ''}
+              ${obs.note ? `<span>📝 특이사항: ${escapeHTML(obs.note)}</span>` : ''}
+            </div>` : '';
+          return `
+            <details class="sd-diary-item">
+              <summary class="sd-diary-summary">
+                <span class="sd-diary-date">${d.date}</span>
+                <span class="sd-diary-mood">${d.mood || ''}</span>
+                <span class="sd-diary-snippet">${escapeHTML((d.content || '').slice(0, 30))}${(d.content || '').length > 30 ? '…' : ''}</span>
+              </summary>
+              <div class="sd-diary-body">
+                ${obsHtml}
+                <p class="sd-diary-content">${escapeHTML(d.content || '')}</p>
+                ${d.imageUrl ? `<img class="sd-diary-img" src="${d.imageUrl}" alt="일기 이미지">` : ''}
+                ${d.teacherComment ? `<div class="sd-diary-comment">💬 ${escapeHTML(d.teacherComment)}</div>` : ''}
+              </div>
+            </details>`;
+        }).join('')
+      }
+    </div>`;
+
+  return html;
+}
+
 // 핵심 로직: 최근 3개 일기의 감정 패턴 → 식물 날씨 분석
 //
 // [조건] — 감정별 날씨 효과
@@ -3326,20 +3524,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // Randomize name placeholder so it feels like real kids
   const sampleNames = ['김초롱', '박한별', '이새싹', '최푸름', '정하늘', '윤초록', '한빛나', '오나무', '류솔잎', '신꽃님'];
   const pick = sampleNames[Math.floor(Math.random() * sampleNames.length)];
-  document.getElementById('input-name').placeholder = `예: ${pick}`;
-  
-  // Event: Start Test
-  document.getElementById('btn-start-test').addEventListener('click', () => {
-    const nameInput = document.getElementById('input-name');
-    const name = nameInput.value.trim();
-    if (!name) {
-      alert("이름을 입력해주세요!");
-      return;
-    }
+  const nameInputEl = document.getElementById('input-name');
+  if (nameInputEl) nameInputEl.placeholder = `예: ${pick}`;
+
+  // Role selection: student / teacher
+  document.getElementById('btn-role-student')?.addEventListener('click', () => switchView('class-code'));
+  document.getElementById('btn-role-teacher')?.addEventListener('click', () => switchView('teacher'));
+  document.getElementById('btn-back-to-intro')?.addEventListener('click', () => switchView('intro'));
+  document.getElementById('btn-back-to-intro2')?.addEventListener('click', () => switchView('intro'));
+
+  // Student: join class with code + name
+  document.getElementById('btn-join-class')?.addEventListener('click', () => {
+    const code = document.getElementById('input-class-code').value.trim();
+    const name = document.getElementById('input-name').value.trim();
+    if (!code) { alert("학급 코드를 입력해주세요!"); return; }
+    if (!name) { alert("이름을 입력해주세요!"); return; }
+    appState.classCode = code;
     appState.userName = name;
+    localStorage.setItem('myDiary_classCode', code);
+    saveState();
     switchView('test');
     initTest();
   });
+
+  // Teacher: enter code and load all students
+  document.getElementById('btn-teacher-enter')?.addEventListener('click', () => enterAsTeacher());
+  document.getElementById('input-teacher-code')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') enterAsTeacher();
+  });
+  document.getElementById('btn-teacher-logout')?.addEventListener('click', () => {
+    document.getElementById('teacher-dashboard').classList.add('hidden');
+    document.getElementById('teacher-login-panel').classList.remove('hidden');
+    document.getElementById('input-teacher-code').value = '';
+  });
+  document.getElementById('btn-print-teacher')?.addEventListener('click', () => window.print());
 
   // Event: Adopt & Go to Environment Selection
   document.getElementById('btn-adopt-plant').addEventListener('click', () => {
@@ -3395,9 +3613,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('btn-reset').addEventListener('click', () => {
     if (confirm("처음부터 다시 성향 검사를 하고 식물을 기르시겠습니까?")) {
       stopSimulation();
+      const savedCode = appState.classCode;
       appState = {
         userName: "새싹 연구원",
-        currentView: "intro",
+        classCode: savedCode,
+        currentView: "class-code",
         testAnswers: [],
         currentQuestionIndex: 0,
         selectedPlantKey: "",
@@ -3433,7 +3653,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('effect-wind').classList.add('hidden-effect');
       document.getElementById('effect-sunlight').classList.add('hidden-effect');
       
-      switchView('intro');
+      switchView('class-code');
+      // Pre-fill class code so student only needs to enter name
+      const codeInputEl = document.getElementById('input-class-code');
+      if (codeInputEl && savedCode) codeInputEl.value = savedCode;
     }
   });
 
@@ -3926,28 +4149,36 @@ async function generateEmotionReport() {
 // --- Firebase Persistence Logic ---
 let saveTimeout = null;
 function saveState() {
-  if (window.fbSaveState) {
+  if (window.fbSaveState && appState.classCode) {
     if (saveTimeout) clearTimeout(saveTimeout);
     saveTimeout = setTimeout(() => {
-      window.fbSaveState(appState);
+      window.fbSaveState(appState, appState.classCode);
     }, 2000);
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Restore classCode from localStorage so returning students don't re-enter it
+  const storedCode = localStorage.getItem('myDiary_classCode');
+  if (storedCode) appState.classCode = storedCode;
+
   if (window.firebaseInitPromise) {
     await window.firebaseInitPromise;
-    if (window.fbLoadState) {
-      const savedState = await window.fbLoadState();
+    if (window.fbLoadState && appState.classCode) {
+      const savedState = await window.fbLoadState(appState.classCode);
       if (savedState) {
         appState = { ...appState, ...savedState };
-        if (appState.currentView) switchView(appState.currentView);
-        if (appState.currentView === 'dashboard') {
-          updateDashboardUI();
-          renderDiaries();
-        } else if (appState.currentView === 'environment') {
-          const previewBox = document.getElementById('result-plant-preview');
-          if (previewBox) previewBox.innerHTML = generatePlantSVG(appState.selectedPlantKey, 3, {water:50, sun:50, wind:50, soil:50}, true);
+        appState.classCode = storedCode; // ensure classCode not overwritten
+        const viewToRestore = appState.currentView;
+        if (viewToRestore && viewToRestore !== 'intro' && viewToRestore !== 'class-code' && viewToRestore !== 'teacher') {
+          switchView(viewToRestore);
+          if (viewToRestore === 'dashboard') {
+            updateDashboardUI();
+            renderDiaries();
+          } else if (viewToRestore === 'environment') {
+            const previewBox = document.getElementById('result-plant-preview');
+            if (previewBox) previewBox.innerHTML = generatePlantSVG(appState.selectedPlantKey, 3, {water:50, sun:50, wind:50, soil:50}, true);
+          }
         }
       }
     }
