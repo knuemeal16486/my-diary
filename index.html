@@ -37,6 +37,9 @@
         <button id="btn-reset" class="btn-icon-only" title="처음부터 다시 하기">
           <i data-lucide="refresh-cw"></i>
         </button>
+        <button id="btn-portfolio" class="btn-icon-only" title="나의 정원 기록">
+          <i data-lucide="book-open"></i>
+        </button>
       </div>
     </header>
 
@@ -735,6 +738,15 @@
       <button id="btn-transplant" class="btn-primary btn-full" style="margin-bottom: 10px;">정원으로 옮겨 심기 🌻</button>
       <button id="btn-transplant-later" class="btn-secondary btn-full"
         style="background: #e0e0e0; color: #333; border: none;">조금만 더 실내에 두기</button>
+    </div>
+  </div>
+
+  <!-- Portfolio Modal -->
+  <div id="portfolio-modal" class="lifecycle-modal hidden">
+    <div class="lifecycle-modal-overlay" id="portfolio-overlay"></div>
+    <div class="lifecycle-modal-card portfolio-card" id="portfolio-content">
+      <button id="portfolio-close" type="button" class="lifecycle-close-btn">✕</button>
+      <!-- Content injected by renderPortfolio() -->
     </div>
   </div>
 

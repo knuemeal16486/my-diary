@@ -2705,6 +2705,255 @@ function closeDiaryDetail() {
   if (modal) modal.classList.add('hidden');
 }
 
+// ── Portfolio & Teacher Report ────────────────────────────────────────────────
+
+function openPortfolio() {
+  const modal = document.getElementById('portfolio-modal');
+  if (!modal) return;
+  renderPortfolio();
+  modal.classList.remove('hidden');
+}
+
+function closePortfolio() {
+  document.getElementById('portfolio-modal')?.classList.add('hidden');
+}
+
+function renderPortfolio() {
+  const content = document.getElementById('portfolio-content');
+  if (!content) return;
+
+  const plantEmojis = { tomato: '🍅', potato: '🥔', cabbage: '🥬', cucumber: '🥒', apple: '🍎' };
+  const stageNames = ["씨앗", "새싹", "성장기", "개화", "결실", "채종"];
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  const totalDiaries = appState.diaryList.length;
+  const quizAttempted = appState.quizSeenIndices.length || 0;
+  const quizCorrect = appState.quizCorrectCount || 0;
+  const quizRate = quizAttempted > 0 ? Math.round((quizCorrect / quizAttempted) * 100) : 0;
+
+  // Emotion totals for donut chart
+  const emotionCounts = {};
+  appState.diaryList.forEach(d => {
+    if (d.moodKey) emotionCounts[d.moodKey] = (emotionCounts[d.moodKey] || 0) + 1;
+  });
+  const emotionTotal = Object.values(emotionCounts).reduce((a, b) => a + b, 0);
+
+  // Donut SVG
+  const r = 34, cx = 44, cy = 44, circ = 2 * Math.PI * r;
+  let donutOffset = 0;
+  const donutSegs = Object.entries(emotionCounts).map(([key, count]) => {
+    const dash = (count / emotionTotal) * circ;
+    const seg = `<circle r="${r}" cx="${cx}" cy="${cy}" fill="transparent"
+      stroke="${EMOTIONS[key]?.color || '#ccc'}" stroke-width="16"
+      stroke-dasharray="${dash.toFixed(2)} ${(circ - dash).toFixed(2)}"
+      stroke-dashoffset="${(-donutOffset + circ * 0.25).toFixed(2)}"
+      transform="rotate(-90 ${cx} ${cy})"/>`;
+    donutOffset += dash;
+    return seg;
+  }).join('');
+
+  const donutSvg = emotionTotal > 0 ? `
+    <svg width="88" height="88" viewBox="0 0 88 88">
+      ${donutSegs}
+      <circle r="20" cx="${cx}" cy="${cy}" fill="white"/>
+      <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="12" font-weight="bold" fill="#555">${totalDiaries}</text>
+    </svg>` : '<div style="width:88px;height:88px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px;">기록 없음</div>';
+
+  const emotionLegend = Object.entries(emotionCounts)
+    .sort((a,b) => b[1]-a[1]).slice(0, 5)
+    .map(([key, count]) => {
+      const em = EMOTIONS[key];
+      if (!em) return '';
+      return `<span class="pf-legend-item"><span class="pf-dot" style="background:${em.color}"></span>${em.emoji} ${em.label} ${count}회</span>`;
+    }).join('');
+
+  // Teacher comment keywords (top 5 words, ignoring stop words)
+  const stopWords = new Set(['이', '가', '은', '는', '을', '를', '의', '에', '도', '와', '과', '으로', '로', '에서', '으로서', '하고', '이고', '이에요', '해요', '있어요', '했어요', '거예요', '이었어요', '그리고', '그런데', '하지만', '때문에', '정말', '너무', '매우', '아주', '조금', '많이', '오늘', '내일', '어제', '했네요', '이런', '그런', '좋아요', '좋겠어요']);
+  const wordFreq = {};
+  appState.diaryList.forEach(d => {
+    if (!d.teacherComment) return;
+    d.teacherComment.replace(/[!?.,~♥🌱🌿💚✨🎉]/g, ' ').split(/\s+/).forEach(w => {
+      if (w.length < 2 || stopWords.has(w)) return;
+      wordFreq[w] = (wordFreq[w] || 0) + 1;
+    });
+  });
+  const topWords = Object.entries(wordFreq).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  const keywordsHtml = topWords.length > 0
+    ? topWords.map(([w, c]) => `<span class="pf-keyword" style="font-size:${12 + c * 2}px">${w}</span>`).join(' ')
+    : '<span style="color:#bbb;font-size:13px">코멘트를 모으면 여기에 나타나요</span>';
+
+  // Completed plants
+  const completedHtml = (appState.completedPlants || []).map(key => {
+    const p = plantProfiles[key];
+    return `<div class="pf-plant-badge"><span>${plantEmojis[key] || '🌱'}</span><span>${p?.name || key}</span><span class="pf-badge-check">✓ 완성</span></div>`;
+  }).join('') || '<span style="color:#bbb;font-size:13px">아직 한살이를 완성한 식물이 없어요</span>';
+
+  // Current plant progress
+  const curProfile = plantProfiles[appState.selectedPlantKey];
+  const curStage = stageNames[appState.growthStage - 1] || '채종';
+  const curPlantHtml = curProfile ? `
+    <div class="pf-plant-badge pf-plant-current">
+      <span>${plantEmojis[appState.selectedPlantKey] || '🌱'}</span>
+      <span>${curProfile.name}</span>
+      <span class="pf-stage-chip">${curStage} 단계 (XP ${appState.growthXP}%)</span>
+    </div>` : '';
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  content.innerHTML = `
+    <button id="portfolio-close" type="button" class="lifecycle-close-btn">✕</button>
+    <div class="pf-header">
+      <div class="pf-title">📗 나의 정원 기록</div>
+      <div class="pf-subtitle">${escapeHTML(appState.userName)}의 식물 성장 포트폴리오</div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">🌿 키운 식물</div>
+      <div class="pf-plants">${completedHtml}${curPlantHtml}</div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">📔 감정 일기 기록</div>
+      <div class="pf-emotion-row">
+        ${donutSvg}
+        <div class="pf-emotion-right">
+          <div class="pf-stat-big">총 <strong>${totalDiaries}</strong>편</div>
+          <div class="pf-legend">${emotionLegend || '<span style="color:#bbb;font-size:12px">일기를 작성하면 나타나요</span>'}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">🧪 식물 퀴즈</div>
+      <div class="pf-quiz-row">
+        <div class="pf-quiz-circle" style="--pct:${quizRate}">
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <circle r="26" cx="32" cy="32" fill="transparent" stroke="#e8f5e9" stroke-width="10"/>
+            <circle r="26" cx="32" cy="32" fill="transparent" stroke="#4caf50" stroke-width="10"
+              stroke-dasharray="${(quizRate / 100 * 163).toFixed(1)} 163"
+              stroke-dashoffset="40.75" transform="rotate(-90 32 32)"/>
+            <text x="32" y="37" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">${quizRate}%</text>
+          </svg>
+        </div>
+        <div><div style="font-size:13px"><strong>${quizCorrect}</strong>문제 정답 / 총 <strong>${quizAttempted}</strong>문제</div>
+          ${quizRate >= 80 ? '<div style="color:#4caf50;font-size:12px;margin-top:4px">🌟 훌륭한 식물 박사예요!</div>' :
+            quizRate >= 50 ? '<div style="color:#ff9800;font-size:12px;margin-top:4px">🌱 계속 도전해 보세요!</div>' :
+            '<div style="color:#bbb;font-size:12px;margin-top:4px">퀴즈를 풀면 여기에 나타나요</div>'}
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-section">
+      <div class="pf-section-title">💬 선생님 코멘트 키워드</div>
+      <div class="pf-keywords">${keywordsHtml}</div>
+    </div>
+
+    <div class="pf-footer">
+      <button id="btn-print-report" class="btn-primary btn-full" type="button">
+        <i data-lucide="printer"></i> 선생님께 보여주기 (인쇄)
+      </button>
+    </div>`;
+
+  // Re-bind close button (innerHTML replaced it)
+  document.getElementById('portfolio-close').addEventListener('click', closePortfolio);
+  document.getElementById('btn-print-report').addEventListener('click', printTeacherReport);
+  lucide.createIcons();
+}
+
+function printTeacherReport() {
+  const plantEmojis = { tomato: '🍅', potato: '🥔', cabbage: '🥬', cucumber: '🥒', apple: '🍎' };
+  const stageNames = ["씨앗", "새싹", "성장기", "개화", "결실", "채종"];
+  const curProfile = plantProfiles[appState.selectedPlantKey];
+  const curStage = stageNames[appState.growthStage - 1] || '채종';
+
+  // Recent 30 diary entries
+  const recentDiaries = appState.diaryList.slice(0, 30);
+  const diaryRows = recentDiaries.map(d => `
+    <tr>
+      <td>${d.date}</td>
+      <td>${d.mood}</td>
+      <td>${escapeHTML(d.content)}</td>
+      <td>${d.observation ? [
+        d.observation.leafColor && `잎 ${d.observation.leafColor}`,
+        d.observation.height && `키 ${d.observation.height}cm`,
+        ...(d.observation.careDone || []),
+        d.observation.note
+      ].filter(Boolean).join(', ') : ''}</td>
+    </tr>`).join('');
+
+  // Personality test summary
+  const testSummary = appState.testAnswers.length > 0
+    ? appState.testAnswers.map((a, i) => `${i+1}. ${escapeHTML(a.text || '')}`).join('<br>')
+    : '정보 없음';
+
+  // Emotion tally
+  const emotionCounts = {};
+  appState.diaryList.forEach(d => {
+    if (d.moodKey) emotionCounts[d.moodKey] = (emotionCounts[d.moodKey] || 0) + 1;
+  });
+  const emotionSummary = Object.entries(emotionCounts)
+    .sort((a,b) => b[1]-a[1])
+    .map(([k, c]) => { const em = EMOTIONS[k]; return em ? `${em.emoji} ${em.label}: ${c}회` : ''; })
+    .filter(Boolean).join(' &nbsp;|&nbsp; ');
+
+  const quizAttempted = appState.quizSeenIndices.length || 0;
+  const quizCorrect = appState.quizCorrectCount || 0;
+  const quizRate = quizAttempted > 0 ? Math.round((quizCorrect / quizAttempted) * 100) : 0;
+
+  const reportWin = window.open('', '_blank');
+  reportWin.document.write(`<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHTML(appState.userName)} 식물 성장 레포트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: #333; padding: 30px 40px; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 20px; color: #2e7d32; border-bottom: 2px solid #2e7d32; padding-bottom: 8px; margin-bottom: 20px; }
+  h2 { font-size: 14px; color: #2e7d32; margin: 18px 0 8px; border-left: 4px solid #81c784; padding-left: 8px; }
+  .meta { color: #666; font-size: 12px; margin-bottom: 20px; }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .info-box { background: #f9fbe7; border: 1px solid #dce775; border-radius: 8px; padding: 10px 14px; }
+  .info-box strong { display: block; font-size: 11px; color: #827717; margin-bottom: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #e8f5e9; color: #2e7d32; padding: 6px 8px; text-align: left; border: 1px solid #c8e6c9; }
+  td { padding: 6px 8px; border: 1px solid #e0e0e0; vertical-align: top; line-height: 1.5; }
+  tr:nth-child(even) td { background: #fafafa; }
+  .emotion-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+  .emotion-chip { background: #e8f5e9; border-radius: 20px; padding: 3px 10px; font-size: 12px; }
+  footer { margin-top: 30px; text-align: center; color: #aaa; font-size: 11px; border-top: 1px solid #eee; padding-top: 12px; }
+  @media print { body { padding: 10px 20px; } button { display: none; } }
+</style>
+</head>
+<body>
+<h1>🌱 ${escapeHTML(appState.userName)}의 식물 성장 레포트</h1>
+<div class="meta">출력일: ${new Date().toLocaleDateString('ko-KR')} &nbsp;|&nbsp; 앱: 나의 반려 식물 일기</div>
+
+<div class="info-grid">
+  <div class="info-box"><strong>학생 이름</strong>${escapeHTML(appState.userName)}</div>
+  <div class="info-box"><strong>현재 식물</strong>${plantEmojis[appState.selectedPlantKey] || '🌱'} ${curProfile?.name || '선택 전'} (${curStage} 단계)</div>
+  <div class="info-box"><strong>완성한 식물</strong>${(appState.completedPlants || []).map(k => plantEmojis[k] + ' ' + (plantProfiles[k]?.name || k)).join(', ') || '없음'}</div>
+  <div class="info-box"><strong>퀴즈 정답률</strong>${quizCorrect}/${quizAttempted}문제 (${quizRate}%)</div>
+</div>
+
+<h2>🌻 식물 선택 이유 (퍼스낼리티 테스트 응답)</h2>
+<div style="background:#f9fbe7;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.8;">${testSummary}</div>
+
+<h2>😊 감정 분포 (전체)</h2>
+<div class="emotion-bar">${emotionSummary || '일기 기록 없음'}</div>
+
+<h2>📔 일기 목록 (최근 ${recentDiaries.length}편)</h2>
+<table>
+  <thead><tr><th>날짜</th><th>감정</th><th>일기 내용</th><th>관찰 기록</th></tr></thead>
+  <tbody>${diaryRows || '<tr><td colspan="4" style="text-align:center;color:#bbb">작성된 일기가 없어요</td></tr>'}</tbody>
+</table>
+
+<footer>이 레포트는 '나의 반려 식물 일기' 앱에서 자동 생성됩니다.</footer>
+<script>window.print();<\/script>
+</body></html>`);
+  reportWin.document.close();
+}
+
 function escapeHTML(str) {
   return str.replace(/[&<>'"]/g, 
     tag => ({
@@ -3104,6 +3353,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
     addBotMessage(`🌱 안녕하세요, ${appState.userName} 님! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
   });
+
+  // Portfolio modal
+  document.getElementById('btn-portfolio')?.addEventListener('click', openPortfolio);
+  document.getElementById('portfolio-overlay')?.addEventListener('click', closePortfolio);
 
   // Reset Application to Initial Screen
   document.getElementById('btn-reset').addEventListener('click', () => {

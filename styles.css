@@ -2647,3 +2647,117 @@ body {
 .lifecycle-funfact { background: #E8F5E9; border-radius: 10px; padding: 12px 14px; }
 .lifecycle-funfact .lifecycle-value { font-size: 13px; color: #2E7D32; font-weight: 500; line-height: 1.5; }
 
+
+/* ── Portfolio Modal ─────────────────────────────────── */
+.portfolio-card {
+  max-height: 88vh;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+.pf-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.pf-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2e7d32;
+}
+.pf-subtitle {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+.pf-section {
+  margin-bottom: 18px;
+}
+.pf-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 10px;
+  border-left: 3px solid #81c784;
+  padding-left: 8px;
+}
+.pf-plants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pf-plant-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+.pf-plant-current {
+  background: #fff9c4;
+  border-color: #f9a825;
+}
+.pf-badge-check {
+  font-size: 11px;
+  color: #2e7d32;
+  font-weight: 700;
+}
+.pf-stage-chip {
+  font-size: 11px;
+  color: #f57f17;
+  font-weight: 700;
+}
+.pf-emotion-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pf-emotion-right {
+  flex: 1;
+  min-width: 0;
+}
+.pf-stat-big {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.pf-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pf-legend-item {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 20px;
+  padding: 2px 8px;
+}
+.pf-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pf-quiz-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pf-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 36px;
+  align-items: center;
+}
+.pf-keyword {
+  color: #2e7d32;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.pf-footer {
+  margin-top: 20px;
+}
