@@ -7,6 +7,14 @@ if (typeof lucide === 'undefined') {
   };
 }
 
+// iOS Safari < 16.2 does not support color-mix(). Convert hex color to rgba as fallback.
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 // GitHub Actions 배포 시 '__GEMINI_API_KEY__' 플레이스홀더가 GitHub Secret으로 자동 교체됩니다.
 // 로컬 테스트 시에는 아래 값을 직접 입력하되, 절대 커밋하지 마세요.
 const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
@@ -3041,7 +3049,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.getElementById('chat-input-field').addEventListener('keypress', (e) => {
+  document.getElementById('chat-input-field').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       const msg = e.target.value.trim();
       if (msg) {
@@ -3074,8 +3082,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const editor = document.querySelector('.diary-editor');
         if (editor) {
           // 일기장의 배경색과 테두리를 감정에 맞게 은은하게 변경
-          editor.style.backgroundColor = `color-mix(in srgb, ${color} 8%, rgba(255, 255, 255, 0.75))`;
-          editor.style.borderColor = `color-mix(in srgb, ${color} 20%, rgba(255, 255, 255, 0.4))`;
+          editor.style.backgroundColor = hexToRgba(color, 0.08);
+          editor.style.borderColor = hexToRgba(color, 0.20);
         }
       }
     });
@@ -3242,8 +3250,8 @@ function renderCalendar() {
       
       if (lastDiary.color) {
         // 감정 달력 해당 칸을 감정에 맞는 은은한 색으로 칠함
-        dayDiv.style.backgroundColor = `color-mix(in srgb, ${lastDiary.color} 15%, white)`;
-        dayDiv.style.borderColor = `color-mix(in srgb, ${lastDiary.color} 30%, rgba(0,0,0,0.05))`;
+        dayDiv.style.backgroundColor = hexToRgba(lastDiary.color, 0.15);
+        dayDiv.style.borderColor = hexToRgba(lastDiary.color, 0.30);
       }
     }
     
