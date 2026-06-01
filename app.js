@@ -1186,7 +1186,7 @@ function spawnParticles() {
 
   const now = new Date();
   const hour = now.getHours();
-  const isDay = (hour >= 6 && hour < 18);
+  const isDay = (hour >= 6 && hour < 20);
   const isSunny = appState.weather === 'sunny';
 
   let type = '';
@@ -3068,14 +3068,14 @@ function startClock() {
     const decimalHour = hour + min / 60;
     
     let nightOpacity = 0;
-    if (decimalHour >= 19 || decimalHour < 5) {
+    if (decimalHour >= 21.5 || decimalHour < 5) {
       nightOpacity = 1.0;
     } else if (decimalHour >= 5 && decimalHour < 7) {
       // Dawn (5 to 7): 1.0 -> 0.0
       nightOpacity = 1.0 - ((decimalHour - 5) / 2);
-    } else if (decimalHour >= 17 && decimalHour < 19) {
-      // Dusk (17 to 19): 0.0 -> 1.0
-      nightOpacity = (decimalHour - 17) / 2;
+    } else if (decimalHour >= 19 && decimalHour < 21.5) {
+      // Dusk (19 to 21:30): 0.0 -> 1.0
+      nightOpacity = (decimalHour - 19) / 2.5;
     } else {
       nightOpacity = 0.0;
     }
