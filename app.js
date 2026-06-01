@@ -684,10 +684,10 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
       svg += `<path d="M100,152 Q100,140 95,130" stroke="${stemColor}" stroke-width="3" fill="none"/>`;
       svg += drawBroadLeaf(95, 130, 0.4, -30);
     } else if (plantKey === 'cabbage') {
-      svg += `<circle cx="100" cy="172" r="2" fill="#3E2723" filter="url(#shadow)"/>`;
-      svg += `<path d="M100,170 Q105,160 98,155" stroke="${stemColor}" stroke-width="2" fill="none"/>`;
-      svg += drawBroadLeaf(98, 155, 0.3, -40);
-      svg += drawBroadLeaf(98, 155, 0.3, 40);
+      svg += `<circle cx="100" cy="130" r="2" fill="#3E2723" filter="url(#shadow)"/>`;
+      svg += `<path d="M100,130 Q104,122 98,116" stroke="${stemColor}" stroke-width="2" fill="none"/>`;
+      svg += drawBroadLeaf(98, 116, 0.3, -40);
+      svg += drawBroadLeaf(98, 116, 0.3, 40);
     } else if (plantKey === 'cucumber') {
       svg += `<ellipse cx="100" cy="172" rx="4" ry="2" fill="#FFF59D" filter="url(#shadow)"/>`;
       svg += `<path d="M100,170 Q105,150 90,145" stroke="${stemColor}" stroke-width="2" fill="none"/>`;
@@ -726,9 +726,9 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
         svg += drawCucumberLeaf(80, 90, 0.6, 40);
         svg += drawTendril(100, 120, 1, 20);
       } else if (plantKey === 'cabbage') {
-        svg += drawNapaLeaf(100, 175, 0.6, -45, "#7CB342");
-        svg += drawNapaLeaf(100, 175, 0.6, 45, "#7CB342");
-        svg += drawNapaLeaf(100, 160, 0.5, 0, "#8BC34A");
+        svg += drawNapaLeaf(100, 130, 0.6, -45, "#7CB342");
+        svg += drawNapaLeaf(100, 130, 0.6, 45, "#7CB342");
+        svg += drawNapaLeaf(100, 130, 0.5, 0, "#8BC34A");
       } else if (plantKey === 'tomato') {
         svg += drawStem(100, 120, 90, 90, 3);
         svg += drawTomatoLeaf(100, 140, 0.8, -50);
@@ -828,39 +828,39 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
     }
     else if (plantKey === 'cabbage') {
       // Base dark green wide outer leaves (flaring outwards)
-      svg += drawNapaLeaf(100, 180, 0.9, -65, "#4CAF50");
-      svg += drawNapaLeaf(100, 180, 0.9, 65, "#4CAF50");
-      svg += drawNapaLeaf(100, 180, 1.0, -45, "#66BB6A");
-      svg += drawNapaLeaf(100, 180, 1.0, 45, "#66BB6A");
-      
+      svg += drawNapaLeaf(100, 130, 0.9, -65, "#4CAF50");
+      svg += drawNapaLeaf(100, 130, 0.9, 65, "#4CAF50");
+      svg += drawNapaLeaf(100, 130, 1.0, -45, "#66BB6A");
+      svg += drawNapaLeaf(100, 130, 1.0, 45, "#66BB6A");
+
       if (stage === 3) {
         // Stage 3: Growing leaves, not tightly packed yet
-        svg += drawNapaLeaf(100, 180, 0.9, -25, "#81C784");
-        svg += drawNapaLeaf(100, 180, 0.9, 25, "#81C784");
-        svg += drawNapaLeaf(100, 180, 0.8, 0, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 130, 0.9, -25, "#81C784");
+        svg += drawNapaLeaf(100, 130, 0.9, 25, "#81C784");
+        svg += drawNapaLeaf(100, 130, 0.8, 0, "#A5D6A7", true);
       } else if (stage === 4) {
         // Stage 4: Starting to head (결구 시작)
-        svg += drawNapaLeaf(100, 180, 1.0, -20, "#81C784");
-        svg += drawNapaLeaf(100, 180, 1.0, 20, "#81C784");
-        svg += drawNapaLeaf(100, 180, 0.9, -10, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 180, 0.9, 10, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 180, 0.85, 0, "#C8E6C9", true);
+        svg += drawNapaLeaf(100, 130, 1.0, -20, "#81C784");
+        svg += drawNapaLeaf(100, 130, 1.0, 20, "#81C784");
+        svg += drawNapaLeaf(100, 130, 0.9, -10, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 130, 0.9, 10, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 130, 0.85, 0, "#C8E6C9", true);
       } else {
         // Stage 5 & 6: Full huge napa cabbage head (꽉 찬 배추)
         // Outer wrapping leaves
-        svg += drawNapaLeaf(100, 180, 1.1, -30, "#81C784");
-        svg += drawNapaLeaf(100, 180, 1.1, 30, "#81C784");
-        
+        svg += drawNapaLeaf(100, 130, 1.1, -30, "#81C784");
+        svg += drawNapaLeaf(100, 130, 1.1, 30, "#81C784");
+
         // Inner head structure (tightly packed, overlapping)
-        svg += drawNapaLeaf(100, 180, 1.0, -15, "#A5D6A7", true);
-        svg += drawNapaLeaf(100, 180, 1.0, 15, "#9CCC65", true); // Slight color variation
-        
+        svg += drawNapaLeaf(100, 130, 1.0, -15, "#A5D6A7", true);
+        svg += drawNapaLeaf(100, 130, 1.0, 15, "#9CCC65", true);
+
         // Core
-        svg += drawNapaLeaf(100, 180, 0.95, -5, "#C8E6C9", true);
-        svg += drawNapaLeaf(100, 180, 0.95, 5, "#DCE775", true); // Yellowish center
-        
+        svg += drawNapaLeaf(100, 130, 0.95, -5, "#C8E6C9", true);
+        svg += drawNapaLeaf(100, 130, 0.95, 5, "#DCE775", true);
+
         // Front most covering leaf
-        svg += drawNapaLeaf(100, 180, 0.9, 0, "#AED581", true);
+        svg += drawNapaLeaf(100, 130, 0.9, 0, "#AED581", true);
         
         if (stage === 6) {
           // Bolting: flower stalk shooting up from head
