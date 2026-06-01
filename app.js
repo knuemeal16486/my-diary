@@ -996,9 +996,52 @@ function switchView(viewName) {
     startSimulation();
     initWeather();
     updateDashboardUI();
+    setTimeout(checkEmpathyMessage, 1200);
   } else {
     stopSimulation();
   }
+}
+
+function checkEmpathyMessage() {
+  if (!appState.diaryList || appState.diaryList.length === 0) return;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+
+  const lastKey = `empathy_shown_${yStr}`;
+  if (appState[lastKey]) return;
+
+  const yesterdayEntry = appState.diaryList.find(d => d.date === yStr);
+  if (!yesterdayEntry) return;
+
+  const sadEmotions = { sadness: true, anxiety: true, ennui: true, fear: true };
+  if (!sadEmotions[yesterdayEntry.moodKey]) return;
+
+  const empathyMessages = {
+    sadness: [
+      "어제 슬펐다고 했지요? 오늘은 조금 나아졌나요? 저도 비를 맞고 더 튼튼해졌어요 🌧️",
+      "슬플 때도 저는 여기 있어요. 오늘도 함께해요 🌿",
+    ],
+    anxiety: [
+      "어제 불안했지요? 걱정 마세요, 저도 처음엔 씨앗이었지만 지금은 이렇게 자랐잖아요 🌱",
+      "불안할 때 화분 흙을 만져보세요. 차분해진대요. 저도 응원할게요 💚",
+    ],
+    fear: [
+      "어제 두려웠나요? 용기 내서 일기를 써줘서 고마워요. 저도 폭풍을 이겨내며 자랐어요 🌪️",
+      "무서운 마음, 솔직하게 써줘서 정말 잘했어요. 오늘은 더 괜찮아지길 바라요 🤍",
+    ],
+    ennui: [
+      "어제 따분했군요. 오늘은 저에게 물 한 잔 줘볼까요? 조금 신날 거예요 😊",
+      "심심한 날도 있어요. 그래도 일기를 써줘서 고마워요 🌼",
+    ],
+  };
+
+  const msgs = empathyMessages[yesterdayEntry.moodKey] || empathyMessages.sadness;
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+
+  appState[lastKey] = true;
+  addBotMessage(msg);
 }
 
 
@@ -2270,6 +2313,11 @@ async function saveDiary() {
   saveBtn.disabled = true;
   lucide.createIcons();
 
+  const aiAvailable = GEMINI_API_KEY && GEMINI_API_KEY !== '__GEMINI_API_KEY__';
+  if (!aiAvailable) {
+    showToast('🌐 인터넷 연결이 필요해요. AI 그림·코멘트 없이 일기 글은 저장됩니다.', 'warn');
+  }
+
   let generatedImageUrl = "";
   let teacherComment = "";
   try {
@@ -2291,6 +2339,15 @@ async function saveDiary() {
   const today = new Date();
   const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
+  // Collect observation checklist data
+  const obsLeafColor = document.querySelector('#obs-leaf-color .obs-chip.selected')?.dataset.val || '';
+  const obsHeight = document.getElementById('obs-height')?.value.trim() || '';
+  const obsCareDone = [...document.querySelectorAll('#obs-care-done .obs-chip.selected')].map(b => b.dataset.val);
+  const obsNote = document.getElementById('obs-note')?.value.trim() || '';
+  const observation = (obsLeafColor || obsHeight || obsCareDone.length || obsNote)
+    ? { leafColor: obsLeafColor, height: obsHeight, careDone: obsCareDone, note: obsNote }
+    : null;
+
   const entry = {
     date: dateStr,
     moodKey: moodKey,
@@ -2299,7 +2356,8 @@ async function saveDiary() {
     content: text,
     imageUrl: generatedImageUrl,
     userPhotos: uploadedPhotosBase64.slice(),
-    teacherComment: teacherComment
+    teacherComment: teacherComment,
+    observation
   };
 
   appState.diaryList.unshift(entry);
@@ -2312,11 +2370,41 @@ async function saveDiary() {
   const previewContainer = document.getElementById('photo-preview-container');
   if (previewContainer) previewContainer.innerHTML = '';
   uploadedPhotosBase64 = [];
-  
+
+  // Reset observation checklist
+  document.querySelectorAll('#obs-leaf-color .obs-chip, #obs-care-done .obs-chip').forEach(b => b.classList.remove('selected'));
+  const obsHeightEl = document.getElementById('obs-height');
+  if (obsHeightEl) obsHeightEl.value = '';
+  const obsNoteEl = document.getElementById('obs-note');
+  if (obsNoteEl) obsNoteEl.value = '';
+  const obsDetails = document.getElementById('obs-checklist');
+  if (obsDetails) obsDetails.open = false;
+
   renderDiaries();
   analyzeEmotionWeather();
 
-  const xpGain = (appState.weather === 'rainy') ? 20 : 10;
+  // Base XP is equal for all emotions (prevents gaming with negative emotions)
+  let xpGain = 10;
+  let streakBonus = false;
+
+  // Check 7-day consecutive diary streak for bonus XP
+  const diaryDates = [...new Set(appState.diaryList.map(d => d.date))].sort().reverse();
+  if (diaryDates.length >= 7) {
+    let consecutive = 1;
+    for (let i = 0; i < diaryDates.length - 1; i++) {
+      const a = new Date(diaryDates[i]);
+      const b = new Date(diaryDates[i + 1]);
+      const diff = Math.round((a - b) / (1000 * 60 * 60 * 24));
+      if (diff === 1) {
+        consecutive++;
+        if (consecutive >= 7) { streakBonus = true; break; }
+      } else {
+        break;
+      }
+    }
+  }
+  if (streakBonus) xpGain += 20;
+
   appState.growthXP = Math.min(100, appState.growthXP + xpGain);
   if (appState.growthXP >= 100 && appState.growthStage < 6) {
     appState.growthStage++;
@@ -2330,10 +2418,10 @@ async function saveDiary() {
   saveBtn.disabled = false;
   lucide.createIcons();
 
-  if (appState.weather === 'rainy') {
-    showToast(`🌧️ 일기 작성 완료! 비 온 뒤 흙처럼 식물이 쑥쑥 자랐어요 ×2.0 XP 🌱`, 'celebrate');
+  if (streakBonus) {
+    showToast(`🌟 7일 연속 일기 작성! 꾸준함이 식물을 쑥쑥 키워요! 보너스 XP +20 🌿`, 'celebrate');
   } else {
-    showToast(`📝 일기 작성 완료! 식물도 함께 성장했어요 🌱`, 'celebrate');
+    showToast(`📝 일기 작성 완료! 비 오는 날도 햇빛 나는 날도 모두 식물에게 소중해요 🌱`, 'celebrate');
   }
 }
 
@@ -2516,48 +2604,94 @@ function renderDiaries() {
   container.innerHTML = '';
   appState.diaryList.forEach(diary => {
     const card = document.createElement('div');
-    card.className = 'diary-card';
+    card.className = 'diary-card diary-card-clickable';
     const bgColor = diary.color || '#888';
-    
-    let mediaHtml = '';
-    
-    if (diary.imageUrl) {
-      mediaHtml += `<div style="margin-bottom:10px;"><img src="${diary.imageUrl}" style="width:100%; border-radius:8px; max-height:200px; object-fit:cover;" alt="AI 요약 그림"></div>`;
-    }
-    
-    if (diary.userPhotos && diary.userPhotos.length > 0) {
-      mediaHtml += `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:10px;">`;
-      diary.userPhotos.forEach(photo => {
-        mediaHtml += `<img src="${photo}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; flex-shrink:0;">`;
-      });
-      mediaHtml += `</div>`;
-    }
 
-    let commentHtml = '';
-    if (diary.teacherComment) {
-      commentHtml = `
-        <div style="margin-top: 15px; padding: 12px; background: rgba(74, 144, 226, 0.05); border-left: 3px solid #4A90D9; border-radius: 4px;">
-          <div style="font-weight: bold; color: #4A90D9; margin-bottom: 5px; font-size: 0.9rem; display: flex; align-items: center; gap: 4px;">
-            <i data-lucide="message-square" style="width:14px; height:14px;"></i> 선생님의 코멘트
-          </div>
-          <p style="margin: 0; font-size: 0.95rem; color: #333; line-height: 1.5; font-family: 'GangwonEdu_OTFBoldA', sans-serif;">${escapeHTML(diary.teacherComment)}</p>
-        </div>
-      `;
-    }
+    const thumbHtml = diary.imageUrl
+      ? `<img class="diary-thumb" src="${diary.imageUrl}" alt="">`
+      : (diary.userPhotos && diary.userPhotos.length ? `<img class="diary-thumb" src="${diary.userPhotos[0]}" alt="">` : '');
+
+    const hasComment = !!diary.teacherComment;
+    const photoCount = (diary.userPhotos && diary.userPhotos.length) ? diary.userPhotos.length : 0;
 
     card.innerHTML = `
-      <div class="diary-card-header">
-        <span class="diary-date"><i data-lucide="calendar" class="icon-small"></i> ${diary.date}</span>
-        <span class="diary-mood-chip" style="background:${bgColor}22; color:${bgColor}; border:1px solid ${bgColor}55">${diary.mood}</span>
+      <div class="diary-card-inner">
+        ${thumbHtml}
+        <div class="diary-card-text">
+          <div class="diary-card-header">
+            <span class="diary-date">${diary.date}</span>
+            <span class="diary-mood-chip" style="background:${bgColor}22; color:${bgColor}; border:1px solid ${bgColor}55">${diary.mood}</span>
+          </div>
+          <p class="diary-body">${escapeHTML(diary.content)}</p>
+          <div class="diary-card-footer">
+            ${photoCount ? `<span>📷 ${photoCount}</span>` : ''}
+            ${hasComment ? `<span class="comment-dot">💬 선생님 코멘트</span>` : ''}
+          </div>
+        </div>
       </div>
-      ${mediaHtml}
-      <p class="diary-body">${escapeHTML(diary.content)}</p>
-      ${commentHtml}
     `;
+    card.addEventListener('click', () => openDiaryDetail(diary));
     container.appendChild(card);
   });
 
   lucide.createIcons();
+}
+
+function openDiaryDetail(diary) {
+  const modal = document.getElementById('diary-detail-modal');
+  if (!modal) return;
+
+  document.getElementById('dd-date').textContent = diary.date;
+  const moodEl = document.getElementById('dd-mood');
+  moodEl.textContent = diary.mood;
+  moodEl.style.background = diary.color ? `${diary.color}22` : '';
+  moodEl.style.color = diary.color || '';
+  moodEl.style.border = diary.color ? `1px solid ${diary.color}55` : '';
+
+  const imgWrap = document.getElementById('dd-image');
+  imgWrap.innerHTML = diary.imageUrl
+    ? `<img src="${diary.imageUrl}" alt="AI 요약 그림" style="width:100%; border-radius:12px; max-height:220px; object-fit:cover;">`
+    : '';
+
+  const photosEl = document.getElementById('dd-photos');
+  if (diary.userPhotos && diary.userPhotos.length > 0) {
+    photosEl.innerHTML = diary.userPhotos.map(p =>
+      `<img src="${p}" alt="사진" style="width:80px; height:80px; object-fit:cover; border-radius:8px; flex-shrink:0;">`
+    ).join('');
+  } else {
+    photosEl.innerHTML = '';
+  }
+
+  const obsEl = document.getElementById('dd-observation');
+  if (diary.observation) {
+    const obs = diary.observation;
+    const parts = [];
+    if (obs.leafColor) parts.push(`🌿 잎 색깔: ${obs.leafColor}`);
+    if (obs.height)    parts.push(`📏 키: ${obs.height}cm`);
+    if (obs.careDone && obs.careDone.length) parts.push(`💧 돌봄: ${obs.careDone.join(', ')}`);
+    if (obs.note)      parts.push(`📝 ${obs.note}`);
+    obsEl.innerHTML = `<div class="dd-obs-inner">${parts.map(p => `<span>${escapeHTML(p)}</span>`).join('')}</div>`;
+  } else {
+    obsEl.innerHTML = '';
+  }
+
+  document.getElementById('dd-content').textContent = diary.content;
+
+  const commentEl = document.getElementById('dd-comment');
+  if (diary.teacherComment) {
+    commentEl.innerHTML = `<strong>선생님의 코멘트</strong><p>${escapeHTML(diary.teacherComment)}</p>`;
+    commentEl.style.display = '';
+  } else {
+    commentEl.innerHTML = '';
+    commentEl.style.display = 'none';
+  }
+
+  modal.classList.remove('hidden');
+}
+
+function closeDiaryDetail() {
+  const modal = document.getElementById('diary-detail-modal');
+  if (modal) modal.classList.add('hidden');
 }
 
 function escapeHTML(str) {
@@ -2871,6 +3005,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('recommendation-modal').classList.add('hidden');
     });
   }
+
+  // Diary detail modal
+  const btnDiaryClose = document.getElementById('diary-detail-close');
+  if (btnDiaryClose) btnDiaryClose.addEventListener('click', closeDiaryDetail);
+  const diaryOverlay = document.getElementById('diary-detail-overlay');
+  if (diaryOverlay) diaryOverlay.addEventListener('click', closeDiaryDetail);
   
   // Transplant modal events
   const btnTransplant = document.getElementById('btn-transplant');
@@ -3039,6 +3179,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('chat-messages-container').scrollTop = document.getElementById('chat-messages-container').scrollHeight;
       } else if (tabName === 'calendar') {
         renderCalendar();
+        renderWeeklyEmotionCard();
       } else if (tabName === 'explore') {
         renderPlantExplorer();
       }
@@ -3095,7 +3236,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Reset diaryList in appState on new plant start
+  // Observation checklist chip toggle (single-select for leaf color, multi-select for care)
+  document.querySelectorAll('#obs-leaf-color .obs-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#obs-leaf-color .obs-chip').forEach(b => b.classList.remove('selected'));
+      btn.classList.toggle('selected');
+    });
+  });
+  document.querySelectorAll('#obs-care-done .obs-chip').forEach(btn => {
+    btn.addEventListener('click', () => btn.classList.toggle('selected'));
+  });
+
   document.getElementById('btn-save-diary').addEventListener('click', saveDiary);
 
   // Diary Photo Upload logic
@@ -3204,6 +3355,7 @@ function addDailyGrowth(xp) {
   
   if (document.getElementById("pane-calendar") && document.getElementById("pane-calendar").classList.contains("active")) {
     renderCalendar();
+    renderWeeklyEmotionCard();
   }
 }
 
@@ -3253,12 +3405,13 @@ function renderCalendar() {
     if (lastDiary) {
       const emojiOnly = lastDiary.mood.split(" ")[0]; // Get the emoji
       innerHTML += `<div class="cal-emoji" title="${lastDiary.mood}">${emojiOnly}</div>`;
-      
+
       if (lastDiary.color) {
-        // 감정 달력 해당 칸을 감정에 맞는 은은한 색으로 칠함
         dayDiv.style.backgroundColor = hexToRgba(lastDiary.color, 0.15);
         dayDiv.style.borderColor = hexToRgba(lastDiary.color, 0.30);
       }
+      dayDiv.classList.add('has-diary');
+      dayDiv.addEventListener('click', () => openDiaryDetail(lastDiary));
     }
     
     if (xpGained > 0) {
@@ -3268,6 +3421,77 @@ function renderCalendar() {
     dayDiv.innerHTML = innerHTML;
     grid.appendChild(dayDiv);
   }
+}
+
+function renderWeeklyEmotionCard() {
+  const card = document.getElementById('weekly-emotion-card');
+  if (!card) return;
+
+  const today = new Date();
+  const weekDates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    weekDates.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+  }
+
+  const counts = {};
+  let total = 0;
+  weekDates.forEach(dateStr => {
+    const entry = appState.diaryList.find(d => d.date === dateStr);
+    if (entry && entry.moodKey) {
+      counts[entry.moodKey] = (counts[entry.moodKey] || 0) + 1;
+      total++;
+    }
+  });
+
+  if (total === 0) {
+    card.innerHTML = `<div class="weekly-emotion-empty">🌱 이번 주 일기를 써보세요! 감정 날씨 차트가 여기에 나와요.</div>`;
+    return;
+  }
+
+  const topEntry = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+  const topEmotion = EMOTIONS[topEntry[0]];
+  const topLabel = topEmotion ? `${topEmotion.emoji} ${topEmotion.label}` : topEntry[0];
+
+  // Build SVG donut chart
+  const radius = 30, cx = 40, cy = 40, circumference = 2 * Math.PI * radius;
+  const emotionKeys = Object.keys(counts);
+  let offset = 0;
+  const segments = emotionKeys.map(key => {
+    const pct = counts[key] / total;
+    const dash = pct * circumference;
+    const seg = { key, dash, offset, color: (EMOTIONS[key]?.color || '#ccc') };
+    offset += dash;
+    return seg;
+  });
+
+  const svgSegments = segments.map(s =>
+    `<circle r="${radius}" cx="${cx}" cy="${cy}" fill="transparent"
+      stroke="${s.color}" stroke-width="14"
+      stroke-dasharray="${s.dash.toFixed(2)} ${(circumference - s.dash).toFixed(2)}"
+      stroke-dashoffset="${(-s.offset + circumference * 0.25).toFixed(2)}"
+      transform="rotate(-90 ${cx} ${cy})"/>`
+  ).join('');
+
+  const legendItems = emotionKeys.map(key => {
+    const em = EMOTIONS[key];
+    if (!em) return '';
+    const pct = Math.round((counts[key] / total) * 100);
+    return `<span class="wec-legend-item"><span class="wec-dot" style="background:${em.color}"></span>${em.emoji} ${em.label} ${pct}%</span>`;
+  }).join('');
+
+  card.innerHTML = `
+    <div class="wec-title">📅 이번 주 나의 감정 날씨</div>
+    <div class="wec-body">
+      <svg width="80" height="80" viewBox="0 0 80 80">${svgSegments}
+        <circle r="18" cx="${cx}" cy="${cy}" fill="white"/>
+      </svg>
+      <div class="wec-right">
+        <div class="wec-top-emotion">가장 많이 느낀 감정: <strong>${topLabel}</strong></div>
+        <div class="wec-legend">${legendItems}</div>
+      </div>
+    </div>`;
 }
 
 // Bind Calendar Events

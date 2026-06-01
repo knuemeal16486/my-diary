@@ -487,6 +487,39 @@
                         maxlength="150" style="position: relative; z-index: 2; background: transparent;"></textarea>
                     </div>
 
+                    <!-- Plant Observation Checklist -->
+                    <details class="obs-checklist" id="obs-checklist">
+                      <summary class="obs-summary">🔍 식물 관찰 기록 (선택)</summary>
+                      <div class="obs-body">
+                        <div class="obs-row">
+                          <label class="obs-label">🌿 잎 색깔</label>
+                          <div class="obs-options" id="obs-leaf-color">
+                            <button type="button" class="obs-chip" data-val="초록">초록</button>
+                            <button type="button" class="obs-chip" data-val="연두">연두</button>
+                            <button type="button" class="obs-chip" data-val="노랑">노랑</button>
+                            <button type="button" class="obs-chip" data-val="갈색">갈색</button>
+                          </div>
+                        </div>
+                        <div class="obs-row">
+                          <label class="obs-label">📏 키 (cm)</label>
+                          <input type="number" id="obs-height" class="obs-input" placeholder="예: 12" min="0" max="999" step="0.5">
+                        </div>
+                        <div class="obs-row">
+                          <label class="obs-label">💧 오늘 한 돌봄</label>
+                          <div class="obs-options" id="obs-care-done">
+                            <button type="button" class="obs-chip" data-val="물주기">물주기</button>
+                            <button type="button" class="obs-chip" data-val="햇빛쬐기">햇빛쬐기</button>
+                            <button type="button" class="obs-chip" data-val="비료주기">비료주기</button>
+                            <button type="button" class="obs-chip" data-val="환기">환기</button>
+                          </div>
+                        </div>
+                        <div class="obs-row">
+                          <label class="obs-label">📝 특이사항</label>
+                          <input type="text" id="obs-note" class="obs-input" placeholder="예: 새 잎이 났어요" maxlength="40">
+                        </div>
+                      </div>
+                    </details>
+
                     <div class="editor-row file-upload-row" style="margin-top: 10px; margin-bottom: 15px;">
                       <label for="diary-photo-upload" class="file-upload-label"
                         style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 13px;">
@@ -561,6 +594,9 @@
 
               <!-- Tab 5: EMOTION CALENDAR -->
               <div class="tab-pane" id="pane-calendar">
+                <div id="weekly-emotion-card" class="weekly-emotion-card glassmorphism-sub">
+                  <!-- Injected by renderWeeklyEmotionCard() -->
+                </div>
                 <div class="calendar-container glassmorphism-sub">
                   <div class="calendar-header">
                     <button id="btn-cal-prev" class="btn-icon-only"><i data-lucide="chevron-left"></i></button>
@@ -699,6 +735,23 @@
       <button id="btn-transplant" class="btn-primary btn-full" style="margin-bottom: 10px;">정원으로 옮겨 심기 🌻</button>
       <button id="btn-transplant-later" class="btn-secondary btn-full"
         style="background: #e0e0e0; color: #333; border: none;">조금만 더 실내에 두기</button>
+    </div>
+  </div>
+
+  <!-- Diary Detail Modal -->
+  <div id="diary-detail-modal" class="lifecycle-modal hidden">
+    <div class="lifecycle-modal-overlay" id="diary-detail-overlay"></div>
+    <div class="lifecycle-modal-card diary-detail-card">
+      <button id="diary-detail-close" type="button" class="lifecycle-close-btn">✕</button>
+      <div class="dd-header">
+        <span class="diary-date" id="dd-date"></span>
+        <span class="diary-mood-chip" id="dd-mood"></span>
+      </div>
+      <div id="dd-image" class="dd-image-wrap"></div>
+      <div id="dd-photos" class="dd-photos"></div>
+      <div id="dd-observation" class="dd-observation"></div>
+      <div class="dd-body"><p id="dd-content"></p></div>
+      <div id="dd-comment" class="dd-comment-box"></div>
     </div>
   </div>
 
