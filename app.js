@@ -2267,7 +2267,7 @@ async function saveDiary() {
   let generatedImageUrl = "";
   let teacherComment = "";
   try {
-    const prompt = await fetchImagePromptFromGemini(text, emotion.label);
+    const prompt = await fetchImagePromptFromGemini(text, emotion.label, uploadedPhotosBase64);
     if (prompt) {
       generatedImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=400&height=300&nologo=true&model=flux-pro&enhance=true`;
     }
@@ -2331,33 +2331,59 @@ async function saveDiary() {
   }
 }
 
-async function fetchImagePromptFromGemini(text, mood) {
+async function fetchImagePromptFromGemini(text, mood, photos = []) {
   if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
-  const prompt = `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
+
+  const hasPhotos = photos && photos.length > 0;
+
+  const promptText = hasPhotos
+    ? `당신은 초등학생 그림일기 삽화 프롬프트 생성 AI입니다.
+첨부된 사진들과 아래 일기를 보고, 오늘 하루를 따뜻하게 담은 영문 그림 프롬프트를 작성하세요.
+
+규칙:
+1. 첨부 사진에 보이는 실제 장소·물건·상황을 최대한 반영할 것
+2. 초등학생 시점의 1인칭(POV) — 주인공이 화면에 직접 등장하지 않음
+3. 감정(${mood})에 맞는 분위기와 색감 포함
+4. 마지막에 반드시 ", first-person POV, soft watercolor illustration, children's picture diary style, warm pastel colors, no text, no anthropomorphic animals" 추가
+5. 영문 한 문장(70단어 이하)만 출력. 따옴표·설명 없이 프롬프트 문장만 출력.
+
+일기 내용: "${text}"
+오늘의 감정: ${mood}`
+    : `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
 아래 일기에서 가장 구체적이고 기억에 남는 장면을 딱 하나 골라, 그 순간을 담은 영문 그림 프롬프트를 작성하세요.
 
 규칙:
-1. 일기 속 실제 사건·행동을 반드시 포함할 것 (예: hands holding a pencil writing in a notebook, walking home through fallen autumn leaves)
-2. 시점은 반드시 1인칭(나의 눈으로 보이는 장면, POV)으로 묘사할 것 — 주인공 캐릭터가 화면에 등장하지 않도록 함
+1. 일기 속 실제 사건·행동을 반드시 포함할 것
+2. 시점은 반드시 1인칭(POV)으로 묘사 — 주인공 캐릭터가 화면에 등장하지 않도록 함
 3. 등장인물은 반드시 사람(human)이어야 하며, 의인화된 동물 캐릭터는 절대 등장하지 않을 것
 4. 감정(${mood})에 맞는 분위기와 색감을 넣을 것
 5. 마지막에 반드시 ", first-person POV, soft watercolor illustration, children's storybook style, warm pastel colors, no text, no anthropomorphic animals" 를 붙일 것
-6. 영문 한 문장(60단어 이하)만 출력할 것. 설명이나 따옴표 없이 프롬프트 문장만 출력.
+6. 영문 한 문장(60단어 이하)만 출력. 설명이나 따옴표 없이 프롬프트 문장만 출력.
 
 일기 내용: "${text}"
 오늘의 감정: ${mood}`;
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const parts = [{ text: promptText }];
 
+  if (hasPhotos) {
+    photos.slice(0, 3).forEach(dataUrl => {
+      const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+      if (match) {
+        parts.push({ inlineData: { mimeType: match[1], data: match[2] } });
+      }
+    });
+  }
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: [{ parts }],
       generationConfig: { temperature: 0.7, maxOutputTokens: 150 }
     })
   });
-  
+
   if (!response.ok) return null;
   const data = await response.json();
   if (data.candidates && data.candidates.length > 0) {
@@ -2510,44 +2536,40 @@ function renderDiaries() {
   container.innerHTML = '';
   appState.diaryList.forEach(diary => {
     const card = document.createElement('div');
-    card.className = 'diary-card';
+    card.className = 'diary-card diary-card-clickable';
     const bgColor = diary.color || '#888';
-    
-    let mediaHtml = '';
-    
-    if (diary.imageUrl) {
-      mediaHtml += `<div style="margin-bottom:10px;"><img src="${diary.imageUrl}" style="width:100%; border-radius:8px; max-height:200px; object-fit:cover;" alt="AI 요약 그림"></div>`;
-    }
-    
-    if (diary.userPhotos && diary.userPhotos.length > 0) {
-      mediaHtml += `<div style="display:flex; gap:8px; overflow-x:auto; margin-bottom:10px;">`;
-      diary.userPhotos.forEach(photo => {
-        mediaHtml += `<img src="${photo}" style="width:80px; height:80px; object-fit:cover; border-radius:8px; flex-shrink:0;">`;
-      });
-      mediaHtml += `</div>`;
-    }
 
-    let commentHtml = '';
-    if (diary.teacherComment) {
-      commentHtml = `
-        <div style="margin-top: 15px; padding: 12px; background: rgba(74, 144, 226, 0.05); border-left: 3px solid #4A90D9; border-radius: 4px;">
-          <div style="font-weight: bold; color: #4A90D9; margin-bottom: 5px; font-size: 0.9rem; display: flex; align-items: center; gap: 4px;">
-            <i data-lucide="message-square" style="width:14px; height:14px;"></i> 선생님의 코멘트
-          </div>
-          <p style="margin: 0; font-size: 0.95rem; color: #333; line-height: 1.5; font-family: 'GangwonEdu_OTFBoldA', sans-serif;">${escapeHTML(diary.teacherComment)}</p>
-        </div>
-      `;
-    }
+    const thumbSrc = diary.imageUrl
+      ? diary.imageUrl
+      : (diary.userPhotos && diary.userPhotos.length > 0 ? diary.userPhotos[0] : null);
+
+    const thumbHtml = thumbSrc
+      ? `<img class="diary-thumb" src="${thumbSrc}" alt="그림">`
+      : `<div class="diary-thumb diary-thumb-empty"><i data-lucide="image" style="opacity:0.3"></i></div>`;
+
+    const photoCount = diary.userPhotos ? diary.userPhotos.length : 0;
+    const photoCountHtml = photoCount > 0
+      ? `<span class="diary-photo-count"><i data-lucide="camera" class="icon-small"></i> ${photoCount}</span>`
+      : '';
+
+    const commentDot = diary.teacherComment
+      ? `<span class="diary-comment-dot" title="선생님 코멘트 있음">💬</span>`
+      : '';
 
     card.innerHTML = `
-      <div class="diary-card-header">
-        <span class="diary-date"><i data-lucide="calendar" class="icon-small"></i> ${diary.date}</span>
-        <span class="diary-mood-chip" style="background:${bgColor}22; color:${bgColor}; border:1px solid ${bgColor}55">${diary.mood}</span>
+      <div class="diary-card-inner">
+        ${thumbHtml}
+        <div class="diary-card-text">
+          <div class="diary-card-header">
+            <span class="diary-date"><i data-lucide="calendar" class="icon-small"></i> ${diary.date}</span>
+            <span class="diary-mood-chip" style="background:${bgColor}22; color:${bgColor}; border:1px solid ${bgColor}55">${diary.mood}</span>
+          </div>
+          <p class="diary-body">${escapeHTML(diary.content)}</p>
+          <div class="diary-card-footer">${photoCountHtml}${commentDot}</div>
+        </div>
       </div>
-      ${mediaHtml}
-      <p class="diary-body">${escapeHTML(diary.content)}</p>
-      ${commentHtml}
     `;
+    card.addEventListener('click', () => openDiaryDetail(diary));
     container.appendChild(card);
   });
 
@@ -2555,7 +2577,7 @@ function renderDiaries() {
 }
 
 function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
+  return str.replace(/[&<>'"]/g,
     tag => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -2564,6 +2586,57 @@ function escapeHTML(str) {
       '"': '&quot;'
     }[tag] || tag)
   );
+}
+
+function openDiaryDetail(diary) {
+  const modal = document.getElementById('diary-detail-modal');
+  const bgColor = diary.color || '#888';
+
+  document.getElementById('dd-date').textContent = diary.date;
+
+  const moodEl = document.getElementById('dd-mood');
+  moodEl.textContent = diary.mood;
+  moodEl.style.background = bgColor + '22';
+  moodEl.style.color = bgColor;
+  moodEl.style.border = `1px solid ${bgColor}55`;
+
+  const imageWrap = document.getElementById('dd-image');
+  imageWrap.innerHTML = diary.imageUrl
+    ? `<img src="${diary.imageUrl}" alt="AI 요약 그림">`
+    : '';
+
+  const photosEl = document.getElementById('dd-photos');
+  if (diary.userPhotos && diary.userPhotos.length > 0) {
+    photosEl.innerHTML = diary.userPhotos
+      .map(p => `<img src="${p}" alt="사진">`)
+      .join('');
+    photosEl.style.display = 'flex';
+  } else {
+    photosEl.innerHTML = '';
+    photosEl.style.display = 'none';
+  }
+
+  document.getElementById('dd-content').textContent = diary.content;
+
+  const commentEl = document.getElementById('dd-comment');
+  if (diary.teacherComment) {
+    commentEl.innerHTML = `
+      <div class="dd-comment-label"><i data-lucide="message-square"></i> 선생님의 코멘트</div>
+      <p>${escapeHTML(diary.teacherComment)}</p>
+    `;
+    commentEl.style.display = 'block';
+    lucide.createIcons();
+  } else {
+    commentEl.style.display = 'none';
+  }
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDiaryDetail() {
+  document.getElementById('diary-detail-modal').classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
 // --- Real-Time Weather System (Open-Meteo API, CORS-free) ---
@@ -2835,6 +2908,13 @@ function showWeatherError() {
 document.addEventListener("DOMContentLoaded", () => {
   // Lucide initialize
   lucide.createIcons();
+
+  // Diary detail modal close handlers
+  const diaryDetailModal = document.getElementById('diary-detail-modal');
+  const diaryDetailCloseBtn = document.getElementById('diary-detail-close');
+  const diaryDetailOverlay = document.getElementById('diary-detail-overlay');
+  if (diaryDetailCloseBtn) diaryDetailCloseBtn.addEventListener('click', closeDiaryDetail);
+  if (diaryDetailOverlay) diaryDetailOverlay.addEventListener('click', closeDiaryDetail);
 
   const btnCloseLc = document.getElementById('lc-close-btn-bottom');
   if (btnCloseLc) {
@@ -3260,6 +3340,12 @@ function renderCalendar() {
     }
     
     dayDiv.innerHTML = innerHTML;
+
+    if (lastDiary) {
+      dayDiv.classList.add('has-diary');
+      dayDiv.addEventListener('click', () => openDiaryDetail(lastDiary));
+    }
+
     grid.appendChild(dayDiv);
   }
 }
