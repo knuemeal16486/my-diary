@@ -69,6 +69,8 @@ body {
   align-items: center;
   overflow-x: hidden;
   padding: 20px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* 3. Utility Classes */
@@ -1189,6 +1191,7 @@ body {
 .tab-viewport {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 20px;
 }
 
@@ -1364,6 +1367,7 @@ body {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1464,7 +1468,7 @@ body {
   padding: 12px 18px;
   border: 2px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--border-radius-md);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   background: white;
   color: var(--text-main);
@@ -1524,7 +1528,7 @@ body {
   border: 2px solid rgba(0,0,0,0.06);
   border-radius: var(--border-radius-md);
   padding: 12px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   outline: none;
   resize: none;
@@ -1545,6 +1549,7 @@ body {
   gap: 12px;
   max-height: 180px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 4px;
 }
 
@@ -1989,6 +1994,7 @@ body {
   border: 1px solid rgba(255,255,255,0.65);
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   transition: background 0.5s ease, border-color 0.5s ease;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 
