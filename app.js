@@ -3390,34 +3390,33 @@ async function generateEmotionReport() {
   }
 }
 
- 
- / /   - - -   F i r e b a s e   P e r s i s t e n c e   L o g i c   - - -  
- l e t   s a v e T i m e o u t   =   n u l l ;  
- f u n c t i o n   s a v e S t a t e ( )   {  
-     i f   ( w i n d o w . f b S a v e S t a t e )   {  
-         i f   ( s a v e T i m e o u t )   c l e a r T i m e o u t ( s a v e T i m e o u t ) ;  
-         s a v e T i m e o u t   =   s e t T i m e o u t ( ( )   = >   {  
-             w i n d o w . f b S a v e S t a t e ( a p p S t a t e ) ;  
-         } ,   2 0 0 0 ) ;  
-     }  
- }  
- d o c u m e n t . a d d E v e n t L i s t e n e r ( ' D O M C o n t e n t L o a d e d ' ,   a s y n c   ( )   = >   {  
-     i f   ( w i n d o w . f i r e b a s e I n i t P r o m i s e )   {  
-         a w a i t   w i n d o w . f i r e b a s e I n i t P r o m i s e ;  
-         i f   ( w i n d o w . f b L o a d S t a t e )   {  
-             c o n s t   s a v e d S t a t e   =   a w a i t   w i n d o w . f b L o a d S t a t e ( ) ;  
-             i f   ( s a v e d S t a t e )   {  
-                 a p p S t a t e   =   {   . . . a p p S t a t e ,   . . . s a v e d S t a t e   } ;  
-                 i f   ( a p p S t a t e . c u r r e n t V i e w )   s w i t c h V i e w ( a p p S t a t e . c u r r e n t V i e w ) ;  
-                 i f   ( a p p S t a t e . c u r r e n t V i e w   = = =   ' d a s h b o a r d ' )   {  
-                     u p d a t e D a s h b o a r d U I ( ) ;  
-                     r e n d e r D i a r i e s ( ) ;  
-                 }   e l s e   i f   ( a p p S t a t e . c u r r e n t V i e w   = = =   ' e n v i r o n m e n t ' )   {  
-                     c o n s t   p r e v i e w B o x   =   d o c u m e n t . g e t E l e m e n t B y I d ( ' r e s u l t - p l a n t - p r e v i e w ' ) ;  
-                     i f   ( p r e v i e w B o x )   p r e v i e w B o x . i n n e r H T M L   =   g e n e r a t e P l a n t S V G ( a p p S t a t e . s e l e c t e d P l a n t K e y ,   3 ,   { w a t e r : 5 0 , s u n : 5 0 , w i n d : 5 0 , s o i l : 5 0 } ,   t r u e ) ;  
-                 }  
-             }  
-         }  
-     }  
- } ) ;  
- 
+// --- Firebase Persistence Logic ---
+let saveTimeout = null;
+function saveState() {
+  if (window.fbSaveState) {
+    if (saveTimeout) clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      window.fbSaveState(appState);
+    }, 2000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.firebaseInitPromise) {
+    await window.firebaseInitPromise;
+    if (window.fbLoadState) {
+      const savedState = await window.fbLoadState();
+      if (savedState) {
+        appState = { ...appState, ...savedState };
+        if (appState.currentView) switchView(appState.currentView);
+        if (appState.currentView === 'dashboard') {
+          updateDashboardUI();
+          renderDiaries();
+        } else if (appState.currentView === 'environment') {
+          const previewBox = document.getElementById('result-plant-preview');
+          if (previewBox) previewBox.innerHTML = generatePlantSVG(appState.selectedPlantKey, 3, {water:50, sun:50, wind:50, soil:50}, true);
+        }
+      }
+    }
+  }
+});
