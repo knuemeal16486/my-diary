@@ -443,6 +443,10 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
       <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.2"/>
       </filter>
+      <!-- Clip to pot interior soil area so underground elements never overflow -->
+      <clipPath id="pot-soil-clip">
+        <path d="M 25,125 L 175,125 L 162,192 L 38,192 Z"/>
+      </clipPath>
       
       <linearGradient id="tomato-grad" x1="0.2" y1="0.2" x2="0.8" y2="0.8">
         <stop offset="0%" stop-color="#FF5252"/>
@@ -776,38 +780,40 @@ function generatePlantSVG(plantKey, stage, stats, isPreview = false) {
       }
     }
     else if (plantKey === 'potato') {
+      // All underground elements clipped to pot interior
+      svg += `<g clip-path="url(#pot-soil-clip)">`;
       // Seed potato and underground stem
       svg += drawPotato(100, 160, 0.6, -10);
-      svg += `<path d="M100,152 Q100,140 100,130" stroke="${stemColor}" stroke-width="6" fill="none"/>`;
-      // Roots
-      svg += `<path d="M100,160 Q80,160 70,180 M100,160 Q120,160 130,175 M100,160 Q105,170 95,190 M100,160 Q130,150 145,170 M100,160 Q75,150 60,165 M100,160 Q115,185 110,200" fill="none" stroke="#795548" stroke-width="1.5"/>`;
-      
+      // Roots — kept within y≤190, x between 45–155
+      svg += `<path d="M100,160 Q82,165 72,178 M100,160 Q118,162 128,174 M100,160 Q104,172 96,186 M100,160 Q125,153 138,168 M100,160 Q78,154 64,166 M100,160 Q112,180 108,188" fill="none" stroke="#795548" stroke-width="1.5"/>`;
+
       // Potatoes
       if (stage === 3) {
-        svg += drawPotato(80, 175, 0.8, -15);
-        svg += drawPotato(125, 165, 0.7, 25);
-        svg += drawPotato(100, 185, 0.9, 10);
-        svg += drawPotato(70, 190, 0.5, 40);
+        svg += drawPotato(82, 174, 0.8, -15);
+        svg += drawPotato(122, 164, 0.7, 25);
+        svg += drawPotato(100, 183, 0.9, 10);
+        svg += drawPotato(72, 185, 0.5, 40);
       } else if (stage === 4) {
-        svg += drawPotato(80, 175, 1.3, -15);
-        svg += drawPotato(125, 165, 1.1, 25);
-        svg += drawPotato(100, 185, 1.4, 10);
-        svg += drawPotato(140, 180, 0.9, -20);
-        svg += drawPotato(70, 190, 0.8, 40);
-        svg += drawPotato(110, 200, 1.0, -10);
-        svg += drawPotato(60, 165, 1.1, 50);
+        svg += drawPotato(82, 174, 1.1, -15);
+        svg += drawPotato(122, 164, 1.0, 25);
+        svg += drawPotato(100, 183, 1.2, 10);
+        svg += drawPotato(136, 178, 0.9, -20);
+        svg += drawPotato(68, 183, 0.8, 40);
+        svg += drawPotato(112, 187, 0.9, -10);
+        svg += drawPotato(64, 164, 1.0, 50);
       } else {
         // Stage 5-6: abundant underground harvest
-        svg += drawPotato(80, 175, 1.5, -15);
-        svg += drawPotato(125, 165, 1.3, 25);
-        svg += drawPotato(100, 185, 1.6, 10);
-        svg += drawPotato(140, 180, 1.1, -20);
-        svg += drawPotato(70, 190, 1.0, 40);
-        svg += drawPotato(110, 200, 1.2, -10);
-        svg += drawPotato(60, 165, 1.3, 50);
-        svg += drawPotato(152, 173, 0.9, 35);
-        svg += drawPotato(48, 178, 0.8, -35);
+        svg += drawPotato(82, 174, 1.3, -15);
+        svg += drawPotato(122, 164, 1.1, 25);
+        svg += drawPotato(100, 182, 1.3, 10);
+        svg += drawPotato(136, 177, 1.0, -20);
+        svg += drawPotato(68, 182, 0.9, 40);
+        svg += drawPotato(112, 186, 1.0, -10);
+        svg += drawPotato(64, 163, 1.1, 50);
+        svg += drawPotato(145, 167, 0.9, 35);
+        svg += drawPotato(55, 172, 0.8, -35);
       }
+      svg += `</g>`;
       
       // Above ground stems
       svg += drawStem(100, 130, 95, 40, 8);
