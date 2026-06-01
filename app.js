@@ -15,6 +15,25 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+// Korean name particle helpers
+// hasBatchim: true if the last syllable has a final consonant (받침)
+function _hasBatchim(name) {
+  if (!name) return false;
+  const code = name.charCodeAt(name.length - 1);
+  if (code < 0xAC00 || code > 0xD7A3) return false;
+  return (code - 0xAC00) % 28 !== 0;
+}
+// Vocative: 아 (consonant ending) / 야 (vowel ending)  e.g. "민준아", "지아야"
+function vocativeName(name) {
+  if (!name) return '';
+  return name + (_hasBatchim(name) ? '아' : '야');
+}
+// Informal friendly suffix: 이 appended when consonant-ending, unchanged for vowel  e.g. "민준이", "지아"
+function friendlyName(name) {
+  if (!name) return '';
+  return _hasBatchim(name) ? name + '이' : name;
+}
+
 // GitHub Actions 배포 시 '__GEMINI_API_KEY__' 플레이스홀더가 GitHub Secret으로 자동 교체됩니다.
 // 로컬 테스트 시에는 아래 값을 직접 입력하되, 절대 커밋하지 마세요.
 const GEMINI_API_KEY = 'AQ.Ab8RN6ITD2Y--lzr5Y9G0G2D3vuQzwduRWqmsnY_YGIg11nmKw';
@@ -1809,7 +1828,7 @@ async function fetchGeminiResponse(userText) {
 - 학생의 메시지: "${userText}"
 
 [선생님의 역할 및 답변 규칙]
-1. 항상 학생을 존중하고 다정한 '해요체(존댓말)'를 사용하세요. 학생을 부를 때는 꼭 학생의 진짜 이름('${appState.userName}')을 불러주세요. (예: "${appState.userName}아, 안녕!", "${appState.userName} 님이 이렇게 잘 돌봐주니")
+1. 항상 학생을 존중하고 다정한 '해요체(존댓말)'를 사용하세요. 학생을 부를 때는 꼭 학생의 진짜 이름을 올바른 조사와 함께 불러주세요. (예: "${vocativeName(appState.userName)}, 안녕!", "${friendlyName(appState.userName)}가 이렇게 잘 돌봐주니")
 2. 학생의 질문(특히 식물이나 자연에 관한 질문)에는 사실에 입각하여 정확하면서도 초등학생이 이해하기 쉽게 친절히 설명해 주세요.
 3. 식물 재배 팁이나 성장 과정에 대한 지식을 자연스럽게 알려주어 식물 성장에 대한 모든 것을 커버하세요.
 4. 학생이 감정을 표현하거나 일상적인 대화를 걸어올 때는, 학생의 최근 감정 상태(${recentEmotion})를 세심하게 관찰하고 공감하며 위로하거나 칭찬해 주세요.
@@ -2425,16 +2444,21 @@ async function saveDiary() {
 async function generateImageWithGemini(text, mood, photos = []) {
   if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
 
-  const promptText = `초등학생이 오늘 하루를 기록한 일기입니다. 이 일기의 내용과 감정(${mood})을 바탕으로, 그 하루를 담은 따뜻한 그림 한 장을 그려주세요.
+  const photoHint = (photos && photos.length > 0)
+    ? `\n- 첨부된 사진(${photos.length}장)의 식물 모습, 색상, 분위기를 참고하여 그림에 자연스럽게 반영해 주세요.`
+    : '';
 
-일기: "${text}"
+  const promptText = `초등학교 6학년 학생이 오늘 식물을 돌보며 쓴 일기입니다. 이 일기의 내용과 감정(${mood})을 바탕으로, 그 하루를 담은 그림 한 장을 그려주세요.
 
-그림 조건:
-- 부드러운 수채화 느낌, 따뜻한 파스텔 색감
-- 초등학생 그림책 스타일
-- 글자나 텍스트 없음
-- 1인칭 시점 (주인공이 화면에 직접 등장하지 않음)
-- 귀엽고 안전한 장면, 폭력·무서운 요소 없음`;
+일기 내용: "${text}"
+
+[그림 스타일 조건]
+- 한국 초등학교 교과서나 동화책에 나오는 따뜻한 일러스트 스타일 (수채화+크레파스 느낌, 선명하고 따뜻한 색감)
+- 귀엽고 친근한 캐릭터 표현, 아이들이 좋아하는 부드러운 느낌
+- 1인칭 시점 또는 하루를 요약하는 한 장면 (주인공 얼굴이 정면으로 크게 나오지 않아도 됨)
+- 식물·자연 요소(화분, 잎, 햇빛, 물 등)가 장면에 자연스럽게 포함되어야 함${photoHint}
+- 글자나 텍스트 없음, 폭력·무서운 요소 없음
+- 배경은 교실·창가·베란다·정원 등 아이가 식물을 돌보는 생활 공간`;
 
   const parts = [{ text: promptText }];
 
@@ -2474,12 +2498,21 @@ async function generateImageWithGemini(text, mood, photos = []) {
 async function fetchTeacherCommentFromGemini(text, mood) {
   if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
 
-  const prompt = `당신은 초등학교의 다정하고 따뜻한 담임 선생님입니다. 학생이 반려 식물을 관찰하고 다음과 같은 일기를 썼습니다.
-학생 이름: ${appState.userName}
-일기 내용: "${text}"
-학생의 오늘 감정: ${mood}
+  const voc = vocativeName(appState.userName); // e.g. 민준아 / 지아야
+  const prompt = `당신은 초등학교 6학년 담임 선생님으로, 학생의 반려 식물 일기에 손 편지처럼 코멘트를 남깁니다.
 
-학생의 일기를 읽고, 깊은 공감과 칭찬을 담은 따뜻한 선생님의 코멘트를 1~2문장으로 '해요체(존댓말)'를 사용하여 다정하게 작성해 주세요. 꼭 학생의 이름(${appState.userName})을 다정하게 불러주세요. JSON 포맷 없이 순수 텍스트로만 대답해 주세요.`;
+[학생 정보]
+- 이름: ${appState.userName} (부를 때는 반드시 "${voc}"처럼 올바른 조사를 붙여 부르세요)
+- 오늘의 감정: ${mood}
+- 일기 내용: "${text}"
+
+[코멘트 작성 규칙]
+1. 실제 담임 선생님이 일기장에 빨간 펜으로 써주는 것처럼 따뜻하고 진심 어린 어조로 써주세요.
+2. 반드시 "${voc}"라고 이름을 직접 불러주며 시작하세요.
+3. 일기에서 학생이 쓴 구체적인 내용을 언급하며 공감해 주세요. (일기 내용을 읽었다는 걸 느낄 수 있게)
+4. 칭찬·공감·따뜻한 격려가 자연스럽게 어우러지게 해주세요.
+5. 해요체(존댓말)로 2~3문장 내외로 완성된 코멘트를 써주세요.
+6. JSON 없이 순수 텍스트만 출력하세요.`;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
   try {
@@ -2488,10 +2521,10 @@ async function fetchTeacherCommentFromGemini(text, mood) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 150 }
+        generationConfig: { temperature: 0.85, maxOutputTokens: 400 }
       })
     });
-    
+
     if (!response.ok) return null;
     const data = await response.json();
     if (data.candidates && data.candidates.length > 0) {
@@ -3347,11 +3380,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const initialMsg = document.getElementById('initial-bot-message');
     if (initialMsg) {
-      initialMsg.innerText = `안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 ${appState.userName} 님과 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!`;
+      initialMsg.innerText = `안녕하세요! 저를 심어주셔서 정말 감사해요. 앞으로 ${friendlyName(appState.userName)}와 함께 자랄 생각을 하니 너무 기뻐요! 제 목소리가 들리시면 위에 있는 돌보기 버튼을 누르거나 하고 싶은 말을 입력해 주세요!`;
     }
 
     const envNames = { window: "창가", balcony: "베란다", room: "방 안", outdoor: "야외 정원" };
-    addBotMessage(`🌱 안녕하세요, ${appState.userName} 님! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
+    addBotMessage(`🌱 안녕하세요, ${vocativeName(appState.userName)}! 드디어 제가 자랄 [${envNames[appState.environment]}] 흙 속에 자리를 잡았어요. 물, 햇빛, 흙, 바람 게이지를 조절하여 제가 튼튼하게 자랄 수 있게 도와주세요!`);
   });
 
   // Portfolio modal
@@ -3538,70 +3571,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Diary Autocomplete (Ghost text) logic
+  // Diary word suggestion (chip bar below textarea)
   const diaryInput = document.getElementById('diary-text');
-  const ghostText = document.getElementById('diary-ghost-text');
-  if (diaryInput && ghostText) {
+  const suggestBar = document.getElementById('diary-suggest-bar');
+  const suggestBtn = document.getElementById('diary-suggest-btn');
+  if (diaryInput && suggestBar && suggestBtn) {
     let typingTimer;
     let currentSuggestion = "";
 
-    function escapeHtmlSimple(unsafe) {
-      if (!unsafe) return "";
-      return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    function hideSuggestion() {
+      currentSuggestion = "";
+      suggestBar.classList.add('hidden');
+      suggestBtn.textContent = '';
+    }
+
+    function showSuggestion(text) {
+      currentSuggestion = text;
+      suggestBtn.textContent = text;
+      suggestBar.classList.remove('hidden');
+    }
+
+    function acceptSuggestion() {
+      if (!currentSuggestion) return;
+      const val = diaryInput.value;
+      diaryInput.value = val.endsWith(' ') ? val + currentSuggestion : val + ' ' + currentSuggestion;
+      hideSuggestion();
+      diaryInput.focus();
     }
 
     diaryInput.addEventListener('input', () => {
       clearTimeout(typingTimer);
-      ghostText.innerHTML = '<span style="color: transparent;">' + escapeHtmlSimple(diaryInput.value) + '</span>';
-      currentSuggestion = "";
-      
-      if (diaryInput.value.trim().length > 0) {
-        typingTimer = setTimeout(async () => {
-          try {
-            const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 다음 문장의 뒷부분(3~5단어 정도)을 자연스럽게 이어지도록 예상해서 완성해주세요. 반드시 이어질 단어만 출력하고 다른 설명은 하지 마세요.
+      hideSuggestion();
+
+      if (diaryInput.value.trim().length < 5) return;
+
+      typingTimer = setTimeout(async () => {
+        try {
+          const prompt = `당신은 초등학생의 일기 쓰기를 도와주는 AI입니다. 학생이 쓴 문장 다음에 이어질 자연스러운 표현(5~10단어 이내)을 딱 하나만 제안해 주세요. 제안 표현만 출력하고 다른 설명은 하지 마세요. 마침표·따옴표도 붙이지 마세요.
 현재까지 쓴 내용: "${diaryInput.value}"`;
-            
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-            
-            const response = await fetch(url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 50 }
-              })
-            });
-            
-            if (response.ok) {
-              const data = await response.json();
-              if (data.candidates && data.candidates.length > 0) {
-                let suggestion = data.candidates[0].content.parts[0].text.trim();
-                currentSuggestion = " " + suggestion;
-                if (diaryInput.value.trim().length > 0) {
-                  ghostText.innerHTML = '<span style="color: transparent;">' + escapeHtmlSimple(diaryInput.value) + '</span><span style="color: rgba(150,150,150,0.7);">' + escapeHtmlSimple(currentSuggestion) + '</span>';
-                }
-              }
-            }
-          } catch (e) {
-            console.error("Autocomplete error", e);
+
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.7, maxOutputTokens: 40 }
+            })
+          });
+
+          if (response.ok && diaryInput.value.trim().length >= 5) {
+            const data = await response.json();
+            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+            if (raw) showSuggestion(raw);
           }
-        }, 1000);
-      }
+        } catch (e) {
+          console.error("Autocomplete error", e);
+        }
+      }, 1200);
     });
 
     diaryInput.addEventListener('keydown', (e) => {
       if ((e.key === 'Tab' || e.key === 'ArrowRight') && currentSuggestion) {
         e.preventDefault();
-        diaryInput.value += currentSuggestion;
-        ghostText.innerHTML = '<span style="color: transparent;">' + escapeHtmlSimple(diaryInput.value) + '</span>';
-        currentSuggestion = "";
+        acceptSuggestion();
       }
+      if (e.key === 'Escape') hideSuggestion();
     });
+
+    suggestBtn.addEventListener('click', acceptSuggestion);
   }
 
   // Trigger weather effects on startup
@@ -3839,18 +3877,19 @@ async function generateEmotionReport() {
   
   const emotionSummary = Object.entries(emotionCounts).map(([mood, count]) => `${mood} ${count}번`).join(', ');
 
-  const prompt = `당신은 초등학교 다정하고 따뜻한 담임 선생님입니다. 학생(${appState.userName})이 반려 식물(현재 ${appState.growthStage}단계)을 기르면서 작성한 한 달치 감정 일기 통계를 바탕으로 다정하고 따뜻한 회고 보고서를 작성해 주세요.
-  
+  const voc = vocativeName(appState.userName);
+  const prompt = `당신은 초등학교 6학년 다정하고 따뜻한 담임 선생님입니다. 학생 "${appState.userName}"이(가) 반려 식물(현재 ${appState.growthStage}단계)을 기르면서 작성한 한 달치 감정 일기 통계를 바탕으로 다정하고 따뜻한 회고 편지를 작성해 주세요.
+
 이번 달 학생의 감정 통계: ${emotionSummary}
 총 작성한 일기 수: ${monthlyDiaries.length}개
 
 요구사항:
-1. 학생이 다양한 감정을 느꼈음을 인정하고 공감해 주세요.
-2. 비(슬픔/우울/불안)나 바람(화/두려움) 같은 감정의 날씨도 식물이 튼튼하게 자라는데 큰 도움이 되었다는 점을 꼭 칭찬해 주세요. (실제로 비가 올 때 식물이 물을 듬뿍 마셔서 경험치를 2배로 얻었습니다)
-3. 햇빛(기쁨/행복)이 식물을 미소 짓게 했다는 점도 언급해 주세요.
-4. 초등학생 6학년이 읽기 좋게 다정하고 부드러운 '해요체(존댓말)'로 작성해 주세요.
-5. 3~4문단 정도로 구성하고, 마크다운(HTML)을 약간 섞어서 보기 좋게 작성해 주세요. (예: <strong>강조</strong>, <br> 등)
-6. 반드시 선생님이 학생(${appState.userName})에게 편지를 쓰는 듯한 어조로 작성하고, 꼭 학생의 이름을 불러주세요.`;
+1. 반드시 "${voc}"라고 이름을 불러주며 시작하세요.
+2. 학생이 다양한 감정을 느꼈음을 인정하고 공감해 주세요.
+3. 비(슬픔/우울/불안)나 바람(화/두려움) 같은 감정도 식물이 튼튼하게 자라는데 큰 도움이 되었다는 점을 꼭 칭찬해 주세요.
+4. 햇빛(기쁨/행복)이 식물을 미소 짓게 했다는 점도 언급해 주세요.
+5. 초등학생 6학년이 읽기 좋게 다정하고 부드러운 '해요체(존댓말)'로 작성해 주세요.
+6. 3~4문단 정도로 구성하고, 마크다운(HTML)을 약간 섞어서 보기 좋게 작성해 주세요. (예: <strong>강조</strong>, <br> 등)`;
 
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;

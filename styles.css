@@ -1554,6 +1554,37 @@ body {
   border-color: var(--accent-green);
 }
 
+.diary-suggest-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  font-size: 12px;
+}
+.diary-suggest-bar.hidden { display: none; }
+.suggest-label { font-size: 14px; }
+.suggest-chip {
+  background: rgba(76, 175, 80, 0.12);
+  border: 1.5px dashed var(--accent-green);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-green);
+  cursor: pointer;
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.suggest-chip:hover { background: rgba(76, 175, 80, 0.22); }
+.suggest-hint {
+  font-size: 11px;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
 .diary-history {
   flex: 1;
 }

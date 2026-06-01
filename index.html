@@ -481,13 +481,14 @@
                       </div>
                     </div>
 
-                    <div class="editor-row relative-editor" style="position: relative;">
-                      <div id="diary-ghost-text" class="ghost-text-overlay"
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 12px; pointer-events: none; color: rgba(150, 150, 150, 0.7); font-size: 13px; font-weight: 700; font-family: inherit; line-height: normal; white-space: pre-wrap; word-wrap: break-word; overflow: hidden; z-index: 1;">
-                      </div>
+                    <div class="editor-row">
                       <textarea id="diary-text" rows="3"
-                        placeholder="오늘 하루 어떤 감정을 느꼈나요? 식물에게 나의 마음을 이야기해 보세요... (잠시 멈추면 식물이 위로의 말을 건넬지도 몰라요!)"
-                        maxlength="150" style="position: relative; z-index: 2; background: transparent;"></textarea>
+                        placeholder="오늘 하루 어떤 감정을 느꼈나요? 식물에게 나의 마음을 이야기해 보세요... (잠시 멈추면 식물이 위로의 말을 건넬지도 몰라요!)"></textarea>
+                      <div id="diary-suggest-bar" class="diary-suggest-bar hidden">
+                        <span class="suggest-label">💡</span>
+                        <button type="button" id="diary-suggest-btn" class="suggest-chip"></button>
+                        <span class="suggest-hint">Tab으로 추가</span>
+                      </div>
                     </div>
 
                     <!-- Plant Observation Checklist -->
