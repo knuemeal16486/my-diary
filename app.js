@@ -2321,12 +2321,9 @@ async function saveDiary() {
   let generatedImageUrl = "";
   let teacherComment = "";
   try {
-    const prompt = await fetchImagePromptFromGemini(text, emotion.label);
-    if (prompt) {
-      generatedImageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=400&height=300&nologo=true&model=flux-pro&enhance=true`;
-    }
+    generatedImageUrl = await generateImageWithGemini(text, emotion.label, uploadedPhotosBase64) || "";
   } catch(e) {
-    console.error("Failed to generate image prompt", e);
+    console.error("Failed to generate image", e);
   }
 
   try {
@@ -2425,37 +2422,51 @@ async function saveDiary() {
   }
 }
 
-async function fetchImagePromptFromGemini(text, mood) {
+async function generateImageWithGemini(text, mood, photos = []) {
   if (!GEMINI_API_KEY || GEMINI_API_KEY === '__GEMINI_API_KEY__') return null;
-  const prompt = `당신은 초등학생 일기를 바탕으로 그림 프롬프트를 생성하는 AI입니다.
-아래 일기에서 가장 구체적이고 기억에 남는 장면을 딱 하나 골라, 그 순간을 담은 영문 그림 프롬프트를 작성하세요.
 
-규칙:
-1. 일기 속 실제 사건·행동을 반드시 포함할 것 (예: hands holding a pencil writing in a notebook, walking home through fallen autumn leaves)
-2. 시점은 반드시 1인칭(나의 눈으로 보이는 장면, POV)으로 묘사할 것 — 주인공 캐릭터가 화면에 등장하지 않도록 함
-3. 등장인물은 반드시 사람(human)이어야 하며, 의인화된 동물 캐릭터는 절대 등장하지 않을 것
-4. 감정(${mood})에 맞는 분위기와 색감을 넣을 것
-5. 마지막에 반드시 ", first-person POV, soft watercolor illustration, children's storybook style, warm pastel colors, no text, no anthropomorphic animals" 를 붙일 것
-6. 영문 한 문장(60단어 이하)만 출력할 것. 설명이나 따옴표 없이 프롬프트 문장만 출력.
+  const promptText = `초등학생이 오늘 하루를 기록한 일기입니다. 이 일기의 내용과 감정(${mood})을 바탕으로, 그 하루를 담은 따뜻한 그림 한 장을 그려주세요.
 
-일기 내용: "${text}"
-오늘의 감정: ${mood}`;
+일기: "${text}"
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+그림 조건:
+- 부드러운 수채화 느낌, 따뜻한 파스텔 색감
+- 초등학생 그림책 스타일
+- 글자나 텍스트 없음
+- 1인칭 시점 (주인공이 화면에 직접 등장하지 않음)
+- 귀엽고 안전한 장면, 폭력·무서운 요소 없음`;
+
+  const parts = [{ text: promptText }];
+
+  // Use uploaded photos as visual context (up to 2)
+  if (photos && photos.length > 0) {
+    photos.slice(0, 2).forEach(dataUrl => {
+      const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+      if (match) parts.push({ inlineData: { mimeType: match[1], data: match[2] } });
+    });
+  }
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`;
 
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 150 }
+      contents: [{ parts }],
+      generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
     })
   });
-  
+
   if (!response.ok) return null;
   const data = await response.json();
-  if (data.candidates && data.candidates.length > 0) {
-    return data.candidates[0].content.parts[0].text.trim();
+
+  const parts2 = data.candidates?.[0]?.content?.parts;
+  if (parts2) {
+    for (const part of parts2) {
+      if (part.inlineData?.data) {
+        return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+      }
+    }
   }
   return null;
 }
