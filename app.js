@@ -2575,31 +2575,35 @@ function renderStudentList(students) {
   const plantNames = { tomato:'방울토마토', potato:'감자', cabbage:'배추', cucumber:'오이', apple:'사과' };
   const plantEmojis = { tomato:'🍅', potato:'🥔', cabbage:'🥬', cucumber:'🥒', apple:'🍎' };
 
+  // 가나다순 정렬
+  const sorted = students.slice().sort((a, b) =>
+    (a.userName || '').localeCompare(b.userName || '', 'ko')
+  );
+
   const listEl = document.getElementById('student-list');
   const detailEl = document.getElementById('student-detail');
   detailEl.classList.add('hidden');
   detailEl.innerHTML = '';
 
-  listEl.innerHTML = students.map((s, idx) => {
+  listEl.innerHTML = sorted.map((s, idx) => {
     const stage = Math.min(Math.max(s.growthStage || 1, 1), 6);
     const plantKey = s.selectedPlantKey || '';
     const diaryCount = (s.diaryList || []).length;
     const quizRate = s.quizSeenIndices?.length
       ? Math.round((s.quizCorrectCount || 0) / s.quizSeenIndices.length * 100) : 0;
+    const xp = s.growthXP || 0;
     return `
       <div class="student-card" data-idx="${idx}">
-        <div class="sc-left">
-          <span class="sc-avatar">${plantEmojis[plantKey] || '🌱'}</span>
-          <div class="sc-info">
-            <strong class="sc-name">${escapeHTML(s.userName || '이름 없음')}</strong>
-            <span class="sc-plant">${plantNames[plantKey] || '식물 미선택'} · ${stageEmojis[stage-1]}${stageNames[stage-1]}</span>
-          </div>
+        <span class="sc-num">${idx + 1}</span>
+        <span class="sc-avatar">${plantEmojis[plantKey] || '🌱'}</span>
+        <strong class="sc-name">${escapeHTML(s.userName || '이름 없음')}</strong>
+        <span class="sc-plant">${plantNames[plantKey] || '미선택'}</span>
+        <span class="sc-stage">${stageEmojis[stage-1]} ${stageNames[stage-1]}</span>
+        <div class="sc-xp-wrap"><div class="sc-xp-bar" style="width:${xp}%"></div></div>
+        <div class="sc-footer">
+          <span>📝 ${diaryCount}</span>
+          <span>🧩 ${quizRate}%</span>
         </div>
-        <div class="sc-stats">
-          <span class="sc-stat">📝 ${diaryCount}개</span>
-          <span class="sc-stat">🧩 ${quizRate}%</span>
-        </div>
-        <span class="sc-arrow">›</span>
       </div>`;
   }).join('');
 
@@ -2607,7 +2611,7 @@ function renderStudentList(students) {
     card.addEventListener('click', () => {
       listEl.querySelectorAll('.student-card').forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
-      renderStudentDetail(students[idx]);
+      renderStudentDetail(sorted[idx]);
     });
   });
 }
