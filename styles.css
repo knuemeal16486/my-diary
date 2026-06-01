@@ -54,6 +54,11 @@
   -webkit-user-select: none;
 }
 
+input, textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 body {
   background: linear-gradient(135deg, #F1F8F3 0%, #E8F0FE 100%);
   background-attachment: fixed;
@@ -220,7 +225,7 @@ body {
 
 .view-section.active {
   opacity: 1;
-  pointer-events: all;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
