@@ -1962,6 +1962,12 @@ function handleQuizAnswer(chosenIndex, btnElement) {
     appState.fertilizerCount++;
     appState.quizCorrectCount++;
     document.getElementById('fertilizer-count').textContent = appState.fertilizerCount;
+    const fertBadge = document.getElementById('fertilizer-badge');
+    if (fertBadge) {
+      fertBadge.classList.remove('badge-shimmer');
+      void fertBadge.offsetWidth;
+      fertBadge.classList.add('badge-shimmer');
+    }
     fbTitle.textContent = "정답입니다! 🌟";
     fbTitle.className = "text-green";
     fbDesc.textContent = qData.explanation;
@@ -2137,7 +2143,7 @@ function showLifeCycleComplete() {
   const topEmotions = Object.entries(emotionCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-    .map(([key]) => INSIDE_OUT_EMOTIONS[key])
+    .map(([key]) => EMOTIONS[key])
     .filter(Boolean);
   const emotionStr = topEmotions.length > 0
     ? topEmotions.map(e => `${e.emoji} ${e.label}`).join('  ')
