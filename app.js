@@ -2050,9 +2050,7 @@ function initPlantInteraction() {
   document.getElementById('plant-info-close').addEventListener('click', () => {
     document.getElementById('plant-info-panel').classList.add('hidden');
   });
-  document.getElementById('lc-close-btn')?.addEventListener('click', () => {
-    document.getElementById('lifecycle-complete-modal').classList.add('hidden');
-  });
+  document.getElementById('lc-close-btn')?.addEventListener('click', closeLifecycleAndRecommend);
 }
 
 function showPlantPartInfo(part, plantKey) {
@@ -2226,9 +2224,7 @@ function initPlantInteraction() {
   document.getElementById('plant-info-close').addEventListener('click', () => {
     document.getElementById('plant-info-panel').classList.add('hidden');
   });
-  document.getElementById('lc-close-btn')?.addEventListener('click', () => {
-    document.getElementById('lifecycle-complete-modal').classList.add('hidden');
-  });
+  document.getElementById('lc-close-btn')?.addEventListener('click', closeLifecycleAndRecommend);
 }
 
 function showPlantPartInfo(part, plantKey) {
@@ -2905,6 +2901,26 @@ function showWeatherError() {
 
 
 // 12. Initialization & Setup Event Handlers
+
+function closeLifecycleAndRecommend() {
+  document.getElementById('lifecycle-complete-modal').classList.add('hidden');
+
+  const allPlants = Object.keys(plantProfiles);
+  const uncompletedPlants = allPlants.filter(p => !appState.completedPlants?.includes(p));
+
+  if (uncompletedPlants.length > 0) {
+    const nextPlantKey = uncompletedPlants[Math.floor(Math.random() * uncompletedPlants.length)];
+    const recModal = document.getElementById('recommendation-modal');
+    if (recModal) {
+      const plantEmojis = { tomato: '🍅', potato: '🥔', cabbage: '🥬', cucumber: '🥒', apple: '🍎' };
+      recModal.querySelector('#rec-plant-emoji').textContent = plantEmojis[nextPlantKey] || '🌱';
+      recModal.querySelector('#rec-plant-name').textContent = plantProfiles[nextPlantKey].name;
+      document.getElementById('btn-grow-rec-plant').onclick = () => resetToNewPlant(nextPlantKey);
+      recModal.classList.remove('hidden');
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Lucide initialize
   lucide.createIcons();
@@ -2917,27 +2933,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (diaryDetailOverlay) diaryDetailOverlay.addEventListener('click', closeDiaryDetail);
 
   const btnCloseLc = document.getElementById('lc-close-btn-bottom');
-  if (btnCloseLc) {
-    btnCloseLc.addEventListener('click', () => {
-      document.getElementById('lifecycle-complete-modal').classList.add('hidden');
-      
-      const allPlants = Object.keys(plantProfiles);
-      const uncompletedPlants = allPlants.filter(p => !appState.completedPlants?.includes(p));
-      
-      if (uncompletedPlants.length > 0) {
-        const nextPlantKey = uncompletedPlants[Math.floor(Math.random() * uncompletedPlants.length)];
-        const recModal = document.getElementById('recommendation-modal');
-        if (recModal) {
-          const plantEmojis = { tomato: '🍅', potato: '🥔', cabbage: '🥬', cucumber: '🥒', apple: '🍎' };
-          recModal.querySelector('#rec-plant-emoji').textContent = plantEmojis[nextPlantKey] || '🌱';
-          recModal.querySelector('#rec-plant-name').textContent = plantProfiles[nextPlantKey].name;
-          
-          document.getElementById('btn-grow-rec-plant').onclick = () => resetToNewPlant(nextPlantKey);
-          recModal.classList.remove('hidden');
-        }
-      }
-    });
-  }
+  if (btnCloseLc) btnCloseLc.addEventListener('click', closeLifecycleAndRecommend);
   
   const btnCloseRec = document.getElementById('btn-close-rec');
   if (btnCloseRec) {
