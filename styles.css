@@ -572,6 +572,57 @@ body {
 .sd-diary-content { font-size: 14px; line-height: 1.7; color: var(--text-main); margin-bottom: 10px; }
 .sd-diary-img     { max-width: 100%; border-radius: 8px; margin-bottom: 10px; }
 .sd-diary-comment { background: #fffde7; border-left: 3px solid #FFD700; padding: 8px 12px; font-size: 13px; border-radius: 0 6px 6px 0; }
+.sd-comment-dot { margin-left: auto; font-size: 13px; }
+
+/* Teacher comment input area */
+.sd-teacher-input {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1.5px dashed rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sd-teacher-input-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+.sd-comment-textarea {
+  width: 100%;
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 2px solid rgba(0,0,0,0.08);
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  line-height: 1.6;
+  color: var(--text-main);
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.sd-comment-textarea:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 3px rgba(76,175,80,0.12);
+}
+.btn-save-comment {
+  align-self: flex-end;
+  padding: 8px 20px;
+  background: var(--primary-green);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-save-comment:hover  { background: var(--accent-green); transform: scale(1.04); }
+.btn-save-comment:active { transform: scale(0.97); }
+.btn-save-comment.saved  { background: #43a047; }
+.btn-save-comment:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
 /* Teacher code error + shake */
 .teacher-code-error { color: #e53935; font-size: 13px; font-weight: 700; margin: -4px 0 8px; }

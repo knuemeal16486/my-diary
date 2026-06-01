@@ -2540,6 +2540,9 @@ async function fetchTeacherCommentFromGemini(text, mood) {
 
 // ===== Teacher View =====
 
+let activeTeacherClassCode = '';
+let activeStudentUid = '';
+
 async function enterAsTeacher() {
   const code = document.getElementById('input-teacher-code')?.value.trim();
   if (!code) return;
@@ -2563,6 +2566,7 @@ async function enterAsTeacher() {
     return;
   }
 
+  activeTeacherClassCode = code;
   document.getElementById('teacher-class-title').textContent = `📋 학급 코드: ${code} — 학생 ${students.length}명`;
   renderStudentList(students);
   document.getElementById('teacher-login-panel').classList.add('hidden');
@@ -2617,6 +2621,7 @@ function renderStudentList(students) {
 }
 
 function renderStudentDetail(s) {
+  activeStudentUid = s.uid || '';
   const detailEl = document.getElementById('student-detail');
   detailEl.classList.remove('hidden');
   detailEl.innerHTML = buildStudentDetailHTML(s);
@@ -2703,12 +2708,14 @@ function buildStudentDetailHTML(s) {
       </div>`;
   }
 
-  // Diary list
+  // Diary list — origIdx maps reversed position back to original array index
+  const totalDiaries = (s.diaryList || []).length;
   html += `
     <div class="sd-section">
       <div class="sd-section-title">📖 일기 전체 (${diaries.length}개)</div>
       ${diaries.length === 0 ? '<p class="sd-empty">아직 작성된 일기가 없어요.</p>' :
-        diaries.map(d => {
+        diaries.map((d, ri) => {
+          const origIdx = totalDiaries - 1 - ri;
           const obs = d.observation;
           const obsHtml = obs ? `
             <div class="sd-obs">
@@ -2717,18 +2724,24 @@ function buildStudentDetailHTML(s) {
               ${obs.careDone?.length ? `<span>🤲 돌봄: ${obs.careDone.map(escapeHTML).join(', ')}</span>` : ''}
               ${obs.note ? `<span>📝 특이사항: ${escapeHTML(obs.note)}</span>` : ''}
             </div>` : '';
+          const hasComment = !!d.teacherComment;
           return `
-            <details class="sd-diary-item">
+            <details class="sd-diary-item" data-orig-idx="${origIdx}">
               <summary class="sd-diary-summary">
                 <span class="sd-diary-date">${d.date}</span>
                 <span class="sd-diary-mood">${d.mood || ''}</span>
                 <span class="sd-diary-snippet">${escapeHTML((d.content || '').slice(0, 30))}${(d.content || '').length > 30 ? '…' : ''}</span>
+                ${hasComment ? '<span class="sd-comment-dot">💬</span>' : ''}
               </summary>
               <div class="sd-diary-body">
                 ${obsHtml}
                 <p class="sd-diary-content">${escapeHTML(d.content || '')}</p>
                 ${d.imageUrl ? `<img class="sd-diary-img" src="${d.imageUrl}" alt="일기 이미지">` : ''}
-                ${d.teacherComment ? `<div class="sd-diary-comment">💬 ${escapeHTML(d.teacherComment)}</div>` : ''}
+                <div class="sd-teacher-input">
+                  <label class="sd-teacher-input-label">✏️ 선생님 코멘트</label>
+                  <textarea class="sd-comment-textarea" placeholder="이 일기에 코멘트를 남겨주세요...">${escapeHTML(d.teacherComment || '')}</textarea>
+                  <button class="btn-save-comment" type="button">저장</button>
+                </div>
               </div>
             </details>`;
         }).join('')
@@ -2736,6 +2749,38 @@ function buildStudentDetailHTML(s) {
     </div>`;
 
   return html;
+}
+
+async function saveTeacherDiaryComment(origIdx, comment, btn) {
+  if (!activeTeacherClassCode || !activeStudentUid) return;
+  const original = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '저장 중...';
+
+  const ok = window.fbSaveTeacherComment
+    ? await window.fbSaveTeacherComment(activeTeacherClassCode, activeStudentUid, origIdx, comment)
+    : false;
+
+  btn.disabled = false;
+  if (ok) {
+    btn.textContent = '✓ 저장됨';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('saved'); }, 2000);
+    // Reflect in summary dot
+    const diaryItem = btn.closest('.sd-diary-item');
+    const summary = diaryItem?.querySelector('.sd-diary-summary');
+    if (summary) {
+      const dot = summary.querySelector('.sd-comment-dot');
+      if (comment && !dot) {
+        summary.insertAdjacentHTML('beforeend', '<span class="sd-comment-dot">💬</span>');
+      } else if (!comment && dot) {
+        dot.remove();
+      }
+    }
+  } else {
+    btn.textContent = '저장 실패';
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }
 }
 
 // 핵심 로직: 최근 3개 일기의 감정 패턴 → 식물 날씨 분석
@@ -3562,6 +3607,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('input-teacher-code').value = '';
   });
   document.getElementById('btn-print-teacher')?.addEventListener('click', () => window.print());
+
+  // Teacher comment save — event delegation on the persistent #student-detail element
+  document.getElementById('student-detail')?.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.btn-save-comment');
+    if (!btn) return;
+    const diaryItem = btn.closest('.sd-diary-item');
+    if (!diaryItem) return;
+    const origIdx = parseInt(diaryItem.dataset.origIdx, 10);
+    const textarea = diaryItem.querySelector('.sd-comment-textarea');
+    await saveTeacherDiaryComment(origIdx, textarea.value.trim(), btn);
+  });
 
   // Event: Adopt & Go to Environment Selection
   document.getElementById('btn-adopt-plant').addEventListener('click', () => {

@@ -71,6 +71,29 @@ window.fbSaveState = async (appState, classCode) => {
   }
 };
 
+// Teacher: update a single diary entry's teacherComment
+window.fbSaveTeacherComment = async (classCode, studentUid, origIdx, comment) => {
+  await window.firebaseInitPromise;
+  if (isOfflineMode || !db || !classCode || !studentUid) return false;
+
+  try {
+    const docRef = doc(db, "classrooms", classCode, "students", studentUid);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return false;
+
+    const data = snap.data();
+    const diaryList = Array.isArray(data.diaryList) ? [...data.diaryList] : [];
+    if (origIdx < 0 || origIdx >= diaryList.length) return false;
+
+    diaryList[origIdx] = { ...diaryList[origIdx], teacherComment: comment };
+    await setDoc(docRef, { diaryList }, { merge: true });
+    return true;
+  } catch (e) {
+    console.error("Error saving teacher comment:", e);
+    return false;
+  }
+};
+
 // Teacher: load all students in a class
 window.fbLoadClassStudents = async (classCode) => {
   await window.firebaseInitPromise;
