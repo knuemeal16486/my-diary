@@ -1340,7 +1340,7 @@ function triggerStageLevelUp() {
   const stageEmoji = ["🌱","🌿","🍃","🌸","🍎","🌾"][appState.growthStage - 1] || "🌾";
   showToast(`${stageEmoji} 축하해요! 정원사님 덕분에 [${stageName}] 단계로 성장했어요!`, 'celebrate');
   
-  if (appState.growthStage >= 3 && appState.environment !== 'outdoor') {
+  if (appState.growthStage >= 3 && appState.growthStage <= 4 && appState.environment !== 'outdoor') {
     setTimeout(() => {
       const modal = document.getElementById('transplant-modal');
       if (modal) modal.classList.remove('hidden');
